@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="250.0" style="-fx-background-color: white;" stylesheets="@../css/StyleSheet.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="bus_transit.SideMenuController">
+   <children>
+      <ImageView fitHeight="175.0" fitWidth="254.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/Login-Wallpaper.jpg" />
+         </image>
+      </ImageView>
+      <Label layoutX="14.0" layoutY="183.0" text="Navigation" textFill="#b2b2b2">
+         <font>
+            <Font name="Calibri" size="13.0" />
+         </font>
+      </Label>
+      <Accordion layoutX="14.0" layoutY="206.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="205.0">
+        <panes>
+          <TitledPane text="Module 1">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;" />
+            </content>
+          </TitledPane>
+          <TitledPane text="Module 2">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: white;" />
+            </content>
+          </TitledPane>
+          <TitledPane text="Module 3">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;" />
+            </content>
+          </TitledPane>
+            <TitledPane layoutX="10.0" layoutY="47.0" text="Module 4">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: white;" />
+               </content>
+            </TitledPane>
+            <TitledPane layoutX="10.0" layoutY="84.0" text="Module 5">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;" />
+               </content>
+            </TitledPane>
+        </panes>
+      </Accordion>
+   </children>
+   <effect>
+      <DropShadow color="GREY" />
+   </effect>
+</AnchorPane>
