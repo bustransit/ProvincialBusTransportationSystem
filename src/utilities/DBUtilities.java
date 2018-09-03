@@ -360,14 +360,14 @@ public class DBUtilities {
         yAxis.setTickLabelRotation(45);
         yAxis.setLabel("Menus");
         XYChart.Series series1 = new XYChart.Series();
-        series1.setName("2016");
+        series1.setName(seriesTitle);
         try {
             this.resultSet = this.displayRecords(q);
             while (this.resultSet.next()) {
                 XYChart.Data<String, Number> data = new XYChart.Data<String, Number>(this.resultSet.getString(i), this.resultSet.getDouble(j));
-                series1.getData().add(data);
-
+                series1.getData().add(data);                
             }
+            
             i++;
             j++;
 

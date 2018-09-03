@@ -179,7 +179,7 @@ public class LoginController implements Initializable {
                 Stage stage = (Stage) btn_signin.getScene().getWindow();
                 stage.close();
                 Stage dash = new Stage(StageStyle.UNDECORATED);
-                Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("hr/LearningManagementReport.fxml"));
                 Scene scene = new Scene(root);
                 dash.setScene(scene);
                 dash.setMaximized(true);

@@ -24,5 +24,5 @@ public class FunctionsDirectory {
         
         directory.add("logistics");
         functions.add("../hr/ProjectManagement.fxml");                                               
-    }
+    }        
 }

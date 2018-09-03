@@ -20,7 +20,7 @@ public class Index extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("hr/HRDashboard.fxml"));        
+        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));        
         Scene scene = new Scene(root);        
         //stage.initStyle(StageStyle.UNDECORATED);
         //stage.setMaximized(true);
