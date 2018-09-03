@@ -74,7 +74,8 @@ public class DashboardController implements Initializable {
         root = container;
         draw = drawer;
         pop = new PopOver(AccountPanel);        
-        loadSidePane();        
+        loadSidePane();    
+        btn_close.setVisible(false);
     }    
 
     @FXML public void loadSidePane(){

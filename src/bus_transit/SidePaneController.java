@@ -34,11 +34,8 @@ import javafx.util.Duration;
  */
 public class SidePaneController implements Initializable {
 
-    @FXML
-    private Label txt_user;
-    @FXML
-    private Label txt_password;
 
+    public static String employeeFullName;
     public static String userLevel;
     public static String department;
     //public FunctionsDirectory functionList = new FunctionsDirectory();
@@ -59,13 +56,49 @@ public class SidePaneController implements Initializable {
     private TitledPane employeeSelfService;
     @FXML
     private TitledPane competencyManagement;
+    @FXML
+    private Label lblEmployeeFullName;
+    @FXML
+    private Label lblPosition;
+    @FXML
+    private JFXButton teamBuilding;
+    @FXML
+    private JFXButton leadershipTraining;
+    @FXML
+    private JFXButton training;
+    @FXML
+    private JFXButton trainingAssessment;
+    @FXML
+    private JFXButton keyRole;
+    @FXML
+    private JFXButton successionPlan;
+    @FXML
+    private JFXButton succesionReport;
+    @FXML
+    private JFXButton paySlip;
+    @FXML
+    private JFXButton leaveFiling;
+    @FXML
+    private JFXButton serviceReport;
+    @FXML
+    private JFXButton evaluation;
+    @FXML
+    private JFXButton skillsAssessment;
+    @FXML
+    private JFXButton competencyReport;
+    @FXML
+    private Label lblDepartment;
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) {        
         loadFunctions(userLevel, department);
+        
+        lblEmployeeFullName.setText(employeeFullName.toUpperCase());
+        lblPosition.setText(userLevel.toUpperCase());
+        lblDepartment.setText(department.toUpperCase());
     }
 
     public void loadFunctions(String dept, String usrLvl) {

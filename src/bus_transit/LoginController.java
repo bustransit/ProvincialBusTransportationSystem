@@ -152,34 +152,44 @@ public class LoginController implements Initializable {
 //                + "ANd user.username = '"+username+"' "
 //                + "AND user.password = '"+password+"'";
 
-        q = "SELECT user.*, "
-                + "employee.*, "
-                + "employee_position.* "
-                + "FROM user, employee, employee_position "
-                + "WHERE user.username = '"+username+"' "
-                + "AND user.password='"+password+"' "
-                + "AND user.emp_id = employee.emp_id "
-                + "GROUP by user.emp_id";
+//        q = "SELECT user.*, "
+//                + "employee.*, "
+//                + "employee_position.* "
+//                + "FROM user, employee, employee_position "
+//                + "WHERE user.username = '"+username+"' "
+//                + "AND user.password='"+password+"' "
+//                + "AND user.emp_id = employee.emp_id "
+//                + "GROUP by user.emp_id";
+
+        q = "SELECT user.*, employee.*, employee_position.*, department.*"
+                + " FROM employee, user, employee_position, department"
+                + " WHERE user.username='"+username+"'"
+                + " AND user.password='"+password+"'"
+                + " AND user.emp_id = employee.emp_id"
+                + " AND employee.position_id = employee_position.position_id"
+                + " GROUP BY user.emp_id";
 
         rs = db.displayRecords(q);
         
         try {
             if(rs.next()){
                 
-                userLevel = rs.getString("position_level");                
+                userLevel = rs.getString("position_name");                
                 empID = rs.getString("emp_id");
                 positionID = rs.getString("position_id"); 
-                dept = rs.getString("department_code");
+                dept = rs.getString("department_name");
                 
                 sidePane.department = dept;
                 sidePane.userLevel = userLevel;
+                sidePane.employeeFullName = rs.getString("lastname") + ", " +
+                                            rs.getString("firstname");
                 
                 filterUser(dept, userLevel);
                 
                 Stage stage = (Stage) btn_signin.getScene().getWindow();
                 stage.close();
                 Stage dash = new Stage(StageStyle.UNDECORATED);
-                Parent root = FXMLLoader.load(getClass().getResource("hr/LearningManagementReport.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
                 Scene scene = new Scene(root);
                 dash.setScene(scene);
                 dash.setMaximized(true);

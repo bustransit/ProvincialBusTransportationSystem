@@ -10,32 +10,52 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="250.0" style="-fx-background-color: white;" stylesheets="@../css/StyleSheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bus_transit.SidePaneController">
    <children>
-      <ImageView fitHeight="171.0" fitWidth="250.0" pickOnBounds="true">
-         <image>
-            <Image url="@../images/Login-Wallpaper.jpg" />
-         </image>
-      </ImageView>
-      <Label fx:id="txt_user" layoutX="23.0" layoutY="120.0" text="Employee/User" textFill="WHITE" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-         <font>
-            <Font name="SansSerif Bold" size="14.0" />
-         </font>
-         <effect>
-            <DropShadow spread="0.5" />
-         </effect>
-      </Label>
-      <Label fx:id="txt_password" layoutX="20.0" layoutY="136.0" text="User Level" textFill="WHITE" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-         <font>
-            <Font name="SansSerif Bold" size="12.0" />
-         </font>
-         <effect>
-            <DropShadow spread="0.5" />
-         </effect>
-      </Label>
+      <StackPane>
+         <children>
+            <ImageView fitHeight="171.0" fitWidth="250.0" pickOnBounds="true" StackPane.alignment="TOP_LEFT">
+               <image>
+                  <Image url="@../images/Login-Wallpaper.jpg" />
+               </image>
+            </ImageView>
+            <VBox spacing="4.0" StackPane.alignment="BOTTOM_LEFT">
+               <children>
+                  <Label fx:id="lblEmployeeFullName" text="Employee Name" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Bold" size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow spread="0.5" />
+                     </effect>
+                  </Label>
+                  <Label fx:id="lblDepartment" text="Department" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Regular" size="12.0" />
+                     </font>
+                     <effect>
+                        <DropShadow spread="0.5" />
+                     </effect>
+                  </Label>
+                  <Label fx:id="lblPosition" text="Position" textFill="WHITE">
+                     <font>
+                        <Font name="SansSerif Regular" size="12.0" />
+                     </font>
+                     <effect>
+                        <DropShadow spread="0.5" />
+                     </effect>
+                  </Label>
+               </children>
+               <StackPane.margin>
+                  <Insets left="10.0" top="100.0" />
+               </StackPane.margin>
+            </VBox>
+         </children>
+      </StackPane>
       <Accordion fx:id="accordion" layoutY="171.0" prefHeight="329.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="171.0">
          <panes>
             <TitledPane text="Learning Management">
