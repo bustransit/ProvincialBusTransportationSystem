@@ -5,9 +5,12 @@
  */
 package bus_transit.hr;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,6 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
@@ -39,9 +43,19 @@ public class DailyTimeRecordController extends Application implements Initializa
     DBUtilities db  = new DBUtilities();
     ResultSet rs;
     String qry;
+    String empId;
+    String timeEntry;
     
     @FXML
     private SegmentedButton segmentedButton;
+    @FXML
+    private JFXButton btnOk;
+    @FXML
+    private JFXButton btnClear;
+    @FXML
+    private JFXTextField tfEmpId;
+    @FXML
+    private Label lblEmpName;
 
     /**
      * Initializes the controller class.
@@ -52,7 +66,8 @@ public class DailyTimeRecordController extends Application implements Initializa
         ToggleButton modena_b1 = new ToggleButton("Time in");
         ToggleButton modena_b2 = new ToggleButton("Lunch Out");
         ToggleButton modena_b3 = new ToggleButton("Lunch in");
-        ToggleButton modena_b4 = new ToggleButton("Time out"); 
+        ToggleButton modena_b4 = new ToggleButton("Time out");
+        
         
         segmentedButton.getButtons().addAll(modena_b1, modena_b2, modena_b3, modena_b4);
         segmentedButton.setToggleGroup(group);
@@ -60,11 +75,37 @@ public class DailyTimeRecordController extends Application implements Initializa
         
         for (ToggleButton tgl : segmentedButton.getButtons()) {
             tgl.setOnMouseClicked(value->{                
+               timeEntry = tgl.getText();
+            });            
+        }
+        
+        tfEmpId.setOnKeyTyped(e->{
+            String id = tfEmpId.getText();
+            qry = "SELECT * FROM employee WHERE emp_id='"+id+"'";
+            rs = db.displayRecords(qry);
+            try {
+                if(rs.next()){
+                    empId = rs.getString("emp_id");
+                    String f = rs.getString("firstname");
+                    String l = rs.getString("lastname");
+                    lblEmpName.setText((l +", "+ f).toUpperCase());
+                    
+                    System.out.println((l +", "+ f).toUpperCase());
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DailyTimeRecordController.class.getName())
+                      .log(Level.SEVERE, null, ex);
+            }
+            
+        });
+        
+        btnOk.setOnAction(e->{
                 Date timeStamp = new Date();
-                String strTime = new SimpleDateFormat("hh:mm").format(timeStamp).toString();
-                String strDate = new SimpleDateFormat("yyyy-MM-dd").format(timeStamp).toString();
-                DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String strTimeEntry = new SimpleDateFormat("hh:mm").format(timeStamp).toString();
+                String dateToday = new SimpleDateFormat("yyyy-MM-dd").format(timeStamp).toString();
+                DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+                timeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                
                 //long start = timeStamp.getTime();
                 //long start = System.nanoTime();
                 long start = System.currentTimeMillis();
@@ -74,21 +115,25 @@ public class DailyTimeRecordController extends Application implements Initializa
                 long end = System.currentTimeMillis();
 
                 long elapse = end - start;
-                String el = dateFormat.format(elapse);
+                String el = timeFormat.format(elapse);
 
 //                System.out.println("Start: " + start);
 //                System.out.println("End :" + end);
 //                System.out.println("Elapse time:" + elapse);
 
-                String g = tgl.getText();                
-                System.out.println(g+": "+strTime);
-                System.out.println("Date: "+strDate);                
-                System.out.println("TimeStamp: "+timeStamp.toString());                
-            });            
-        }
+                System.out.println(elapse);    
+                System.out.println(timeEntry+" : "+strTimeEntry);
+                System.out.println("Date: "+dateToday);                
+                System.out.println("TimeStamp: "+timeStamp.toString());             
+        });
+        
+        btnClear.setOnAction(e->{
+            tfEmpId.setText("");
+        });
+        
     }    
 
-    private void inputTime(String e, Time t){    
+    private void inputTime(String id, String e, Time t){
         
     }
     
