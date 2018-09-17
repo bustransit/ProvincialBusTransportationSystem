@@ -56,9 +56,54 @@
             </VBox>
          </children>
       </StackPane>
-      <Accordion fx:id="accordion" layoutY="171.0" prefHeight="329.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="171.0">
+      <Accordion fx:id="sidePaneAccordion" layoutY="171.0" prefHeight="329.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="171.0">
          <panes>
-            <TitledPane text="Learning Management">
+            <TitledPane fx:id="hr4" text="HR 4">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
+                     <children>
+                        <VBox layoutX="-6.0" layoutY="-6.0" prefHeight="200.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-3.0">
+                           <children>
+                              <JFXButton id="module_button" fx:id="compensatioin" accessibleText="hr/CompensationPlanning.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="240.0" ripplerFill="#0078d7" text="Compensation Planning" textFill="#868686">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="12.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
+                                 </graphic>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </JFXButton>
+                              <JFXButton id="module_button" fx:id="corehuman" accessibleText="hr/CoreHumanCapital.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="228.0" ripplerFill="#0078d7" text="Core Human" textFill="#868686">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="12.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
+                                 </graphic>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </JFXButton>
+                              <JFXButton id="module_button" fx:id="payroll" accessibleText="hr/PayrollSystem.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="321.0" ripplerFill="#0078d7" text="Payroll" textFill="#868686">
+                                 <font>
+                                    <Font name="SansSerif Regular" size="12.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
+                                 </graphic>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane fx:id="learningManagement" text="Learning Management">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
                      <children>

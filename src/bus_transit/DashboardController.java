@@ -30,6 +30,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -42,7 +43,7 @@ import org.controlsfx.control.PopOver;
 public class DashboardController implements Initializable {   
     @FXML private AnchorPane container;
     @FXML private JFXButton btn_menu;
-    @FXML private JFXButton btn_close;
+    private JFXButton btn_close;
     @FXML private JFXButton btn_minimize;
     @FXML private JFXButton btn_user;
     @FXML private Label txt_copyright;
@@ -67,6 +68,14 @@ public class DashboardController implements Initializable {
     public static JFXDrawer draw;
 
     private PopOver pop;
+    @FXML
+    private AnchorPane content;
+    @FXML
+    private AnchorPane header;
+    @FXML
+    private JFXButton btnUserMgt;
+    @FXML
+    private AnchorPane footer;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -74,11 +83,10 @@ public class DashboardController implements Initializable {
         root = container;
         draw = drawer;
         pop = new PopOver(AccountPanel);        
-        loadSidePane();    
-        btn_close.setVisible(false);
+        loadSidePane();            
     }    
 
-    @FXML public void loadSidePane(){
+    public void loadSidePane(){
         // This will sets the sidepane
         try {
             AnchorPane pane = FXMLLoader.load(getClass().getResource("SidePane.fxml"));
@@ -88,11 +96,7 @@ public class DashboardController implements Initializable {
             System.out.println(e);
         }        
     }
-    
-    @FXML public void loadFunctions(){
         
-    }
-    
     @FXML
     private void OpenSideMenu(ActionEvent event) {
         // This shows and hides the sidepane
@@ -103,7 +107,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    @FXML
     private void Close(ActionEvent event) {
         // Shows dialog if close button is clicked
         stackpane.toFront();
@@ -146,6 +149,48 @@ public class DashboardController implements Initializable {
         dialog.show();
     }
 
+    private void archiveInfo(ActionEvent event) {
+        // Shows dialog if close button is clicked
+        stackpane.toFront();
+
+        Label header = new Label("Archive?");
+        header.setFont(new Font("SansSerif", 12));
+
+        Label body = new Label("Are you sure you want to exit?");
+        body.setFont(new Font("SansSerif", 14));
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(header);
+        layout.setBody(body);
+        layout.setPrefSize(300, 150);
+
+        JFXDialog dialog = new JFXDialog(stackpane, layout, JFXDialog.DialogTransition.LEFT);
+        dialog.setOverlayClose(false);
+
+        JFXButton btn_yes = new JFXButton("Yes");
+        btn_yes.setButtonType(JFXButton.ButtonType.RAISED);
+        btn_yes.setPrefSize(75, 26);
+        btn_yes.setStyle("-fx-background-color: #0078D7; -fx-text-fill: white;");
+        btn_yes.setDefaultButton(true);
+        btn_yes.setOnAction((evt) -> {
+            dialog.close();
+            Stage stage = (Stage) btn_yes.getScene().getWindow();
+            stage.close();
+        });
+
+        JFXButton btn_cancel = new JFXButton("Cancel");
+        btn_cancel.setButtonType(JFXButton.ButtonType.RAISED);
+        btn_cancel.setPrefSize(75, 26);
+        btn_cancel.setCancelButton(true);
+        btn_cancel.setOnAction((evt) -> {
+            dialog.close();
+            stackpane.toBack();
+        });
+
+        layout.setActions(btn_cancel, btn_yes);
+        dialog.show();
+    }    
+    
     @FXML
     private void Minimize(ActionEvent event) {
         // Minimize window if minimize button is clicked
@@ -158,37 +203,47 @@ public class DashboardController implements Initializable {
         // Popups a small window if user button is clicked
         pop.setDetachable(false);
         pop.setAnimated(true);
-        pop.setAutoFix(true);
+        //pop.setAutoFix(true);
         pop.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
-        pop.setCornerRadius(0);
+        pop.setCornerRadius(0);        
         AccountPanel.setVisible(true);
         pop.show(btn_user);
     }
 
     @FXML
     private void AccountSettings(ActionEvent event) throws IOException{
+        try {
+            AnchorPane pane = FXMLLoader.load(getClass().getResource("system/Profile.fxml"));
+            pane.setPrefSize(DashboardController.root.getWidth(), DashboardController.root.getHeight());
+            DashboardController.root.getChildren().removeAll(DashboardController.root.getChildren());
+            DashboardController.root.getChildren().add(pane);
+            DashboardController.draw.close();
+            stackpane.toBack();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }       
         // Fade-out animation
-        FadeTransition fade = new FadeTransition();
-        fade.setDuration(Duration.millis(500));
-        fade.setNode(DashboardController.root);
-        fade.setFromValue(1);
-        fade.setToValue(0);
-        fade.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    AnchorPane pane = FXMLLoader.load(getClass().getResource("system/Profile.fxml"));
-                    pane.setPrefSize(DashboardController.root.getWidth(), DashboardController.root.getHeight());
-                    DashboardController.root.getChildren().removeAll(DashboardController.root.getChildren());
-                    DashboardController.root.getChildren().add(pane);
-                    DashboardController.draw.close();
-                    stackpane.toBack();
-                } catch (IOException ex) {
-                    System.out.println(ex);
-                }
-            }
-        });
-        fade.play();        
+//        FadeTransition fade = new FadeTransition();
+//        fade.setDuration(Duration.millis(500));
+//        fade.setNode(DashboardController.root);
+//        fade.setFromValue(1);
+//        fade.setToValue(0);
+//        fade.setOnFinished(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                try {
+//                    AnchorPane pane = FXMLLoader.load(getClass().getResource("system/Profile.fxml"));
+//                    pane.setPrefSize(DashboardController.root.getWidth(), DashboardController.root.getHeight());
+//                    DashboardController.root.getChildren().removeAll(DashboardController.root.getChildren());
+//                    DashboardController.root.getChildren().add(pane);
+//                    DashboardController.draw.close();
+//                    stackpane.toBack();
+//                } catch (IOException ex) {
+//                    System.out.println(ex);
+//                }
+//            }
+//        });
+//        fade.play();        
     }
 
     @FXML
@@ -211,7 +266,7 @@ public class DashboardController implements Initializable {
         JFXDialog dialog = new JFXDialog(stackpane, layout, JFXDialog.DialogTransition.LEFT);
         dialog.setOverlayClose(false);
 
-        // If YES, the scene will back to login form
+        // If YES, the scene will back to secondStage form
         JFXButton btn_yes = new JFXButton("Yes");
         btn_yes.setButtonType(JFXButton.ButtonType.RAISED);
         btn_yes.setPrefSize(75, 26);
@@ -309,4 +364,20 @@ public class DashboardController implements Initializable {
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }
+
+    @FXML
+    private void UserManagement(ActionEvent event) throws IOException {
+        JFXButton b = (JFXButton) event.getSource();
+        String file = b.getAccessibleText().toString();       
+        try {
+            AnchorPane pane = FXMLLoader.load(getClass().getResource(file));
+            pane.setPrefSize(DashboardController.root.getWidth(), DashboardController.root.getHeight());
+            DashboardController.root.getChildren().removeAll(DashboardController.root.getChildren());
+            DashboardController.root.getChildren().add(pane);
+            DashboardController.draw.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }      
+    }
 }
+ 

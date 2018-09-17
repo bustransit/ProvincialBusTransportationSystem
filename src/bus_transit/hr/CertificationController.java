@@ -41,9 +41,9 @@ public class CertificationController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        wrapper.getHTMLEditorInstance().setContent("Hello from sferyx");
-        wrapper.setPreferredSize(200, 400);
-        content.getChildren().add(wrapper);
+//        wrapper.getHTMLEditorInstance().setContent("Hello from sferyx");
+//        wrapper.setPreferredSize(200, 400);
+//        content.getChildren().add(wrapper);
     }
     
     @FXML private void back(ActionEvent e){

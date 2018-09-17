@@ -62,9 +62,9 @@
             <DropShadow color="GREY" height="10.0" radius="4.5" width="10.0" />
          </effect>
          <children>
-            <JFXButton fx:id="btn_close" contentDisplay="GRAPHIC_ONLY" layoutX="707.0" layoutY="1.0" onAction="#Close" prefHeight="48.0" prefWidth="48.0" ripplerFill="RED" style="-fx-background-color: transparent; -fx-background-radius: 0;" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="1.0">
+            <JFXButton fx:id="btnUserMgt" accessibleText="system/UserManagement.fxml" contentDisplay="GRAPHIC_ONLY" layoutX="707.0" layoutY="1.0" onAction="#UserManagement" prefHeight="48.0" prefWidth="48.0" ripplerFill="RED" style="-fx-background-color: transparent; -fx-background-radius: 0;" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="1.0">
                <graphic>
-                  <MaterialDesignIconView fill="WHITE" glyphName="CLOSE" size="20" />
+                  <MaterialDesignIconView fill="WHITE" glyphName="SETTINGS" size="20" />
                </graphic>
             </JFXButton>
             <JFXButton fx:id="btn_menu" contentDisplay="GRAPHIC_ONLY" layoutX="6.0" layoutY="13.0" onAction="#OpenSideMenu" prefHeight="48.0" prefWidth="48.0" ripplerFill="SILVER" style="-fx-background-color: transparent; -fx-background-radius: 0;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="1.0">

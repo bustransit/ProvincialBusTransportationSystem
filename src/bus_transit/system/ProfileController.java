@@ -19,10 +19,6 @@ import javafx.scene.layout.AnchorPane;
  */
 public class ProfileController implements Initializable {
 
-    @FXML
-    private AnchorPane container;
-    @FXML
-    private JFXButton btn_menu;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO

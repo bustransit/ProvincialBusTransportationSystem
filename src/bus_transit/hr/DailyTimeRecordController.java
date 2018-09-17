@@ -12,12 +12,17 @@ import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXML;
@@ -30,6 +35,8 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
+import javax.swing.JOptionPane;
 import org.controlsfx.control.SegmentedButton;
 import utilities.DBUtilities;
 
@@ -38,13 +45,17 @@ import utilities.DBUtilities;
  *
  * @author NelsonDelaTorre
  */
-public class DailyTimeRecordController extends Application implements Initializable {
+public class DailyTimeRecordController extends 
+             Application implements
+             Initializable {
     
     DBUtilities db  = new DBUtilities();
     ResultSet rs;
     String qry;
     String empId;
     String timeEntry;
+    
+    private Timestamp tm = null;
     
     @FXML
     private SegmentedButton segmentedButton;
@@ -56,30 +67,49 @@ public class DailyTimeRecordController extends Application implements Initializa
     private JFXTextField tfEmpId;
     @FXML
     private Label lblEmpName;
+    
+    private int hour;
+    private int minute;
+    private int second;
+    private int am_pm;
+    private int month;
+    private int day;
+    private int year;    
+    @FXML
+    private Label txt_time;
+    @FXML
+    private Label txt_date;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        TimeDate();
         ToggleGroup group = new ToggleGroup();
-        ToggleButton modena_b1 = new ToggleButton("Time in");
-        ToggleButton modena_b2 = new ToggleButton("Lunch Out");
-        ToggleButton modena_b3 = new ToggleButton("Lunch in");
-        ToggleButton modena_b4 = new ToggleButton("Time out");
+        ToggleButton btnTimeIn = new ToggleButton("Time In");
+        ToggleButton btnLunchOut = new ToggleButton("Lunch Out");
+        ToggleButton btnLunchIn = new ToggleButton("Lunch In");
+        ToggleButton btnBreakOut = new ToggleButton("Break Out");
+        ToggleButton btnBreakIn = new ToggleButton("Break In");        
+        ToggleButton btnTimeOut = new ToggleButton("Time Out");
+                
+        segmentedButton.getButtons().add(btnTimeIn);
+        segmentedButton.getButtons().add(btnLunchOut);
+        segmentedButton.getButtons().add(btnLunchIn);
+        segmentedButton.getButtons().add(btnBreakOut);
+        segmentedButton.getButtons().add(btnBreakIn);
+        segmentedButton.getButtons().add(btnTimeOut);
         
-        
-        segmentedButton.getButtons().addAll(modena_b1, modena_b2, modena_b3, modena_b4);
-        segmentedButton.setToggleGroup(group);
-        ToggleButton t = (ToggleButton) group.getSelectedToggle();        
+        segmentedButton.setToggleGroup(group);        
         
         for (ToggleButton tgl : segmentedButton.getButtons()) {
-            tgl.setOnMouseClicked(value->{                
+            tgl.setOnAction(value->{                
                timeEntry = tgl.getText();
             });            
         }
         
-        tfEmpId.setOnKeyTyped(e->{
+        tfEmpId.setOnAction(e->{
             String id = tfEmpId.getText();
             qry = "SELECT * FROM employee WHERE emp_id='"+id+"'";
             rs = db.displayRecords(qry);
@@ -88,59 +118,210 @@ public class DailyTimeRecordController extends Application implements Initializa
                     empId = rs.getString("emp_id");
                     String f = rs.getString("firstname");
                     String l = rs.getString("lastname");
-                    lblEmpName.setText((l +", "+ f).toUpperCase());
-                    
-                    System.out.println((l +", "+ f).toUpperCase());
-                }
+                    lblEmpName.setText((l +", "+ f).toUpperCase());                    
+                }else{
+                    lblEmpName.setText("Not Found!".toUpperCase());
+                }                
             } catch (SQLException ex) {
                 Logger.getLogger(DailyTimeRecordController.class.getName())
                       .log(Level.SEVERE, null, ex);
-            }
-            
+            }            
         });
-        
+                        
         btnOk.setOnAction(e->{
-                Date timeStamp = new Date();
-                String strTimeEntry = new SimpleDateFormat("hh:mm").format(timeStamp).toString();
-                String dateToday = new SimpleDateFormat("yyyy-MM-dd").format(timeStamp).toString();
-                DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss.SSS");
-                timeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                
-                //long start = timeStamp.getTime();
-                //long start = System.nanoTime();
-                long start = System.currentTimeMillis();
-                //Thread.sleep(5*60*10);
-                //long end = timeStamp.getTime();
-                //long end = System.nanoTime();
-                long end = System.currentTimeMillis();
+            Date timeStamp = new Date();
+            String strTimeEntry = new SimpleDateFormat("hh:mm").format(timeStamp).toString();
+            String dateToday = new SimpleDateFormat("yyyy-MM-dd").format(timeStamp).toString();
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+            timeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-                long elapse = end - start;
-                String el = timeFormat.format(elapse);
+            long start = System.currentTimeMillis();
+            long end = System.currentTimeMillis();
 
-//                System.out.println("Start: " + start);
-//                System.out.println("End :" + end);
-//                System.out.println("Elapse time:" + elapse);
+            long elapse = end - start;
+            String el = timeFormat.format(elapse);
+            tm = new Timestamp(System.currentTimeMillis());
 
-                System.out.println(elapse);    
-                System.out.println(timeEntry+" : "+strTimeEntry);
-                System.out.println("Date: "+dateToday);                
-                System.out.println("TimeStamp: "+timeStamp.toString());             
+            if(timeEntry.equals("Time In")){                  
+              inputTimeIn(empId);                  
+            }
+
+            if(timeEntry.equals("Lunch Out")){
+              inputLunchOut(empId);
+            }
+
+            if(timeEntry.equals("Lunch In")){
+              inputLunchIn(empId);
+            }
+
+            if(timeEntry.equals("Break Out")){
+
+            }
+
+            if(timeEntry.equals("Break In")){
+
+            }
+
+            if(timeEntry.equals("Time Out")){
+
+            }  
+            System.out.println(timeEntry);
+            System.out.println(empId);
+//            System.out.println("Current time stamp: "+tm);
+//            System.out.println(elapse);    
+//            System.out.println(timeEntry+" : "+strTimeEntry);
+//            System.out.println("Date: "+dateToday);                
+//            System.out.println("TimeStamp: "+timeStamp.toString());             
         });
         
         btnClear.setOnAction(e->{
             tfEmpId.setText("");
-        });
-        
+        });        
     }    
 
-    private void inputTime(String id, String e, Time t){
+    private void inputTimeIn(String id){        
+//        String q =  "SET @empId := "+id+";" +
+//                    "SET @timeInput := CURTIME();" +                
+//                    "SET @schedTime := '08:00:00';" +
+//                    "SET @late := (TIMEDIFF(@timeInput,@schedTime));" +
+//                    "SET @lateToDouble := CAST(TIME_TO_SEC(@late) / (60 * 60) AS DECIMAL(10,1));" +
+//                    "SET @remarks := IF(@lateToDouble = 0, 'on time',(IF(@lateToDouble > 0, 'late','early')));" +
+//                    "INSERT INTO timesheet (emp_id, time_in,time_in_remarks, total_late, DATE)" +
+//                    "VALUES(@empId, @timeInput, @remarks,@late,CURDATE());";
         
+        String q = "INSERT INTO timesheet (emp_id, time_in,time_in_remarks, total_late, DATE)" +
+                    "VALUES("+id+", CURTIME(), IF(CAST(TIME_TO_SEC(TIMEDIFF(CURTIME(),'08:00:00')) / (60 * 60) AS DECIMAL(10,1)) = 0, 'on time',(IF(CAST(TIME_TO_SEC(TIMEDIFF(CURTIME(),'08:00:00')) / (60 * 60) AS DECIMAL(10,1)) > 0, 'late','early'))),TIMEDIFF(CURTIME(),'08:00:00'),CURDATE());";
+                    //"SELECT emp_id, time_in, time_in_remarks, 'date' FROM timesheet WHERE 'date' = CURDATE() AND emp_id="+id;
+        
+                    db.execute(q);
+                    
+        q = "SELECT emp_id, time_in, time_in_remarks, DATE "
+                + "FROM timesheet "
+                + "WHERE DATE = CURRENT_DATE() "
+                + "AND emp_id="+id;
+        
+        rs = db.displayRecords(q);
+        try {
+            if(rs.next()){
+                lblEmpName.setText("OK");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,ex);
+            Logger.getLogger(DailyTimeRecordController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
     }
+    
+    private void inputLunchOut(String id){
+//        String q =  "SET @empId := "+id+";" +
+//                    "SET @timeInput := CURTIME();" +                
+//                    "SET @schedTime := '08:00:00';" +
+//                    "SET @late := TIMEDIFF(@timeInput,@schedTime);" +
+//                    "SET @lateToDouble := CAST(TIME_TO_SEC(@late) / (60 * 60) AS DECIMAL(10,1));" +
+//                    "SET @remarks := IF(@lateToDouble = 0, 'on time',(IF(@lateToDouble > 0, 'late','early')));" +
+//                    "INSERT INTO timesheet (emp_id, time_in,time_in_remarks, total_late, DATE)" +
+//                    "VALUES(@empId, @timeInput, @remarks,@late,CURDATE());";
+        
+        String q =  "UPDATE timesheet " +
+                    "SET lunch_out = CURTIME()," +
+                    "lunch_out_remarks = IF((CAST(TIME_TO_SEC( (TIMEDIFF(CURTIME(),'08:00:00'))) / (60 * 60) AS DECIMAL(10,1))) = 0, 'on time',(IF((CAST(TIME_TO_SEC( (TIMEDIFF(CURTIME(),'08:00:00'))) / (60 * 60) AS DECIMAL(10,1))) > 0, 'late','early'))) " +
+                    "WHERE DATE = CURDATE() " +
+                    "AND emp_id ="+id;
+        
+                    db.execute(q);
+                    
+        q = "SELECT emp_id, lunch_out, lunch_out_remarks, DATE "
+                + "FROM timesheet "
+                + "WHERE DATE = CURRENT_DATE() "
+                + "AND emp_id="+id;
+        
+        rs = db.displayRecords(q);
+        try {
+            if(rs.next()){
+                lblEmpName.setText("OK");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,ex);
+            Logger.getLogger(DailyTimeRecordController.class.getName()).log(Level.SEVERE, null, ex);
+        }     
+    } 
+    
+    private void inputLunchIn(String id){
+    
+    }
+    
+    private void inputBreakOut(String id){
+    
+    }      
+
+    private void inputBreakIn(String id){
+    
+    }   
+    
+    private void inputTimeOut(String id){
+    
+    }    
+    
+    private void TimeDate() {
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            Calendar cal = Calendar.getInstance();
+            hour = cal.get(Calendar.HOUR);
+            minute = cal.get(Calendar.MINUTE);
+            second = cal.get(Calendar.SECOND);
+            month = cal.get(Calendar.MONTH);
+            day = cal.get(Calendar.DATE);
+            year = cal.get(Calendar.YEAR);
+            am_pm = cal.get(Calendar.AM_PM);
+
+            String date = month + "-" + day + "-" + year;
+            if (month == 0) {
+                date = ("January " + day + ", " + year);
+            } else if (month == 1) {
+                date = ("Febuary " + day + ", " + year);
+            } else if (month == 2) {
+                date = ("March " + day + ", " + year);
+            } else if (month == 3) {
+                date = ("April " + day + ", " + year);
+            } else if (month == 4) {
+                date = ("May " + day + ", " + year);
+            } else if (month == 5) {
+                date = ("June " + day + ", " + year);
+            } else if (month == 6) {
+                date = ("July " + day + ", " + year);
+            } else if (month == 7) {
+                date = ("August " + day + ", " + year);
+            } else if (month == 8) {
+                date = ("September " + day + ", " + year);
+            } else if (month == 9) {
+                date = ("October " + day + ", " + year);
+            } else if (month == 10) {
+                date = ("November " + day + ", " + year);
+            } else if (month == 11) {
+                date = ("December " + day + ", " + year);
+            }
+
+            String day_night = "";
+            if (am_pm == 1) {
+                day_night = "PM";
+            } else {
+                day_night = "AM";
+            }
+
+            if (hour == 0) {
+                txt_time.setText("12" + ":" + minute + ":" + second + " " + day_night);
+                txt_date.setText(date);
+            } else {
+                txt_time.setText(hour + ":" + minute + ":" + second + " " + day_night);
+                txt_date.setText(date);
+            }
+        }),
+                new KeyFrame(Duration.seconds(1))
+        );
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+    }    
     
     @Override
     public void start(Stage stage) throws Exception {
-//        ModuleFunctions f = new ModuleFunctions();
-        //f.loadFunctions("hr");
         Parent root = FXMLLoader.load(getClass().getResource("DailyTimeRecord.fxml"));
         Scene scene = new Scene(root);
         stage.initStyle(StageStyle.UNDECORATED);

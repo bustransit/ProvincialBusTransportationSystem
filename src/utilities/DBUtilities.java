@@ -22,6 +22,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.StackedAreaChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -31,16 +32,16 @@ import javafx.util.Callback;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 
 public class DBUtilities {
     private String address = "";
+    public String database_name;
     private String DATABASE_URL = "jdbc:mysql://localhost/bustransit_master";
     private String username = "root";
     private String password = "071325";
     public Connection connection = null;
     private Statement statement = null;
-    private ResultSet resultSet = null;
+    private ResultSet resultSet = null;    
 
     // Connect with modified database
     public DBUtilities(String a, String db, String u, String p) {
@@ -133,7 +134,36 @@ public class DBUtilities {
             Logger.getLogger(DBUtilities.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void appendToJFXComboBox(String q, JFXComboBox cb) {        
+        try {
+            this.resultSet = this.displayRecords(q);
+            while (resultSet.next()) {
+                cb.getItems().add(resultSet.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DBUtilities.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
 
+    /**
+     * Archiving record
+     * @param columnNameForID
+     * @param deletingID
+     * @param sourceTbl
+     * @param archiveTbl 
+     */
+    public void archive(String columnNameForID, String deletingID, String sourceTbl, String archiveTbl){                        
+        String q = "INSERT INTO " +archiveTbl+" "+
+                   "SELECT * FROM "+sourceTbl+" WHERE "+sourceTbl+"."+columnNameForID+" = '"+deletingID+"'";
+        this.execute(q);
+        q = "DELETE FROM "+sourceTbl+" WHERE "+sourceTbl+"."+columnNameForID+" = '"+deletingID+"'";
+        this.execute(q);
+        new Alert(Alert.AlertType.INFORMATION,"Record is on archive now.").show();
+    }    
+    
+    
+    
     public void populateComboBox(String q, ComboBox cb) {
         cb.getItems().clear();
         try {
@@ -146,10 +176,72 @@ public class DBUtilities {
         }
     }
 
+    /**
+     * Populating Table in JavaFX
+     * @param q
+     * @param t 
+     */
+    public void populateTable(String q, TableView t) {
+        //TABLE VIEW AND DATA
+        ObservableList<ObservableList> data = FXCollections.observableArrayList();
+        try {
+            //SQL FOR SELECTING ALL OF CUSTOMER
+            //ResultSet
+            this.resultSet = this.displayRecords(q);
+
+            t.getItems().clear();
+            t.getColumns().clear();
+
+            /**
+             * ********************************
+             * TABLE COLUMN ADDED DYNAMICALLY *
+             *********************************
+             */
+            for (int i = 0; i < this.resultSet.getMetaData().getColumnCount(); i++) {
+                //We are using non property style for making dynamic table
+                final int j = i;
+                TableColumn col = new TableColumn(this.resultSet.getMetaData().getColumnName(i + 1));
+                col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
+                        SimpleStringProperty s = new SimpleStringProperty(param.getValue().get(j).toString());
+                        return s;
+                    }
+                });
+                t.getColumns().addAll(col);
+            }
+
+            /**
+             * ******************************
+             * Data added to ObservableList *
+             *******************************
+             */
+            while (this.resultSet.next()) {
+                //Iterate Row
+                ObservableList<String> row = FXCollections.observableArrayList();
+                for (int i = 1; i <= this.resultSet.getMetaData().getColumnCount(); i++) {
+                    String d;
+                    if(this.resultSet.getString(i) == null){
+                        d = "";
+                    }else{
+                        d = this.resultSet.getString(i);
+                    }
+                    //Iterate Column
+                    row.add(d);
+                }
+                data.add(row);
+            }
+
+            //FINALLY ADDED TO TableView
+            t.setItems(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error on Building Data");
+        }
+    }    
+    
     public void buildData(String q, TableView t) {
         //TABLE VIEW AND DATA
         ObservableList<ObservableList> data = FXCollections.observableArrayList();
-
         try {
             //SQL FOR SELECTING ALL OF CUSTOMER
             //ResultSet
@@ -172,7 +264,6 @@ public class DBUtilities {
                         return new SimpleStringProperty(param.getValue().get(j).toString());
                     }
                 });
-
                 t.getColumns().addAll(col);
             }
 
@@ -181,12 +272,18 @@ public class DBUtilities {
              * Data added to ObservableList *
              *******************************
              */
-            while (this.resultSet.next()) {
+            while (this.resultSet.next() || this.resultSet.equals(null)) {
                 //Iterate Row
                 ObservableList<String> row = FXCollections.observableArrayList();
                 for (int i = 1; i <= this.resultSet.getMetaData().getColumnCount(); i++) {
+                    String d;
+                    if(this.resultSet.getString(i) == null){
+                        d = "";
+                    }else{
+                        d = this.resultSet.getString(i);
+                    }
                     //Iterate Column
-                    row.add(this.resultSet.getString(i));
+                    row.add(d);
                 }
                 data.add(row);
             }
@@ -440,4 +537,18 @@ public class DBUtilities {
         }
         c.getData().addAll(series1);
     }    
+
+    /**
+     * @return the database_name
+     */
+    public String getDatabase_name() {
+        return database_name;
+    }
+
+    /**
+     * @param database_name the database_name to set
+     */
+    public void setDatabase_name(String database_name) {
+        this.database_name = database_name;
+    }
 }

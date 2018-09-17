@@ -6,6 +6,7 @@
 package bus_transit;
 
 import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,15 +17,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
@@ -40,69 +37,56 @@ public class SidePaneController implements Initializable {
     public static String department;
     //public FunctionsDirectory functionList = new FunctionsDirectory();
 
+    @FXML public Accordion sidePaneAccordion;
+    @FXML private JFXButton report;
+    @FXML private TitledPane trainingManagement;
+    @FXML private JFXButton certification;
+    @FXML private JFXButton learningModules;
+    @FXML private TitledPane successionPlanning;
+    @FXML private TitledPane employeeSelfService;
+    @FXML private TitledPane competencyManagement;
+    @FXML private Label lblEmployeeFullName;
+    @FXML private Label lblPosition;
+    @FXML private JFXButton teamBuilding;
+    @FXML private JFXButton leadershipTraining;
+    @FXML private JFXButton training;
+    @FXML private JFXButton trainingAssessment;
+    @FXML private JFXButton keyRole;
+    @FXML private JFXButton successionPlan;
+    @FXML private JFXButton succesionReport;
+    @FXML private JFXButton paySlip;
+    @FXML private JFXButton leaveFiling;
+    @FXML private JFXButton serviceReport;
+    @FXML private JFXButton evaluation;
+    @FXML private JFXButton skillsAssessment;
+    @FXML private JFXButton competencyReport;
+    @FXML private Label lblDepartment;
     @FXML
-    public Accordion accordion;
+    private TitledPane hr4;
     @FXML
-    private JFXButton report;
+    private TitledPane learningManagement;
     @FXML
-    private TitledPane trainingManagement;
+    private JFXButton compensatioin;
     @FXML
-    private JFXButton certification;
+    private JFXButton corehuman;
     @FXML
-    private JFXButton learningModules;
-    @FXML
-    private TitledPane successionPlanning;
-    @FXML
-    private TitledPane employeeSelfService;
-    @FXML
-    private TitledPane competencyManagement;
-    @FXML
-    private Label lblEmployeeFullName;
-    @FXML
-    private Label lblPosition;
-    @FXML
-    private JFXButton teamBuilding;
-    @FXML
-    private JFXButton leadershipTraining;
-    @FXML
-    private JFXButton training;
-    @FXML
-    private JFXButton trainingAssessment;
-    @FXML
-    private JFXButton keyRole;
-    @FXML
-    private JFXButton successionPlan;
-    @FXML
-    private JFXButton succesionReport;
-    @FXML
-    private JFXButton paySlip;
-    @FXML
-    private JFXButton leaveFiling;
-    @FXML
-    private JFXButton serviceReport;
-    @FXML
-    private JFXButton evaluation;
-    @FXML
-    private JFXButton skillsAssessment;
-    @FXML
-    private JFXButton competencyReport;
-    @FXML
-    private Label lblDepartment;
+    private JFXButton payroll;
+
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {        
-        loadFunctions(userLevel, department);
+        //loadFunctions(userLevel, department);
         
         lblEmployeeFullName.setText(employeeFullName.toUpperCase());
         lblPosition.setText(userLevel.toUpperCase());
-        lblDepartment.setText(department.toUpperCase());
+        lblDepartment.setText(department.toUpperCase());        
     }
 
     public void loadFunctions(String dept, String usrLvl) {
-        accordion.getPanes().removeAll();
+        sidePaneAccordion.getPanes().removeAll(sidePaneAccordion.getPanes());
         ObservableList<JFXButton> btn;
         ObservableList<TitledPane> titledPane;
         AnchorPane anchorPane;
@@ -123,9 +107,7 @@ public class SidePaneController implements Initializable {
         // Logisitics
         if (dept.toLowerCase().equals("logistics")) {
             if (usrLvl.equals("staff")) {
-                AnchorPane p = new AnchorPane();
-                TitledPane t = new TitledPane("Logistics pane", p);
-                accordion.getPanes().add(t);
+
             }
             if (usrLvl.equals("supervisor")) {
 
@@ -173,32 +155,42 @@ public class SidePaneController implements Initializable {
 
             }
         }
-        System.out.println(dept);
-        System.out.println(usrLvl);
+                
+//        TitledPane t = new TitledPane();
+//        t.setText("Vendor Portal");
+//        VBox v = new VBox();
+//        v.setFillWidth(true);
+//        FontAwesomeIconView ico = new FontAwesomeIconView();
+//        ico.glyphNameProperty().setValue("ANCHOR");
+//        JFXButton b = new JFXButton("Purchasing");
+//        b.graphicProperty().set(ico);
+//        v.getChildren().add(b);
+//        t.setContent(v);
+//        sidePaneAccordion.getPanes().add(t);        
     } // filterUser end here    
 
-    private void Module1(ActionEvent event) throws IOException {
-        FadeTransition fade = new FadeTransition();
-        fade.setDuration(Duration.millis(500));
-        fade.setNode(DashboardController.root);
-        fade.setFromValue(1);
-        fade.setToValue(0);
-        fade.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    AnchorPane pane = FXMLLoader.load(getClass().getResource("hr/Certification.fxml"));
-                    pane.setPrefSize(DashboardController.root.getWidth(), DashboardController.root.getHeight());
-                    DashboardController.root.getChildren().removeAll(DashboardController.root.getChildren());
-                    DashboardController.root.getChildren().add(pane);
-                    DashboardController.draw.close();
-                } catch (IOException ex) {
-                    System.out.println(ex);
-                }
-            }
-        });
-        fade.play();
-    }
+//    private void Module1(ActionEvent event) throws IOException {
+//        FadeTransition fade = new FadeTransition();
+//        fade.setDuration(Duration.millis(500));
+//        fade.setNode(DashboardController.root);
+//        fade.setFromValue(1);
+//        fade.setToValue(0);
+//        fade.setOnFinished(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                try {
+//                    AnchorPane pane = FXMLLoader.load(getClass().getResource("hr/Certification.fxml"));
+//                    pane.setPrefSize(DashboardController.root.getWidth(), DashboardController.root.getHeight());
+//                    DashboardController.root.getChildren().removeAll(DashboardController.root.getChildren());
+//                    DashboardController.root.getChildren().add(pane);
+//                    DashboardController.draw.close();
+//                } catch (IOException ex) {
+//                    System.out.println(ex);
+//                }
+//            }
+//        });
+//        fade.play();
+//    }
 
     @FXML
     private void loadFunction(ActionEvent event) throws IOException {
@@ -235,8 +227,5 @@ public class SidePaneController implements Initializable {
         } catch (IOException ex) {
             System.out.println(ex);
         }
-    }
-    
-    
-    
+    } // loadFunction ends here            
 }

@@ -6,10 +6,13 @@
 
 package bus_transit.system;
 
+import com.jfoenix.controls.JFXButton;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeSupport;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -19,6 +22,8 @@ import javafx.collections.ObservableList;
 public class FunctionsDirectory {
     public ObservableList<String> functions;            
     public ObservableList<String> directory;
+    public ObservableList<TitledPane> titledPane;
+    public ObservableList<JFXButton> jfxButton;
     
     public FunctionsDirectory(){        
         directory.add("hr");
@@ -26,7 +31,13 @@ public class FunctionsDirectory {
         functions.add("../hr/Training.fxml");                                
         
         directory.add("logistics");
-        functions.add("../hr/ProjectManagement.fxml");                                               
+        functions.add("../hr/ProjectManagement.fxml");  
+        
+        TitledPane t = new TitledPane();
+        VBox v = new VBox();
+        JFXButton btn = new JFXButton();
+        v.getChildren().add(btn);
+        t.setContent(v);
     }        
 
     /**
@@ -38,6 +49,7 @@ public class FunctionsDirectory {
 
     /**
      * @param functions the functions to set
+     * @throws java.beans.PropertyVetoException
      */
     public void setFunctions(ObservableList<String> functions) throws PropertyVetoException {
         javafx.collections.ObservableList<java.lang.String> oldFunctions = this.functions;
@@ -55,6 +67,7 @@ public class FunctionsDirectory {
 
     /**
      * @param directory the directory to set
+     * @throws java.beans.PropertyVetoException
      */
     public void setDirectory(ObservableList<String> directory) throws PropertyVetoException {
         javafx.collections.ObservableList<java.lang.String> oldDirectory = this.directory;

@@ -19,6 +19,8 @@ import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +43,7 @@ import utilities.DBUtilities;
  *
  * @author Llamera
  */
-public class LoginController implements Initializable {
+public class LoginController extends Application implements Initializable {
 
     @FXML
     private Label txt_time;
@@ -211,7 +213,7 @@ public class LoginController implements Initializable {
          */
         
         /**
-         * Department code to filtered
+         * Department code to be filtered
          * admin
          * it
          * hr
@@ -219,7 +221,8 @@ public class LoginController implements Initializable {
          * finance
          * core
          */
-
+                
+        
         // system_admin
         if (dept.toLowerCase().equals("system_admin")) {            
             
@@ -349,4 +352,24 @@ public class LoginController implements Initializable {
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }
+    
+    
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));        
+        Scene scene = new Scene(root);        
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setMaximized(true);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }     
+    
 }

@@ -5,47 +5,36 @@
  */
 package bus_transit.system;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  *
  * @author NelsonDelaTorre
  */
-public class Modals extends Application {
-    
+public class Modals implements Initializable {
     @Override
-    public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
+    public void initialize(URL location, ResourceBundle resources) {       
         
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
+        
+    public void showAlert(String msg) {                
+        Alert dlg = new Alert(Alert.AlertType.INFORMATION, msg);
+        dlg.show();
     }
     
+    public void showConfirmation(String msg) {
+        Alert dlg = new Alert(Alert.AlertType.CONFIRMATION, msg);
+        dlg.show();
+    }
+    
+    public void showInputDialog(String msg) {
+        Alert dlg = new Alert(Alert.AlertType.CONFIRMATION, msg);
+        dlg.show();
+    }    
 }
