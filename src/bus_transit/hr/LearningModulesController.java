@@ -5,17 +5,24 @@
  */
 package bus_transit.hr;
 
-//import bus_transit.sharedComponents.ModuleFunctions;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXTabPane;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
-import javafx.application.Application;
-import static javafx.application.Application.launch;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import org.controlsfx.control.textfield.CustomTextField;
+import utilities.DBUtilities;
 
 /**
  * FXML Controller class
@@ -23,29 +30,54 @@ import javafx.stage.StageStyle;
  * @author NelsonDelaTorre
  */
 public class LearningModulesController implements Initializable {
-//    DBUtilities db = new DBUtitlieis();
-//    ResultSet rs;
-//    String qry;
+    DBUtilities db = new DBUtilities();
+    ResultSet rs;    
+    
+    
+    @FXML
+    private AnchorPane container;
+    @FXML
+    private AnchorPane heading;
+    @FXML
+    private JFXTabPane content;
+    @FXML
+    private Tab training;
+    @FXML
+    private CustomTextField tfSearch;
+    @FXML
+    private FlowPane container_all;
+    @FXML
+    private TableView<?> tblTrainingList;
+    @FXML
+    private JFXTextField tfTrainingTitle;
+    @FXML
+    private JFXTextField tfTrainingLocation;
+    @FXML
+    private JFXDatePicker dpTrainingDate;
+    @FXML
+    private JFXComboBox<?> cbTrainingType;
+    @FXML
+    private JFXTextField tfNumberOfParticipants;
+    @FXML
+    private JFXButton btnNew;
+    @FXML
+    private JFXTimePicker tpTrainingTime;
+    @FXML
+    private Tab learningProgress;
+    @FXML
+    private CustomTextField txt_searchPending;
+    @FXML
+    private FlowPane container_pending;
+
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        db.buildData("SELECT title, participants, TIME, target_date, venue, TYPE FROM training", tblTrainingList);
     }    
 
-    
-    
-//    @Override
-//    public void start(Stage stage) throws Exception {
-////        ModuleFunctions f = new ModuleFunctions();
-//        //f.loadFunctions("hr");
-//        Parent root = FXMLLoader.load(getClass().getResource("LearningModules.fxml"));        
-//        Scene scene = new Scene(root);        
-//        stage.initStyle(StageStyle.UNDECORATED);
-//        stage.setMaximized(true);
-//        stage.setScene(scene);
-//        stage.show();                
-//    }
-//    
-//    public static void main(String[] args) {
-//        launch(args);
-//    }     
+    @FXML
+    private void searchTraining(KeyEvent event) {
+    }        
 }

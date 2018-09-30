@@ -3,9 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -56,288 +54,54 @@
             </VBox>
          </children>
       </StackPane>
-      <Accordion fx:id="sidePaneAccordion" layoutY="171.0" prefHeight="329.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="171.0">
-         <panes>
-            <TitledPane fx:id="hr4" text="HR 4">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
-                     <children>
-                        <VBox layoutX="-6.0" layoutY="-6.0" prefHeight="200.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-3.0">
-                           <children>
-                              <JFXButton id="module_button" fx:id="compensatioin" accessibleText="hr/CompensationPlanning.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="240.0" ripplerFill="#0078d7" text="Compensation Planning" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="corehuman" accessibleText="hr/CoreHumanCapital.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="228.0" ripplerFill="#0078d7" text="Core Human" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="payroll" accessibleText="hr/PayrollSystem.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="321.0" ripplerFill="#0078d7" text="Payroll" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </TitledPane>
-            <TitledPane fx:id="learningManagement" text="Learning Management">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
-                     <children>
-                        <VBox layoutX="-6.0" layoutY="-6.0" prefHeight="200.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-3.0">
-                           <children>
-                              <JFXButton id="module_button" fx:id="learningModules" accessibleText="hr/LearningModules.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="240.0" ripplerFill="#0078d7" text="Learning Modules" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="certification" accessibleText="hr/Certification.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="228.0" ripplerFill="#0078d7" text="Certification" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="report" accessibleText="hr/LearningManagementReport.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="321.0" ripplerFill="#0078d7" text="Report" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </TitledPane>
-            <TitledPane fx:id="trainingManagement" text="Training Management">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
-                     <children>
-                        <VBox layoutX="-6.0" layoutY="-6.0" prefHeight="200.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-3.0">
-                           <children>
-                              <JFXButton id="module_button" fx:id="teamBuilding" accessibleText="hr/TeamBuilding.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="228.0" ripplerFill="#0078d7" text="Team Building" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="leadershipTraining" accessibleText="hr/LeadershipTraining.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="240.0" ripplerFill="#0078d7" text="Leadership Training" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="training" accessibleText="hr/Training.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="228.0" ripplerFill="#0078d7" text="Training" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="trainingAssessment" accessibleText="hr/TrainingAssessment.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="321.0" ripplerFill="#0078d7" text="Assessment Report" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </TitledPane>
-            <TitledPane fx:id="successionPlanning" text="Succession Planning">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
-                     <children>
-                        <VBox layoutX="-6.0" layoutY="-6.0" prefHeight="200.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-3.0">
-                           <children>
-                              <JFXButton id="module_button" fx:id="keyRole" accessibleText="hr/KeyRole.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="228.0" ripplerFill="#0078d7" text="Key role" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="successionPlan" accessibleText="hr/TalentPreview.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="240.0" ripplerFill="#0078d7" text="Talent Preview" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="succesionReport" accessibleText="hr/SuccessionReport.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="321.0" ripplerFill="#0078d7" text="Succession Report" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </TitledPane>
-            <TitledPane fx:id="employeeSelfService" text="Employee Self Service">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
-                     <children>
-                        <VBox layoutX="-6.0" layoutY="-6.0" prefHeight="200.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-3.0">
-                           <children>
-                              <JFXButton id="module_button" fx:id="paySlip" accessibleText="hr/PaySlip.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="228.0" ripplerFill="#0078d7" text="Pay Slip" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="leaveFiling" accessibleText="hr/Leave.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="240.0" ripplerFill="#0078d7" text="Leave Filing" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="serviceReport" accessibleText="hr/ServiceReport.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="321.0" ripplerFill="#0078d7" text="Service Report" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </TitledPane>
-            <TitledPane fx:id="competencyManagement" text="Competency Management">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;">
-                     <children>
-                        <VBox layoutX="-6.0" layoutY="-6.0" prefHeight="200.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-3.0">
-                           <children>
-                              <JFXButton id="module_button" fx:id="evaluation" accessibleText="hr/Evaluation.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="228.0" ripplerFill="#0078d7" text="Evaluation" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="skillsAssessment" accessibleText="hr/SkillsAssessment.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="240.0" ripplerFill="#0078d7" text="Skills Assessment" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                              <JFXButton id="module_button" fx:id="competencyReport" accessibleText="hr/CompetencyReport.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="321.0" ripplerFill="#0078d7" text="Competency Report" textFill="#868686">
-                                 <font>
-                                    <Font name="SansSerif Regular" size="12.0" />
-                                 </font>
-                                 <graphic>
-                                    <FontAwesomeIconView id="module_icon" fill="#868686" size="16" textAlignment="CENTER" wrappingWidth="50.0" />
-                                 </graphic>
-                                 <VBox.margin>
-                                    <Insets />
-                                 </VBox.margin>
-                              </JFXButton>
-                           </children>
-                        </VBox>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </TitledPane>
-         </panes>
-      </Accordion>
+      <VBox layoutX="4.0" layoutY="4.0" prefHeight="200.0" prefWidth="250.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="175.0">
+         <children>
+            <JFXButton id="module_button" fx:id="learningManagement" accessibleText="hr/learning/LearningManagement.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="245.0" ripplerFill="#0078d7" text="Learning Management" textFill="#868686">
+               <font>
+                  <Font name="SansSerif Regular" size="12.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView id="module_icon" fill="#868686" glyphName="GRADUATION_CAP" size="24" textAlignment="CENTER" wrappingWidth="50.0" />
+               </graphic>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton id="module_button" fx:id="trainingManagement" accessibleText="hr/training/TrainingManagement.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="228.0" ripplerFill="#0078d7" text="Training Management" textFill="#868686">
+               <font>
+                  <Font name="SansSerif Regular" size="12.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView id="module_icon" fill="#868686" glyphName="GEARS" size="24" textAlignment="CENTER" wrappingWidth="50.0" />
+               </graphic>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton id="module_button" fx:id="competencyManagement" accessibleText="hr/competency/CompetencyManagement.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="321.0" ripplerFill="#0078d7" text="Competency Management" textFill="#868686">
+               <font>
+                  <Font name="SansSerif Regular" size="12.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView id="module_icon" fill="#868686" glyphName="BOOK" size="24" textAlignment="CENTER" wrappingWidth="50.0" />
+               </graphic>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton id="module_button" fx:id="successionPlanning" accessibleText="hr/succession/SuccessionPlanning.fxml" alignment="BASELINE_LEFT" onAction="#loadFunction" prefHeight="25.0" prefWidth="321.0" ripplerFill="#0078d7" text="Succession Planning" textFill="#868686">
+               <font>
+                  <Font name="SansSerif Regular" size="12.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView id="module_icon" fill="#868686" glyphName="LINE_CHART" size="24" textAlignment="CENTER" wrappingWidth="50.0" />
+               </graphic>
+            </JFXButton>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
    </children>
    <effect>
       <DropShadow blurType="GAUSSIAN" color="GREY" height="10.0" radius="4.5" width="10.0" />

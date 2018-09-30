@@ -36,41 +36,15 @@ public class SidePaneController implements Initializable {
     public static String userLevel;
     public static String department;
     //public FunctionsDirectory functionList = new FunctionsDirectory();
-
-    @FXML public Accordion sidePaneAccordion;
-    @FXML private JFXButton report;
-    @FXML private TitledPane trainingManagement;
-    @FXML private JFXButton certification;
-    @FXML private JFXButton learningModules;
-    @FXML private TitledPane successionPlanning;
-    @FXML private TitledPane employeeSelfService;
-    @FXML private TitledPane competencyManagement;
+    public Accordion sidePaneAccordion;
+    @FXML private JFXButton trainingManagement;
+    @FXML private JFXButton successionPlanning;
+    @FXML private JFXButton competencyManagement;
     @FXML private Label lblEmployeeFullName;
     @FXML private Label lblPosition;
-    @FXML private JFXButton teamBuilding;
-    @FXML private JFXButton leadershipTraining;
-    @FXML private JFXButton training;
-    @FXML private JFXButton trainingAssessment;
-    @FXML private JFXButton keyRole;
-    @FXML private JFXButton successionPlan;
-    @FXML private JFXButton succesionReport;
-    @FXML private JFXButton paySlip;
-    @FXML private JFXButton leaveFiling;
-    @FXML private JFXButton serviceReport;
-    @FXML private JFXButton evaluation;
-    @FXML private JFXButton skillsAssessment;
-    @FXML private JFXButton competencyReport;
     @FXML private Label lblDepartment;
     @FXML
-    private TitledPane hr4;
-    @FXML
-    private TitledPane learningManagement;
-    @FXML
-    private JFXButton compensatioin;
-    @FXML
-    private JFXButton corehuman;
-    @FXML
-    private JFXButton payroll;
+    private JFXButton learningManagement;
 
 
     /**
@@ -197,27 +171,6 @@ public class SidePaneController implements Initializable {
         JFXButton b = (JFXButton) event.getSource();
         String file = b.getAccessibleText().toString();
         System.out.println(file);
-//        Stage stage = (Stage) b.getScene().getWindow();
-//        stage.close();
-//        Stage dash = new Stage(StageStyle.UNDECORATED);
-//        Parent root = FXMLLoader.load(getClass().getResource(file));
-//        Scene scene = new Scene(root);
-//        dash.setScene(scene);
-//        dash.setMaximized(true);
-//        dash.show();             
-
-//        FadeTransition fade = new FadeTransition();
-//        fade.setDuration(Duration.millis(500));
-//        fade.setNode(DashboardController.root);
-//        fade.setFromValue(1);
-//        fade.setToValue(0);
-//        fade.setOnFinished(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                
-//            }
-//        });
-//        fade.play();
         try {
             AnchorPane pane = FXMLLoader.load(getClass().getResource(file));
             pane.setPrefSize(DashboardController.root.getWidth(), DashboardController.root.getHeight());

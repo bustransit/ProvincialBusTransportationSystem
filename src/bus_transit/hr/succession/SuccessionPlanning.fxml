@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.chart.StackedAreaChart?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color: #f3f3f3;" stylesheets="@../../../css/StyleSheet_1.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bus_transit.hr.succession.SuccessionPlanningController">
+   <children>
+      <AnchorPane accessibleText="hr/SuccessionPlanning.fxml" layoutX="74.0" layoutY="51.0" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <effect>
+            <DropShadow blurType="GAUSSIAN" color="GREY" height="5.0" radius="2.0" width="5.0" />
+         </effect>
+         <children>
+            <Label layoutX="32.0" layoutY="20.0" text="Succession Planning" textFill="#2d2d2d" AnchorPane.leftAnchor="25.0">
+               <font>
+                  <Font name="SansSerif Regular" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+         <children>
+            <JFXTabPane prefHeight="420.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <tabs>
+                  <Tab fx:id="modules" text="Succession Plan">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <BorderPane layoutX="150.0" layoutY="61.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+                                 <effect>
+                                    <DropShadow color="SILVER" />
+                                 </effect>
+                                 <top>
+                                    <AnchorPane prefHeight="65.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                                       <effect>
+                                          <DropShadow blurType="GAUSSIAN" color="SILVER" height="10.0" radius="4.5" width="10.0" />
+                                       </effect>
+                                       <children>
+                                          <CustomTextField fx:id="txt_searchAll" layoutX="22.0" layoutY="15.0" onKeyReleased="#SearchAllRequest" prefHeight="35.0" prefWidth="300.0" promptText="Search.." style="-fx-background-color: white; -fx-background-radius: 0; -fx-border-color: #DCDCDC;">
+                                             <font>
+                                                <Font name="Calibri" size="14.0" />
+                                             </font>
+                                          </CustomTextField>
+                                          <JFXButton fx:id="btnNew" accessibleText="LearningModulesManagement.fxml" layoutX="1186.0" layoutY="16.0" onAction="#loadFunction" prefHeight="28.0" prefWidth="58.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="New" textFill="WHITE" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="16.0">
+                                             <font>
+                                                <Font name="Calibri Bold" size="14.0" />
+                                             </font>
+                                             <effect>
+                                                <DropShadow color="SILVER" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                             </effect>
+                                          </JFXButton>
+                                       </children>
+                                    </AnchorPane>
+                                 </top>
+                                 <center>
+                                    <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                       <content>
+                                          <FlowPane fx:id="container_all" hgap="20.0" prefHeight="750.0" prefWidth="723.0" prefWrapLength="600.0" style="-fx-background-color: white;" vgap="20.0">
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding>
+                                             <children>
+                                                <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="522.0" style="-fx-background-radius: 4; -fx-background-color: white;">
+                                                   <effect>
+                                                      <DropShadow color="#000000e0" />
+                                                   </effect>
+                                                   <children>
+                                                      <AnchorPane style="-fx-background-color: #0078D7;">
+                                                         <children>
+                                                            <HBox prefHeight="28.0" prefWidth="536.0" style="-fx-background-color: #0078D7;">
+                                                               <children>
+                                                                  <Label prefHeight="28.0" prefWidth="527.0" style="-fx-text-fill: white;" text="HR Manager" textFill="#757575">
+                                                                     <font>
+                                                                        <Font name="Calibri Bold" size="24.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="28.0" prefWidth="506.0" style="-fx-text-fill: white;" text="Daniel Smith" textFill="#757575">
+                                                                     <font>
+                                                                        <Font name="Calibri Bold" size="24.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                               <padding>
+                                                                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                               </padding>
+                                                            </HBox>
+                                                            <Label style="-fx-text-fill: white;" text="Tentative Retirement / Exit Date: 12/12//2020" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+                                                               <font>
+                                                                  <Font name="Calibri" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <FlowPane layoutX="47.0" layoutY="107.0" prefHeight="521.0" prefWidth="617.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                                                         <children>
+                                                            <HBox prefHeight="200.0" prefWidth="512.0">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" prefWidth="179.0" text="Up Next [Ready Now]:" />
+                                                                  <VBox fx:id="vbxUpNext1" prefHeight="200.0" prefWidth="304.0">
+                                                                     <children>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Colin, Nathaniel M.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Lance, Nicolas B.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                     </children>
+                                                                  </VBox>
+                                                                  <JFXButton fx:id="btnNewUpNext1" contentDisplay="GRAPHIC_ONLY" prefHeight="0.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="SAVE REQUEST" textFill="WHITE">
+                                                                     <font>
+                                                                        <Font name="Calibri Bold" size="14.0" />
+                                                                     </font>
+                                                                     <effect>
+                                                                        <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                                     </effect>
+                                                                     <graphic>
+                                                                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="14" />
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Save Changes">
+                                                                           <font>
+                                                                              <Font name="Calibri" size="12.0" />
+                                                                           </font>
+                                                                        </Tooltip>
+                                                                     </tooltip>
+                                                                  </JFXButton>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="200.0" prefWidth="513.0">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" prefWidth="179.0" text="Ready 1- 3 years:" />
+                                                                  <VBox fx:id="vbxReadInThreeYrs1" prefHeight="200.0" prefWidth="304.0">
+                                                                     <children>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Colin, Nathaniel M.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Lance, Nicolas B.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                     </children>
+                                                                  </VBox>
+                                                                  <JFXButton fx:id="btnReady1" contentDisplay="GRAPHIC_ONLY" prefHeight="0.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="SAVE REQUEST" textFill="WHITE">
+                                                                     <font>
+                                                                        <Font name="Calibri Bold" size="14.0" />
+                                                                     </font>
+                                                                     <effect>
+                                                                        <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                                     </effect>
+                                                                     <graphic>
+                                                                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="14" />
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Save Changes">
+                                                                           <font>
+                                                                              <Font name="Calibri" size="12.0" />
+                                                                           </font>
+                                                                        </Tooltip>
+                                                                     </tooltip>
+                                                                  </JFXButton>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="200.0" prefWidth="515.0">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" prefWidth="179.0" text="High Potential Ready 5+yrs:" />
+                                                                  <VBox fx:id="vbxHiPotentials1" prefHeight="200.0" prefWidth="304.0">
+                                                                     <children>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Colin, Nathaniel M.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Lance, Nicolas B.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                     </children>
+                                                                  </VBox>
+                                                                  <JFXButton fx:id="btnHiPotentials1" contentDisplay="GRAPHIC_ONLY" prefHeight="0.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="SAVE REQUEST" textFill="WHITE">
+                                                                     <font>
+                                                                        <Font name="Calibri Bold" size="14.0" />
+                                                                     </font>
+                                                                     <effect>
+                                                                        <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                                     </effect>
+                                                                     <graphic>
+                                                                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="14" />
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Save Changes">
+                                                                           <font>
+                                                                              <Font name="Calibri" size="12.0" />
+                                                                           </font>
+                                                                        </Tooltip>
+                                                                     </tooltip>
+                                                                  </JFXButton>
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </FlowPane>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="522.0" style="-fx-background-radius: 4; -fx-background-color: white;">
+                                                   <effect>
+                                                      <DropShadow color="#000000e0" />
+                                                   </effect>
+                                                   <children>
+                                                      <AnchorPane style="-fx-background-color: #0078D7;">
+                                                         <children>
+                                                            <HBox prefHeight="28.0" prefWidth="536.0" style="-fx-background-color: #0078D7;">
+                                                               <children>
+                                                                  <Label prefHeight="28.0" prefWidth="527.0" style="-fx-text-fill: white;" text="HR Manager" textFill="#757575">
+                                                                     <font>
+                                                                        <Font name="Calibri Bold" size="24.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="28.0" prefWidth="506.0" style="-fx-text-fill: white;" text="Daniel Smith" textFill="#757575">
+                                                                     <font>
+                                                                        <Font name="Calibri Bold" size="24.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                               </children>
+                                                               <padding>
+                                                                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                               </padding>
+                                                            </HBox>
+                                                            <Label style="-fx-text-fill: white;" text="Tentative Retirement / Exit Date: 12/12//2020" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+                                                               <font>
+                                                                  <Font name="Calibri" size="12.0" />
+                                                               </font>
+                                                            </Label>
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <FlowPane layoutX="47.0" layoutY="107.0" prefHeight="521.0" prefWidth="617.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+                                                         <children>
+                                                            <HBox prefHeight="200.0" prefWidth="512.0">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" prefWidth="179.0" text="Up Next [Ready Now]:" />
+                                                                  <VBox fx:id="vbxUpNext11" prefHeight="200.0" prefWidth="304.0">
+                                                                     <children>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Colin, Nathaniel M.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Lance, Nicolas B.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                     </children>
+                                                                  </VBox>
+                                                                  <JFXButton fx:id="btnNewUpNext11" contentDisplay="GRAPHIC_ONLY" prefHeight="0.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="SAVE REQUEST" textFill="WHITE">
+                                                                     <font>
+                                                                        <Font name="Calibri Bold" size="14.0" />
+                                                                     </font>
+                                                                     <effect>
+                                                                        <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                                     </effect>
+                                                                     <graphic>
+                                                                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="14" />
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Save Changes">
+                                                                           <font>
+                                                                              <Font name="Calibri" size="12.0" />
+                                                                           </font>
+                                                                        </Tooltip>
+                                                                     </tooltip>
+                                                                  </JFXButton>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="200.0" prefWidth="513.0">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" prefWidth="179.0" text="Ready 1- 3 years:" />
+                                                                  <VBox fx:id="vbxReadInThreeYrs11" prefHeight="200.0" prefWidth="304.0">
+                                                                     <children>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Colin, Nathaniel M.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Lance, Nicolas B.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                     </children>
+                                                                  </VBox>
+                                                                  <JFXButton fx:id="btnReady11" contentDisplay="GRAPHIC_ONLY" prefHeight="0.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="SAVE REQUEST" textFill="WHITE">
+                                                                     <font>
+                                                                        <Font name="Calibri Bold" size="14.0" />
+                                                                     </font>
+                                                                     <effect>
+                                                                        <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                                     </effect>
+                                                                     <graphic>
+                                                                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="14" />
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Save Changes">
+                                                                           <font>
+                                                                              <Font name="Calibri" size="12.0" />
+                                                                           </font>
+                                                                        </Tooltip>
+                                                                     </tooltip>
+                                                                  </JFXButton>
+                                                               </children>
+                                                            </HBox>
+                                                            <HBox prefHeight="200.0" prefWidth="515.0">
+                                                               <children>
+                                                                  <Label prefHeight="17.0" prefWidth="179.0" text="High Potential Ready 5+yrs:" />
+                                                                  <VBox fx:id="vbxHiPotentials11" prefHeight="200.0" prefWidth="304.0">
+                                                                     <children>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Colin, Nathaniel M.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                        <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Lance, Nicolas B.">
+                                                                           <font>
+                                                                              <Font size="14.0" />
+                                                                           </font>
+                                                                        </Hyperlink>
+                                                                     </children>
+                                                                  </VBox>
+                                                                  <JFXButton fx:id="btnHiPotentials11" contentDisplay="GRAPHIC_ONLY" prefHeight="0.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="SAVE REQUEST" textFill="WHITE">
+                                                                     <font>
+                                                                        <Font name="Calibri Bold" size="14.0" />
+                                                                     </font>
+                                                                     <effect>
+                                                                        <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                                     </effect>
+                                                                     <graphic>
+                                                                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="14" />
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Save Changes">
+                                                                           <font>
+                                                                              <Font name="Calibri" size="12.0" />
+                                                                           </font>
+                                                                        </Tooltip>
+                                                                     </tooltip>
+                                                                  </JFXButton>
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </FlowPane>
+                                                   </children>
+                                                </AnchorPane>
+                                             </children>
+                                          </FlowPane>
+                                       </content>
+                                    </ScrollPane>
+                                 </center>
+                              </BorderPane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Report">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <JFXButton fx:id="btn_pdf" layoutX="14.0" layoutY="22.0" style="-fx-background-color: #00ffff;" text="Create PDF Report" />
+                              <PieChart fx:id="myPiechart" layoutX="152.0" layoutY="1.0" prefHeight="383.0" prefWidth="487.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="152.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
+                           </children></AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Successor Readines For Key Roles">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <JFXButton fx:id="btn_pdf2" layoutX="14.0" layoutY="14.0" style="-fx-background-color: #00ffff;" text="Create PDF Report" />
+                              <BarChart fx:id="myBarChart" layoutX="146.0" layoutY="25.0" prefHeight="324.0" prefWidth="482.0" AnchorPane.bottomAnchor="36.0" AnchorPane.leftAnchor="146.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="25.0">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                           </children></AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab text="Position Filled By Nominated Successor">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <JFXButton fx:id="btn_report3" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: #00ffff;" text="Create PDF Report" />
+                              <StackedAreaChart fx:id="myLineChart" layoutX="169.0" layoutY="-22.0" prefHeight="385.0" prefWidth="471.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="169.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <xAxis>
+                                  <NumberAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </StackedAreaChart>
+                           </children></AnchorPane>
+                    </content>
+                  </Tab>
+               </tabs>
+            </JFXTabPane>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

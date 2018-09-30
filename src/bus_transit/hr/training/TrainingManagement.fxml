@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
+
+
+<AnchorPane id="AnchorPane" fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bus_transit.hr.training.TrainingManagementController">
+   <children>
+      <AnchorPane fx:id="heading" prefHeight="60.0" prefWidth="628.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <effect>
+            <DropShadow blurType="GAUSSIAN" color="GREY" height="5.0" radius="2.0" width="5.0" />
+         </effect>
+         <children>
+            <Label layoutX="32.0" layoutY="20.0" text="Training Management" textFill="#2d2d2d" AnchorPane.leftAnchor="25.0">
+               <font>
+                  <Font name="SansSerif Regular" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <JFXTabPane fx:id="content" layoutX="102.0" layoutY="118.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
+         <tabs>
+            <Tab fx:id="training" text="Training List">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane layoutX="150.0" layoutY="61.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+                           <effect>
+                              <DropShadow color="SILVER" />
+                           </effect>
+                           <center>
+                              <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <content>
+                                    <TableView fx:id="tblTrainingList" onMouseClicked="#setSelectedTraining" prefHeight="625.0" prefWidth="915.0">
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                 </content>
+                              </ScrollPane>
+                           </center>
+                           <top>
+                              <AnchorPane prefHeight="63.0" prefWidth="1258.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                                 <effect>
+                                    <DropShadow blurType="GAUSSIAN" color="SILVER" height="10.0" radius="4.5" width="10.0" />
+                                 </effect>
+                                 <children>
+                                    <CustomTextField fx:id="tfSearch" layoutX="22.0" layoutY="15.0" onKeyReleased="#searchTraining" prefHeight="35.0" prefWidth="300.0" promptText="Search..." style="-fx-background-color: white; -fx-background-radius: 0; -fx-border-color: #DCDCDC;">
+                                       <font>
+                                          <Font name="Calibri" size="14.0" />
+                                       </font>
+                                    </CustomTextField>
+                                 </children>
+                              </AnchorPane>
+                           </top>
+                           <right>
+                              <Accordion prefHeight="625.0" prefWidth="328.0" BorderPane.alignment="CENTER">
+                                <panes>
+                                    <TitledPane fx:id="tdpAddTrainees" animated="false" expanded="false" layoutX="10.0" layoutY="10.0" prefHeight="586.0" prefWidth="372.0" text="Set Trainees">
+                                       <content>
+                                          <VBox fx:id="vbxAddTrainees" disable="true" spacing="10.0">
+                                             <children>
+                                                <Label fx:id="lblTraineesForTraining" prefHeight="19.0" prefWidth="319.0" text="Training Title">
+                                                   <font>
+                                                      <Font name="Calibri Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <JFXTextField fx:id="tfSearchTrainees" onAction="#searchTrainees" onKeyReleased="#searchTrainees" promptText="Search by Employee Lastname" />
+                                                <ScrollPane>
+                                                   <content>
+                                                      <VBox fx:id="vbxTrainees" prefHeight="497.0" prefWidth="242.0" spacing="8.0">
+                                                         <children>
+                                                            <JFXCheckBox onAction="#addTrainee" prefHeight="17.0" prefWidth="237.0">
+                                                               <tooltip>
+                                                                  <Tooltip text="Empty Tooltip" />
+                                                               </tooltip>
+                                                            </JFXCheckBox>
+                                                            <JFXCheckBox layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="237.0" />
+                                                            <JFXCheckBox layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="237.0" />
+                                                            <JFXCheckBox layoutX="10.0" layoutY="35.0" prefHeight="17.0" prefWidth="237.0" />
+                                                         </children>
+                                                      </VBox>
+                                                   </content>
+                                                </ScrollPane>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </TitledPane>
+                                  <TitledPane animated="false" expanded="false" text="Set Training">
+                                    <content>
+                                      <AnchorPane fx:id="ancTraining" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane layoutX="6.0" layoutY="29.0" prefHeight="172.0" prefWidth="262.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="65.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="219.0" minHeight="10.0" prefHeight="78.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="67.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="67.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="272.0" minHeight="10.0" prefHeight="73.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="270.0000305175781" minHeight="10.0" prefHeight="223.0" valignment="TOP" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <JFXTextField fx:id="tfTrainingTitle" promptText="Title">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </GridPane.margin>
+                                                      </JFXTextField>
+                                                      <JFXTextField fx:id="tfTrainingLocation" promptText="Location" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </GridPane.margin>
+                                                      </JFXTextField>
+                                                      <JFXTextField fx:id="tfNumberOfParticipants" promptText="Number of Participants" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </GridPane.margin>
+                                                      </JFXTextField>
+                                                      <JFXTimePicker fx:id="tpTrainingTime" editable="true" prefHeight="28.0" prefWidth="289.0" promptText="Time" GridPane.rowIndex="3">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </GridPane.margin>
+                                                      </JFXTimePicker>
+                                                      <JFXDatePicker fx:id="dpTrainingDate" prefHeight="31.0" prefWidth="303.0" promptText="Target Date" GridPane.rowIndex="4">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </GridPane.margin>
+                                                      </JFXDatePicker>
+                                                      <JFXComboBox fx:id="cbTrainingType" prefHeight="25.0" prefWidth="295.0" promptText="Type" GridPane.rowIndex="5">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                         </GridPane.margin>
+                                                      </JFXComboBox>
+                                                      <HBox alignment="TOP_RIGHT" spacing="20.0" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                                                         <children>
+                                                            <JFXButton fx:id="btnNew" alignment="CENTER" contentDisplay="CENTER" onAction="#saveNewTraining" prefHeight="28.0" prefWidth="58.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="Save" textFill="WHITE">
+                                                               <font>
+                                                                  <Font name="Calibri Bold" size="14.0" />
+                                                               </font>
+                                                               <effect>
+                                                                  <DropShadow color="SILVER" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                               </effect>
+                                                            </JFXButton>
+                                                            <JFXButton fx:id="btnClear" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" onAction="#clearTrainingFields" prefHeight="28.0" prefWidth="58.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="Clear" textFill="WHITE">
+                                                               <font>
+                                                                  <Font name="Calibri Bold" size="14.0" />
+                                                               </font>
+                                                               <effect>
+                                                                  <DropShadow color="SILVER" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                               </effect>
+                                                            </JFXButton>
+                                                            <JFXButton fx:id="btnUpdate" alignment="CENTER" contentDisplay="CENTER" disable="true" onAction="#updateTraining" prefHeight="28.0" prefWidth="80.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="Update" textFill="WHITE">
+                                                               <font>
+                                                                  <Font name="Calibri Bold" size="14.0" />
+                                                               </font>
+                                                               <effect>
+                                                                  <DropShadow color="SILVER" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                               </effect>
+                                                            </JFXButton>
+                                                         </children>
+                                                         <GridPane.margin>
+                                                            <Insets />
+                                                         </GridPane.margin>
+                                                         <padding>
+                                                            <Insets top="20.0" />
+                                                         </padding>
+                                                      </HBox>
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                </panes>
+                              </Accordion>
+                           </right>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="learningProgress" text="Assessment">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+                           <effect>
+                              <DropShadow color="SILVER" />
+                           </effect>
+                           <center>
+                              <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <content>
+                                    <FlowPane fx:id="container_pending" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </FlowPane>
+                                 </content>
+                              </ScrollPane>
+                           </center>
+                           <top>
+                              <AnchorPane prefHeight="65.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                                 <effect>
+                                    <DropShadow blurType="GAUSSIAN" color="SILVER" height="10.0" radius="4.5" width="10.0" />
+                                 </effect>
+                                 <children>
+                                    <CustomTextField fx:id="txt_searchPending" layoutX="22.0" layoutY="15.0" prefHeight="35.0" prefWidth="300.0" promptText="Search Employee..." style="-fx-background-color: white; -fx-background-radius: 0; -fx-border-color: #DCDCDC;">
+                                       <font>
+                                          <Font name="Calibri" size="14.0" />
+                                       </font>
+                                    </CustomTextField>
+                                 </children>
+                              </AnchorPane>
+                           </top>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+   </children>
+   <stylesheets>
+      <URL value="@../../../css/StyleSheet_1.css" />
+      <URL value="@../../../css/StyleSheet.css" />
+   </stylesheets>
+</AnchorPane>

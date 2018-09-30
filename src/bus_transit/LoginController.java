@@ -80,6 +80,7 @@ public class LoginController extends Application implements Initializable {
     DBUtilities db = new DBUtilities();
     ResultSet rs;
     String q;
+    
     SidePaneController sidePane = new SidePaneController();
     
     @Override

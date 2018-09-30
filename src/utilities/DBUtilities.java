@@ -7,8 +7,12 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,6 +33,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -200,7 +205,7 @@ public class DBUtilities {
             for (int i = 0; i < this.resultSet.getMetaData().getColumnCount(); i++) {
                 //We are using non property style for making dynamic table
                 final int j = i;
-                TableColumn col = new TableColumn(this.resultSet.getMetaData().getColumnName(i + 1));
+                TableColumn col = new TableColumn(this.resultSet.getMetaData().getColumnLabel(i + 1));
                 col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
                     public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
                         SimpleStringProperty s = new SimpleStringProperty(param.getValue().get(j).toString());
@@ -551,4 +556,75 @@ public class DBUtilities {
     public void setDatabase_name(String database_name) {
         this.database_name = database_name;
     }
+    
+    public String getTime() {        
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            String remaining = "";
+            int hour;
+            int minute;
+            int second;
+            int am_pm;
+            int month;
+            int day;
+            int year;  
+            
+            Calendar cal = Calendar.getInstance();
+            hour = cal.get(Calendar.HOUR);
+            minute = cal.get(Calendar.MINUTE);
+            second = cal.get(Calendar.SECOND);
+            month = cal.get(Calendar.MONTH);
+            day = cal.get(Calendar.DATE);
+            year = cal.get(Calendar.YEAR);
+            am_pm = cal.get(Calendar.AM_PM);
+
+            String date = month + "-" + day + "-" + year;
+            if (month == 0) {
+                date = ("January " + day + ", " + year);
+            } else if (month == 1) {
+                date = ("Febuary " + day + ", " + year);
+            } else if (month == 2) {
+                date = ("March " + day + ", " + year);
+            } else if (month == 3) {
+                date = ("April " + day + ", " + year);
+            } else if (month == 4) {
+                date = ("May " + day + ", " + year);
+            } else if (month == 5) {
+                date = ("June " + day + ", " + year);
+            } else if (month == 6) {
+                date = ("July " + day + ", " + year);
+            } else if (month == 7) {
+                date = ("August " + day + ", " + year);
+            } else if (month == 8) {
+                date = ("September " + day + ", " + year);
+            } else if (month == 9) {
+                date = ("October " + day + ", " + year);
+            } else if (month == 10) {
+                date = ("November " + day + ", " + year);
+            } else if (month == 11) {
+                date = ("December " + day + ", " + year);
+            }
+
+            String day_night = "";
+            if (am_pm == 1) {
+                day_night = "PM";
+            } else {
+                day_night = "AM";
+            }
+
+            if (hour == 0) {
+                remaining = "12" + ":" + minute + ":" + second + " " + day_night;
+//                txt_time.setText("12" + ":" + minute + ":" + second + " " + day_night);
+//                txt_date.setText(date);
+            } else {
+                remaining = "12" + ":" + minute + ":" + second + " " + day_night;
+//                txt_time.setText(hour + ":" + minute + ":" + second + " " + day_night);
+//                txt_date.setText(date);
+            }
+        }),
+                new KeyFrame(Duration.seconds(1))
+        );
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+        return clock.toString();
+    }    
 }

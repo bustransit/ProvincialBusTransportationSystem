@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
+
+<AnchorPane id="AnchorPane" fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bus_transit.hr.learning.LearningManagementController">
+   <children>
+      <AnchorPane fx:id="heading" prefHeight="60.0" prefWidth="628.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <effect>
+            <DropShadow blurType="GAUSSIAN" color="GREY" height="5.0" radius="2.0" width="5.0" />
+         </effect>
+         <children>
+            <Label layoutX="32.0" layoutY="20.0" text="Learning Management" textFill="#2d2d2d" AnchorPane.leftAnchor="25.0">
+               <font>
+                  <Font name="SansSerif Regular" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <JFXTabPane fx:id="content" layoutX="102.0" layoutY="118.0" rotateGraphic="true" stylesheets="@../../../css/StyleSheet_1.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0">
+         <tabs>
+            <Tab fx:id="modules" text="Modules">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane layoutX="150.0" layoutY="61.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+                           <effect>
+                              <DropShadow color="SILVER" />
+                           </effect>
+                           <center>
+                              <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <content>
+                                    <FlowPane fx:id="container_all" hgap="20.0" prefHeight="200.0" prefWidth="200.0" prefWrapLength="1000.0" style="-fx-background-color: white;" vgap="20.0">
+                                       <padding>
+                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                       </padding>
+                                       <children>
+                                          <FlowPane fx:id="modulePane" hgap="10.0" minWidth="600.0" onMouseEntered="#toHoverState" prefHeight="160.0" prefWidth="600.0" style="-fx-background-color: white; -fx-background-radius: 4;" vgap="10.0">
+                                             <children>
+                                                <Label fx:id="title" prefHeight="25.0" prefWidth="427.0" text="Developing leaders around you">
+                                                   <font>
+                                                      <Font name="Calibri Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <JFXButton fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY" onAction="#SaveRequest" prefHeight="31.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="SAVE REQUEST" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Calibri Bold" size="14.0" />
+                                                   </font>
+                                                   <effect>
+                                                      <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                   </effect>
+                                                   <graphic>
+                                                      <FontAwesomeIconView fill="WHITE" glyphName="EDIT" size="20" />
+                                                   </graphic>
+                                                   <tooltip>
+                                                      <Tooltip text="Edit">
+                                                         <font>
+                                                            <Font name="Calibri" size="12.0" />
+                                                         </font>
+                                                      </Tooltip>
+                                                   </tooltip>
+                                                </JFXButton>
+                                                <JFXButton fx:id="btnView" contentDisplay="GRAPHIC_ONLY" onAction="#CancelRequest" prefHeight="31.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="View" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Calibri Bold" size="14.0" />
+                                                   </font>
+                                                   <effect>
+                                                      <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                   </effect>
+                                                   <graphic>
+                                                      <FontAwesomeIconView fill="WHITE" glyphName="EYE" size="20" />
+                                                   </graphic>
+                                                   <tooltip>
+                                                      <Tooltip text="View">
+                                                         <font>
+                                                            <Font name="Calibri" size="12.0" />
+                                                         </font>
+                                                      </Tooltip>
+                                                   </tooltip>
+                                                </JFXButton>
+                                                <JFXButton fx:id="btnView2" contentDisplay="GRAPHIC_ONLY" onAction="#CancelRequest" prefHeight="31.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="View" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Calibri Bold" size="14.0" />
+                                                   </font>
+                                                   <effect>
+                                                      <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                   </effect>
+                                                   <graphic>
+                                                      <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="20" />
+                                                   </graphic>
+                                                   <tooltip>
+                                                      <Tooltip text="Print">
+                                                         <font>
+                                                            <Font name="Calibri" size="12.0" />
+                                                         </font>
+                                                      </Tooltip>
+                                                   </tooltip>
+                                                </JFXButton>
+                                                <Text fx:id="description" strokeType="OUTSIDE" strokeWidth="0.0" text="Leadership training reading materials for back office personnel. Place sample text or short description for modules here." textAlignment="JUSTIFY" wrappingWidth="580.13671875">
+                                                   <font>
+                                                      <Font name="Calibri" size="14.0" />
+                                                   </font>
+                                                   <FlowPane.margin>
+                                                      <Insets bottom="10.0" top="10.0" />
+                                                   </FlowPane.margin>
+                                                </Text>
+                                                <Label fx:id="date1" prefHeight="17.0" prefWidth="123.0" text="Type: Text">
+                                                   <padding>
+                                                      <Insets right="10.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="date" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="437.0" text="Last update: 12/12/2018">
+                                                   <FlowPane.margin>
+                                                      <Insets />
+                                                   </FlowPane.margin>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding>
+                                             <effect>
+                                                <DropShadow blurType="GAUSSIAN" color="#73737380" height="18.03" radius="9.2575" />
+                                             </effect>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                          </FlowPane>
+                                          <FlowPane fx:id="modulePane1" hgap="10.0" minWidth="600.0" onMouseEntered="#toHoverState" prefHeight="160.0" prefWidth="600.0" style="-fx-background-color: white; -fx-background-radius: 4;" vgap="10.0">
+                                             <children>
+                                                <Label fx:id="title1" prefHeight="25.0" prefWidth="480.0" text="Defensive Driving 101">
+                                                   <font>
+                                                      <Font name="Calibri Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <JFXButton fx:id="btnEdit1" contentDisplay="GRAPHIC_ONLY" onAction="#SaveRequest" prefHeight="35.0" prefWidth="40.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="SAVE REQUEST" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Calibri Bold" size="14.0" />
+                                                   </font>
+                                                   <effect>
+                                                      <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                   </effect>
+                                                   <graphic>
+                                                      <FontAwesomeIconView fill="WHITE" glyphName="EDIT" size="20" />
+                                                   </graphic>
+                                                   <tooltip>
+                                                      <Tooltip text="Save Changes">
+                                                         <font>
+                                                            <Font name="Calibri" size="12.0" />
+                                                         </font>
+                                                      </Tooltip>
+                                                   </tooltip>
+                                                </JFXButton>
+                                                <JFXButton fx:id="btnView1" contentDisplay="GRAPHIC_ONLY" onAction="#CancelRequest" prefHeight="35.0" prefWidth="40.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="CANCEL REQUEST" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Calibri Bold" size="14.0" />
+                                                   </font>
+                                                   <effect>
+                                                      <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                                   </effect>
+                                                   <graphic>
+                                                      <FontAwesomeIconView fill="WHITE" glyphName="EYE" size="20" />
+                                                   </graphic>
+                                                   <tooltip>
+                                                      <Tooltip text="Cancel Request">
+                                                         <font>
+                                                            <Font name="Calibri" size="12.0" />
+                                                         </font>
+                                                      </Tooltip>
+                                                   </tooltip>
+                                                </JFXButton>
+                                                <Text fx:id="description1" strokeType="OUTSIDE" strokeWidth="0.0" text="Courtesy to other road user: Defensive Driving 101 contains about safe driving practices" textAlignment="JUSTIFY" wrappingWidth="580.13671875">
+                                                   <font>
+                                                      <Font name="Calibri" size="14.0" />
+                                                   </font>
+                                                   <FlowPane.margin>
+                                                      <Insets bottom="10.0" top="10.0" />
+                                                   </FlowPane.margin>
+                                                </Text>
+                                                <Label fx:id="date11" prefHeight="17.0" prefWidth="123.0" text="Type: Text">
+                                                   <padding>
+                                                      <Insets right="10.0" />
+                                                   </padding>
+                                                </Label>
+                                                <Label fx:id="date1" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="437.0" text="Last update: 12/12/2018">
+                                                   <FlowPane.margin>
+                                                      <Insets />
+                                                   </FlowPane.margin>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding>
+                                             <effect>
+                                                <DropShadow color="#75757580" />
+                                             </effect>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
+                                          </FlowPane>
+                                       </children>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </FlowPane>
+                                 </content>
+                              </ScrollPane>
+                           </center>
+                           <top>
+                              <AnchorPane prefHeight="65.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                                 <effect>
+                                    <DropShadow blurType="GAUSSIAN" color="SILVER" height="10.0" radius="4.5" width="10.0" />
+                                 </effect>
+                                 <children>
+                                    <CustomTextField fx:id="txt_searchAll" layoutX="22.0" layoutY="15.0" onKeyReleased="#SearchAllRequest" prefHeight="35.0" prefWidth="300.0" promptText="Search Modules..." style="-fx-background-color: white; -fx-background-radius: 0; -fx-border-color: #DCDCDC;">
+                                       <font>
+                                          <Font name="Calibri" size="14.0" />
+                                       </font>
+                                    </CustomTextField>
+                                    <JFXButton fx:id="btnNew" contentDisplay="GRAPHIC_ONLY" onAction="#CancelRequest" prefHeight="45.0" prefWidth="49.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="View" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                       <font>
+                                          <Font name="Calibri Bold" size="14.0" />
+                                       </font>
+                                       <effect>
+                                          <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                       </effect>
+                                       <graphic>
+                                          <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="20" />
+                                       </graphic>
+                                       <tooltip>
+                                          <Tooltip text="New">
+                                             <font>
+                                                <Font name="Calibri" size="12.0" />
+                                             </font>
+                                          </Tooltip>
+                                       </tooltip>
+                                    </JFXButton>
+                                 </children>
+                              </AnchorPane>
+                           </top>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="test" text="Tests &amp; Quizes">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+                           <effect>
+                              <DropShadow color="SILVER" />
+                           </effect>
+                           <center>
+                              <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <content>
+                                    <FlowPane fx:id="flpTestContainer" hgap="20.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" vgap="20.0">
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </FlowPane>
+                                 </content>
+                                 <padding>
+                                    <Insets bottom="50.0" />
+                                 </padding>
+                              </ScrollPane>
+                           </center>
+                           <top>
+                              <AnchorPane prefHeight="65.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                                 <effect>
+                                    <DropShadow blurType="GAUSSIAN" color="SILVER" height="10.0" radius="4.5" width="10.0" />
+                                 </effect>
+                                 <children>
+                                    <CustomTextField fx:id="txt_searchPending1" layoutX="22.0" layoutY="15.0" onKeyReleased="#SearchPendingRequest" prefHeight="35.0" prefWidth="300.0" promptText="Search Test" style="-fx-background-color: white; -fx-background-radius: 0; -fx-border-color: #DCDCDC;">
+                                       <font>
+                                          <Font name="Calibri" size="14.0" />
+                                       </font>
+                                    </CustomTextField>
+                                    <JFXCheckBox layoutX="354.0" layoutY="24.0" text="Tests" />
+                                    <JFXCheckBox layoutX="452.0" layoutY="24.0" text="Quizzes" />
+                                 </children>
+                              </AnchorPane>
+                           </top>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="learningProgress" text="Learning Progress">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+                           <effect>
+                              <DropShadow color="SILVER" />
+                           </effect>
+                           <center>
+                              <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <content>
+                                    <FlowPane fx:id="container_pending" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </FlowPane>
+                                 </content>
+                              </ScrollPane>
+                           </center>
+                           <top>
+                              <AnchorPane prefHeight="65.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                                 <effect>
+                                    <DropShadow blurType="GAUSSIAN" color="SILVER" height="10.0" radius="4.5" width="10.0" />
+                                 </effect>
+                                 <children>
+                                    <CustomTextField fx:id="txt_searchPending" layoutX="22.0" layoutY="15.0" onKeyReleased="#SearchPendingRequest" prefHeight="35.0" prefWidth="300.0" promptText="Search Employee..." style="-fx-background-color: white; -fx-background-radius: 0; -fx-border-color: #DCDCDC;">
+                                       <font>
+                                          <Font name="Calibri" size="14.0" />
+                                       </font>
+                                    </CustomTextField>
+                                 </children>
+                              </AnchorPane>
+                           </top>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+   </children>
+</AnchorPane>

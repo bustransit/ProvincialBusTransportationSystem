@@ -91,8 +91,7 @@ public class UserManagementController extends
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        qry = "SELECT emp_id, username FROM user";
-        
+        qry = "SELECT emp_id, username FROM user";        
         btnAddNewUser.setOnAction(e->{
             BooleanProperty b = newUser.visibleProperty();
             if(b.getValue()){
