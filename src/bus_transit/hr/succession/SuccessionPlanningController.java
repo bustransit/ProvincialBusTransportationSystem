@@ -6,13 +6,21 @@
 package bus_transit.hr.succession;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -27,10 +35,14 @@ import javafx.scene.chart.Chart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.StackedAreaChart;
 import javafx.scene.control.Tab;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javax.imageio.ImageIO;
@@ -71,31 +83,11 @@ public class SuccessionPlanningController extends Application implements Initial
     @FXML
     private JFXButton btnNew;
     @FXML
-    private FlowPane container_all;
+    private Tooltip btnNewToolTip;
     @FXML
-    private VBox vbxUpNext1;
+    private StackPane stackPane;
     @FXML
-    private JFXButton btnNewUpNext1;
-    @FXML
-    private VBox vbxReadInThreeYrs1;
-    @FXML
-    private JFXButton btnReady1;
-    @FXML
-    private VBox vbxHiPotentials1;
-    @FXML
-    private JFXButton btnHiPotentials1;
-    @FXML
-    private VBox vbxUpNext11;
-    @FXML
-    private JFXButton btnNewUpNext11;
-    @FXML
-    private VBox vbxReadInThreeYrs11;
-    @FXML
-    private JFXButton btnReady11;
-    @FXML
-    private VBox vbxHiPotentials11;
-    @FXML
-    private JFXButton btnHiPotentials11;
+    private FlowPane fpSuccessionPlan;
 
     /**
      * Initializes the controller class.
@@ -126,7 +118,7 @@ public class SuccessionPlanningController extends Application implements Initial
             
         });
         
-       // }
+       populateSuccesionPlanePane();
     }
     
     private void chartToPNG(Chart b, String filename){
@@ -159,9 +151,9 @@ public class SuccessionPlanningController extends Application implements Initial
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "jpg",file);
         }catch(IOException e){
             System.out.println(e);
+        }        
     }
-        
-    }
+    
     
     
       @Override
@@ -184,14 +176,133 @@ public class SuccessionPlanningController extends Application implements Initial
     private void SearchAllRequest(KeyEvent event) {
     }
 
+    public void populateSuccesionPlanePane(){
+        String q = "SELECT * FROM succession_plan";
+        rs = db.displayRecords(q);
+        fpSuccessionPlan.getChildren().clear();
+        try {
+            while(rs.next()){
+                FXMLLoader l =  new FXMLLoader(getClass().getResource("SuccessionCard.fxml"));                                                            
+                SuccessionCardController successionCardController = new SuccessionCardController();                
+                successionCardController.setPositionId(rs.getString("position_id"));
+                
+                AnchorPane fp = l.load();
+                l.setController(successionCardController);
+                
+                fpSuccessionPlan.getChildren().addAll(fp);                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SuccessionPlanningController.class.getName())
+                  .log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(SuccessionPlanningController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    LocalDate dateExit;
+    String positionId;
+    String employeeId;
+    String readiness;    
+    
     @FXML
-    private void loadFunction(ActionEvent event) {
+    private void loadNewSuccesionPlan(ActionEvent event) throws InterruptedException {
+        JFXDialogLayout dialog = new JFXDialogLayout();
+        dialog.setHeading(new Text("Examinee Info"));
+        
+        VBox vbx = new VBox();
+        vbx.setFillWidth(true);
+        
+        String q = "";
+        
+        JFXComboBox cbPosion = new JFXComboBox();
+        q = "SELECT CONCAT(position_id,', ', position_name) FROM employee_position";        
+        db.populateComboBox(q, cbPosion);
+        vbx.getChildren().add(cbPosion);
+        cbPosion.setOnAction((e) -> {
+            String s = cbPosion.getSelectionModel().getSelectedItem().toString();
+            setSelectedPosition(s);
+        });        
+        
+        JFXComboBox cbEmployee = new JFXComboBox();
+        q = "SELECT CONCAT(emp_id,', ',lastname,"
+            + "', ', firstname,' ', middlename) AS 'employee' FROM employee";
+                        
+        db.populateComboBox(q, cbEmployee);
+        vbx.getChildren().add(cbEmployee);
+        
+        cbEmployee.setOnAction((e) -> {
+            String s = cbEmployee.getSelectionModel().getSelectedItem().toString();
+            setSelectedEmployee(s);
+        });
+        
+//        JFXComboBox<String> cbReadiness = new JFXComboBox();
+//        cbReadiness.getItems().add("IMMEDIATE");
+//        cbReadiness.getItems().add("1-3 YEARS");
+//        cbReadiness.getItems().add("HIGH POTENTIALS");
+//        cbReadiness.setOnAction((evt) -> {
+//            setReadiness(cbReadiness);
+//        });
+//        
+//        vbx.getChildren().add(cbReadiness);
+        
+        JFXDatePicker dp = new JFXDatePicker();
+        vbx.getChildren().add(dp);
+        
+        dp.setOnAction((evt) -> {
+            dateExit = dp.getValue();
+        });
+        
+        dialog.setBody(vbx);
+        
+        JFXDialog dlg = new JFXDialog(stackPane,dialog,JFXDialog.DialogTransition.CENTER);
+        
+        JFXButton btnOK = new JFXButton("OK");
+        vbx.getChildren().add(btnOK);
+        btnOK.setOnAction((evt) -> {                                         
+            dlg.close();
+        });
+        
+        JFXButton btnCancel = new JFXButton("CANCEL");
+        vbx.getChildren().add(btnCancel);
+        btnOK.setOnAction((evt) -> {          
+            dlg.close();
+        });        
+        
+                                      
+        dlg.show();
+        dialog.setActions(btnOK);        
+        
+        dlg.setOnDialogClosed((evt) -> {
+            System.out.println("Date: "+dateExit);
+            System.out.println("Employee ID: "+employeeId);
+            System.out.println("Position ID: "+positionId);
+            System.out.println("Readiness: "+readiness); 
+            System.out.println("Hi");
+            try{
+                String qry = "INSERT INTO succession_plan "
+                        + "(position_id, emp_id, exit_date) "
+                        + "VALUES("+positionId
+                        +","+employeeId
+                        +",'"+dateExit+"')";
+                db.execute(qry);
+            }catch(Exception e){
+                System.out.println(e);
+            }
+            populateSuccesionPlanePane();
+        });
+        
     }
     
     
-               
-        
+    private void setSelectedPosition(String s){        
+        positionId = s.toString().split(",")[0].substring(1);         
+    }
     
-
+    private void setSelectedEmployee(String s){
+        employeeId = s.toString().split(",")[0].substring(1);         
+    }
     
+    private void setReadiness(JFXComboBox c){
+        readiness = c.getSelectionModel().getSelectedItem().toString();        
+    }
 }

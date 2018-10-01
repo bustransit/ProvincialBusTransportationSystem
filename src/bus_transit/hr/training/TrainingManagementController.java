@@ -310,10 +310,6 @@ public class TrainingManagementController
 
 
     @FXML
-    private void searchTrainees(ActionEvent event) {
-    }
-
-    @FXML
     private void addTrainee(ActionEvent event) {
     }
     
