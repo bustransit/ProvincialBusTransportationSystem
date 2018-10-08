@@ -221,7 +221,7 @@
                               </ScrollPane>
                            </center>
                            <top>
-                              <AnchorPane prefHeight="65.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                              <AnchorPane prefHeight="33.0" prefWidth="1258.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
                                  <effect>
                                     <DropShadow blurType="GAUSSIAN" color="SILVER" height="10.0" radius="4.5" width="10.0" />
                                  </effect>
@@ -231,7 +231,7 @@
                                           <Font name="Calibri" size="14.0" />
                                        </font>
                                     </CustomTextField>
-                                    <JFXButton fx:id="btnNew" contentDisplay="GRAPHIC_ONLY" onAction="#CancelRequest" prefHeight="45.0" prefWidth="49.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="View" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                    <JFXButton fx:id="btnNew" contentDisplay="GRAPHIC_ONLY" onAction="#CancelRequest" prefHeight="31.0" prefWidth="36.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="View" textFill="WHITE" AnchorPane.bottomAnchor="24.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                        <font>
                                           <Font name="Calibri Bold" size="14.0" />
                                        </font>
@@ -243,6 +243,24 @@
                                        </graphic>
                                        <tooltip>
                                           <Tooltip text="New">
+                                             <font>
+                                                <Font name="Calibri" size="12.0" />
+                                             </font>
+                                          </Tooltip>
+                                       </tooltip>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnAttachFile" contentDisplay="GRAPHIC_ONLY" layoutX="1222.0" layoutY="20.0" onAction="#loadFileChooser" prefHeight="31.0" prefWidth="36.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="Attach" textFill="WHITE" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="10.0">
+                                       <font>
+                                          <Font name="Calibri Bold" size="14.0" />
+                                       </font>
+                                       <effect>
+                                          <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                       </effect>
+                                       <graphic>
+                                          <FontAwesomeIconView fill="WHITE" glyphName="PAPERCLIP" size="20" />
+                                       </graphic>
+                                       <tooltip>
+                                          <Tooltip text="Attach File">
                                              <font>
                                                 <Font name="Calibri" size="12.0" />
                                              </font>

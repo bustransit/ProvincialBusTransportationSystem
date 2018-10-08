@@ -6,6 +6,7 @@
 package bus_transit.system;
 
 
+import bus_transit.Directories;
 import bus_transit.DashboardController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -22,6 +23,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +34,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -52,38 +55,35 @@ public class ForgotPasswordController
     @FXML private JFXTextField tfUsername;
     @FXML private JFXTextField tfSuperVisorCode;
     @FXML private JFXButton btnReset;
-
+    @FXML private Label generatedPassword;
+    @FXML private VBox vBoxReset;
+    
     DBUtilities db = new DBUtilities();
     ResultSet rs;
     String q;
     int r;
-    @FXML
-    private Label generatedPassword;
-    @FXML
-    private VBox vBoxReset;
-    @FXML
-    private JFXComboBox<String> charts;
+
 
     public ObservableList chr;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {       
         // back
-        btnBack.setOnAction(e->{
-            try {
-                Stage stage = (Stage) btnBack.getScene().getWindow();
-                stage.close();
-                Stage dash = new Stage(StageStyle.UNDECORATED);
-                Parent root;               
-                root = FXMLLoader.load(getClass().getResource("../Login.fxml"));
-                Scene scene = new Scene(root);
-                dash.setScene(scene);
-                dash.setMaximized(true);
-                dash.show();                
-            } catch (IOException ex) {
-                Logger.getLogger(ForgotPasswordController.class.getName()).log(Level.SEVERE, null, ex);
-            }        
-        });
+//        btnBack.setOnAction(e->{
+//            try {
+//                Stage stage = (Stage) btnBack.getScene().getWindow();
+//                stage.close();
+//                Stage dash = new Stage(StageStyle.UNDECORATED);
+//                Parent root;               
+//                root = FXMLLoader.load(getClass().getResource("src/bus_transit/Login.fxml"));
+//                Scene scene = new Scene(root);
+//                dash.setScene(scene);
+//                dash.setMaximized(true);
+//                dash.show();                
+//            } catch (IOException ex) {
+//                Logger.getLogger(ForgotPasswordController.class.getName()).log(Level.SEVERE, null, ex);
+//            }        
+//        });
         
         vBoxReset.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -198,7 +198,35 @@ public class ForgotPasswordController
         }
         return r;
     }
+
+    @FXML
+    private void back(ActionEvent event) throws IOException {        
+        Stage stage = (Stage) btnBack.getScene().getWindow();         
+        stage.close();
+        Stage dash = new Stage(StageStyle.UNDECORATED);
+        Directories dir = new Directories();
+        //Parent root = FXMLLoader.load(getClass().getResource(dir.login.getFile()));
+        Parent root = FXMLLoader.load(dir.login);
+        Scene scene = new Scene(root);
+        dash.setScene(scene);
+        dash.setMaximized(true);
+        dash.show();                
+    }
     
+    private void loadFunction(ActionEvent event) throws IOException {
+        JFXButton b = (JFXButton) event.getSource();
+        String file = b.getAccessibleText().toString();
+        System.out.println(file);
+        try {
+            AnchorPane pane = FXMLLoader.load(getClass().getResource(file));
+            pane.setPrefSize(DashboardController.root.getWidth(), DashboardController.root.getHeight());
+            DashboardController.root.getChildren().removeAll(DashboardController.root.getChildren());
+            DashboardController.root.getChildren().add(pane);
+            DashboardController.draw.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    } // loadFunction ends here    
     
 //    @Override
 //    public void start(Stage stage) throws Exception {

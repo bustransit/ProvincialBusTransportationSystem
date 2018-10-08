@@ -75,9 +75,6 @@ public class TrainingManagementController
     @FXML private JFXTextField tfNumberOfParticipants;
     @FXML private JFXButton btnNew;
     @FXML private JFXTimePicker tpTrainingTime;
-    @FXML private Tab learningProgress;
-    @FXML private CustomTextField txt_searchPending;
-    @FXML private FlowPane container_pending;
     @FXML private JFXButton btnClear;
     @FXML private Label lblTraineesForTraining;
     @FXML private JFXTextField tfSearchTrainees;
@@ -93,6 +90,8 @@ public class TrainingManagementController
     @FXML
     private JFXButton btnUpdate;
     private StackPane stackPane;
+    @FXML
+    private MenuItem mnuGenerateReport;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {               
@@ -269,6 +268,15 @@ public class TrainingManagementController
 
     @FXML    
     private void searchTraining(KeyEvent event) {
+        String s = tfSearch.getText();
+        db.populateTable("SELECT training_id as 'ID', "
+                + "title as 'TITLE', "
+                + "participants as 'TRAINEES', "
+                + "TIME as 'TIME', "
+                + "target_date as 'DATE', "
+                + "venue as 'VENUE', "
+                + "TYPE FROM training "
+                + "WHERE title LIKE '%"+s+"%'", tblTrainingList);
     }
 
     @FXML
@@ -476,4 +484,8 @@ public class TrainingManagementController
                   .log(Level.SEVERE, null, ex);
         }        
     }    
+
+    @FXML
+    private void generateReport(ActionEvent event) {        
+    }
 }

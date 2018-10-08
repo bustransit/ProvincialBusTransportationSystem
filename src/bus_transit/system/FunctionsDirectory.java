@@ -11,6 +11,7 @@ import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeSupport;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 
@@ -80,4 +81,15 @@ public class FunctionsDirectory {
     private final transient VetoableChangeSupport vetoableChangeSupport = new java.beans.VetoableChangeSupport(this);
     public static final String PROP_FUNCTIONS = "functions";
     public static final String PROP_DIRECTORY = "directory";
+    
+    public class JFXModuleButton extends JFXButton{
+        public JFXModuleButton() {
+            
+        }   
+
+        @Override
+        protected ObservableList<Node> getChildren() {
+            return super.getChildren(); //To change body of generated methods, choose Tools | Templates.
+        }     
+    }
 }

@@ -275,19 +275,18 @@ public class DashboardController implements Initializable {
         btn_yes.setOnAction((evt) -> {
             try {
                 dialog.close();
-
-                Stage stage = (Stage) btn_close.getScene().getWindow();
+                Stage stage = (Stage) btn_user.getScene().getWindow();
                 stage.close();
-
                 Stage login = new Stage(StageStyle.UNDECORATED);
-                Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
+                Parent root = FXMLLoader.load(getClass()
+                                        .getResource("Login.fxml"));
                 Scene scene = new Scene(root);
-
                 login.setScene(scene);
                 login.setMaximized(true);
                 login.show();
             } catch (IOException ex) {
-                Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(DashboardController.class.getName())
+                      .log(Level.SEVERE, null, ex);
             }
         });
 
