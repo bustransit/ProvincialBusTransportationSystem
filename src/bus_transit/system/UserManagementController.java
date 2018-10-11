@@ -74,23 +74,18 @@ public class UserManagementController extends
     @FXML private JFXPasswordField pfPassword1;
     @FXML private JFXButton btnAddUser1;
     @FXML private JFXTextField tfEmpId;
-    @FXML
-    private Label lblResult;
-    @FXML
-    private ContextMenu context;
-    @FXML
-    private MenuItem viewProfile;
-    @FXML
-    private MenuItem editInfo;
-    @FXML
-    private MenuItem archiveAccount;
+    @FXML private Label lblResult;
+    @FXML private ContextMenu context;
+    @FXML private MenuItem viewProfile;
+    @FXML private MenuItem editInfo;
+    @FXML private MenuItem archiveAccount;
     String selectedRec;
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle ddddrb) {
         qry = "SELECT emp_id, username FROM user";        
         btnAddNewUser.setOnAction(e->{
             BooleanProperty b = newUser.visibleProperty();
@@ -114,7 +109,8 @@ public class UserManagementController extends
         });
         
         tblUser.setOnMouseClicked(ev->{
-            ObservableList<String> r = (ObservableList<String>) tblUser.getSelectionModel().getSelectedItem();            
+            ObservableList<String> r = (ObservableList<String>) 
+                    tblUser.getSelectionModel().getSelectedItem();            
             String id = r.get(0);
             selectedRec = id;
             System.out.println(selectedRec);

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0760deeb-df96-4396-8d2c-288a384cc53d">
+	<property name="ireport.zoom" value="1.2100000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<queryString>
+		<![CDATA[SELECT
+     training_participants.`rec_id` AS training_participants_rec_id,
+     training_participants.`training_id` AS training_participants_training_id,
+     training_participants.`emp_id` AS training_participants_emp_id,
+     training_assessment.`record_id` AS training_assessment_record_id,
+     training_assessment.`training_id` AS training_assessment_training_id,
+     training.`training_id` AS training_training_id,
+     training.`title` AS training_title,
+     training.`description` AS training_description,
+     training.`participants` AS training_participants,
+     training.`time` AS training_time,
+     training.`end_time` AS training_end_time,
+     training.`target_date` AS training_target_date,
+     training.`venue` AS training_venue,
+     training.`type` AS training_type,
+     department.`department_code` AS department_department_code,
+     department.`department_name` AS department_department_name,
+     department.`description` AS department_description,
+     department.`scope` AS department_scope,
+     employee.`emp_id` AS employee_emp_id,
+     employee.`firstname` AS employee_firstname,
+     employee.`middlename` AS employee_middlename,
+     employee.`lastname` AS employee_lastname,
+     employee.`birthdate` AS employee_birthdate,
+     employee.`address` AS employee_address,
+     employee.`contact_info` AS employee_contact_info,
+     employee.`immediate_supervisor_code` AS employee_immediate_supervisor_code,
+     employee.`age` AS employee_age,
+     employee.`gender` AS employee_gender,
+     employee.`position_id` AS employee_position_id,
+     employee.`sss` AS employee_sss,
+     employee.`bir` AS employee_bir,
+     employee.`tax` AS employee_tax,
+     employee.`philhealth` AS employee_philhealth,
+     employee.`hdmf` AS employee_hdmf,
+     employee.`hiring_req_id` AS employee_hiring_req_id,
+     employee.`education_rec_id` AS employee_education_rec_id,
+     employee.`clearances_rec_id` AS employee_clearances_rec_id,
+     employee.`employment_history_rec_id` AS employee_employment_history_rec_id,
+     employee_position.`position_id` AS employee_position_position_id,
+     employee_position.`position_name` AS employee_position_position_name,
+     employee_position.`description` AS employee_position_description,
+     employee_position.`scope` AS employee_position_scope,
+     employee_position.`population` AS employee_position_population,
+     employee_position.`vacancy` AS employee_position_vacancy,
+     employee_position.`department_code` AS employee_position_department_code,
+     employee_position.`position_level` AS employee_position_position_level
+FROM
+     `department` department INNER JOIN `employee_position` employee_position ON department.`department_code` = employee_position.`department_code`
+     INNER JOIN `employee` employee ON employee_position.`position_id` = employee.`position_id`,
+     `training_participants` training_participants,
+     `training_assessment` training_assessment,
+     `training` training]]>
+	</queryString>
+	<field name="training_participants_rec_id" class="java.lang.Long"/>
+	<field name="training_participants_training_id" class="java.lang.Long"/>
+	<field name="training_participants_emp_id" class="java.lang.Long"/>
+	<field name="training_assessment_record_id" class="java.lang.Integer"/>
+	<field name="training_assessment_training_id" class="java.lang.Integer"/>
+	<field name="training_training_id" class="java.lang.Long"/>
+	<field name="training_title" class="java.lang.String"/>
+	<field name="training_description" class="java.lang.String"/>
+	<field name="training_participants" class="java.lang.Integer"/>
+	<field name="training_time" class="java.sql.Time"/>
+	<field name="training_end_time" class="java.sql.Time"/>
+	<field name="training_target_date" class="java.sql.Date"/>
+	<field name="training_venue" class="java.lang.String"/>
+	<field name="training_type" class="java.lang.String"/>
+	<field name="department_department_code" class="java.lang.String"/>
+	<field name="department_department_name" class="java.lang.String"/>
+	<field name="department_description" class="java.lang.String"/>
+	<field name="department_scope" class="java.lang.String"/>
+	<field name="employee_emp_id" class="java.lang.Long"/>
+	<field name="employee_firstname" class="java.lang.String"/>
+	<field name="employee_middlename" class="java.lang.String"/>
+	<field name="employee_lastname" class="java.lang.String"/>
+	<field name="employee_birthdate" class="java.sql.Date"/>
+	<field name="employee_address" class="java.lang.String"/>
+	<field name="employee_contact_info" class="java.lang.String"/>
+	<field name="employee_immediate_supervisor_code" class="java.lang.Long"/>
+	<field name="employee_age" class="java.lang.Integer"/>
+	<field name="employee_gender" class="java.lang.String"/>
+	<field name="employee_position_id" class="java.lang.Long"/>
+	<field name="employee_sss" class="java.lang.String"/>
+	<field name="employee_bir" class="java.lang.String"/>
+	<field name="employee_tax" class="java.lang.String"/>
+	<field name="employee_philhealth" class="java.lang.String"/>
+	<field name="employee_hdmf" class="java.lang.String"/>
+	<field name="employee_hiring_req_id" class="java.lang.Long"/>
+	<field name="employee_education_rec_id" class="java.lang.Long"/>
+	<field name="employee_clearances_rec_id" class="java.lang.Long"/>
+	<field name="employee_employment_history_rec_id" class="java.lang.Long"/>
+	<field name="employee_position_position_id" class="java.lang.Long"/>
+	<field name="employee_position_position_name" class="java.lang.String"/>
+	<field name="employee_position_description" class="java.lang.String"/>
+	<field name="employee_position_scope" class="java.lang.String"/>
+	<field name="employee_position_population" class="java.lang.Integer"/>
+	<field name="employee_position_vacancy" class="java.lang.Integer"/>
+	<field name="employee_position_department_code" class="java.lang.String"/>
+	<field name="employee_position_position_level" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<image>
+				<reportElement x="275" y="0" width="300" height="64" uuid="06bb84c1-f879-45d9-880d-fa35e441e5c3"/>
+				<imageExpression><![CDATA["leaf_banner_violet.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="0" y="13" width="263" height="33" uuid="0e06e6a0-db6f-4b36-a5da-2cdaaeae38ee"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="63" y="46" width="200" height="22" uuid="47913eb1-f076-4123-9c12-774ef4715e53">
+					<property name="net.sf.jasperreports.export.pdf.tag.h1" value="full"/>
+				</reportElement>
+				<text><![CDATA[Bus Transit Inc.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="70" splitType="Stretch">
+			<textField>
+				<reportElement x="208" y="0" width="154" height="36" uuid="21b6b1f8-4836-4117-9bfa-0dae54712b93"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{training_title}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="206" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="e8fe45bc-7eee-497f-992f-257e32de66c8"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="fb8d495b-513d-4da8-b3b1-9d900ffa107b"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="55d1a5d1-39b0-454d-aeb0-a5e21c106e4e"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="3cb204b4-3c1b-48e7-8a71-64058b0348c4"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

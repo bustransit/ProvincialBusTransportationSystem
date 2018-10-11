@@ -18,15 +18,11 @@ import javafx.fxml.Initializable;
  * @author Admin
  */
 public class CompetencyManagementController implements Initializable {
-
-
-    /**
-     * Initializes the controller class.
-     */
+   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-
+    
     
 }

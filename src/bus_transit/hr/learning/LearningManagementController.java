@@ -22,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -31,6 +32,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.controlsfx.control.textfield.CustomTextField;
@@ -74,6 +76,8 @@ public class LearningManagementController extends Application implements Initial
     @FXML private Tab test;
     @FXML private CustomTextField txt_searchPending1;
     @FXML private FlowPane flpTestContainer;
+    @FXML
+    private JFXButton btnAttachFile;
 
     /**
      * Initializes the controller class.
@@ -120,7 +124,6 @@ public class LearningManagementController extends Application implements Initial
     }
     
     
-    @FXML
     private void populateTestContainer(){
         String q = "SELECT * FROM test";
         rs = db.displayRecords(q);               
@@ -170,6 +173,26 @@ public class LearningManagementController extends Application implements Initial
 
     public static void main(String[] args) {
         launch(args);
+    }    
+
+   
+    @FXML
+    private void loadFileChooser(ActionEvent event) {
+        Stage stage = (Stage) btnAttachFile.getScene().getWindow();
+        Parent root = null;
+        try {
+            root = root = FXMLLoader.load(
+                    LearningManagementController.class.getResource("Certification.fxml"));
+        } catch (IOException ex) {
+            Logger.getLogger(LearningManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        stage.setScene(new Scene(root));
+        stage.setTitle("My modal window");
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(
+            ((Node)event.getSource()).getScene().getWindow() );
+        stage.show();
     }    
     
 }
