@@ -63,6 +63,7 @@ public class TestViewerController extends Application implements Initializable {
     public static int score = 0;
     
     public static String testId;
+    public int duration = 0;
     
     @FXML private AnchorPane heading;
     @FXML private Label lblTesTitle;
@@ -71,7 +72,7 @@ public class TestViewerController extends Application implements Initializable {
     @FXML private JFXButton btnSubmit;
     @FXML private StackPane stackPane;
 
-    private static final Integer TEST_DURATION = 1; 
+    private static Integer TEST_DURATION = 1; 
      
     @Override
     public void initialize(URL url, ResourceBundle rb) {       
@@ -203,7 +204,8 @@ public class TestViewerController extends Application implements Initializable {
     
     public void populateQuestionContainer() {
         System.out.println("from testviewercontroller:"+getTestId());
-        q = "SELECT * FROM question WHERE test_id="+getTestId();
+        //q = "SELECT * FROM question, test WHERE question.test_id="+getTestId();
+        q = "SELECT * FROM test INNER JOIN question ON test.test_id = question.test_id AND test.test_id ="+getTestId();
         rs = db.displayRecords(q);        
         int i = 1;        
         ObservableList<FlowPane> p = null;
@@ -217,7 +219,8 @@ public class TestViewerController extends Application implements Initializable {
                 qCntrl.setTestId(rs.getInt("test_id"));
                 qCntrl.setExaminee(getExamineeId());
                 FlowPane pane = l.load();                
-                l.setController(qCntrl);                
+                l.setController(qCntrl);    
+                TEST_DURATION = rs.getInt("duration");
                 vbxQuestionContainer.getChildren().addAll(pane);
                 
                 q = "INSERT INTO question_examinee "+
@@ -255,6 +258,13 @@ public class TestViewerController extends Application implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }     
 
     public GridPane createQuestionComponent(String questionId){              
         GridPane gridPane = new GridPane();
@@ -330,12 +340,7 @@ public class TestViewerController extends Application implements Initializable {
         return image;
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }      
+     
 
     /**
      * @return the score

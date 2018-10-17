@@ -31,9 +31,8 @@ import utilities.DBUtilities;
  */
 public class QuestionController implements Initializable {
 
-    @FXML private FlowPane flpQuestion;
     @FXML private Label lblNumber;
-    @FXML public Text txtQuestion;
+    public Text txtQuestion;
     @FXML private VBox vbxChoices;
     
     public TestViewerController testViewerController;

@@ -37,7 +37,6 @@ public class TestController implements Initializable {
     String q;
     
     @FXML private JFXButton btnEdit;
-    @FXML private JFXButton btnView;
     @FXML private JFXButton btnPrint;
     @FXML private FlowPane flpTest;
     @FXML private Label lblTitle;
@@ -48,7 +47,11 @@ public class TestController implements Initializable {
     private static String description;
     private static String lastUpdate;
     public static String testId;
-    private final String id = testId;
+    public final String id = testId;
+    @FXML
+    private JFXButton btnRunTest;
+    @FXML
+    private Label lblDuration;
     
     /**
      * Initializes the controller class.
@@ -59,18 +62,20 @@ public class TestController implements Initializable {
     }    
 
     public void loadTest(){  
+        // lets get some output
         System.out.println(id);
         System.out.println(this.testId);
-        System.out.println(getTestId());
+        System.out.println(getTestId());        
+        System.out.println("From loadTest:"+id);     
         
-        System.out.println("From loadTest:"+id);        
-        String q = "SELECT * FROM test WHERE test_id="+id;
+        String q = "SELECT * FROM test WHERE test_id='"+id+"'";
         rs = db.displayRecords(q);
         try {
             if(rs.next()){
                 lblTitle.setText(rs.getString("test_name"));
-                lblDate.setText(rs.getString("last_update"));
+                lblDate.setText("Last Update: "+rs.getString("last_update"));
                 txtDescription.setText(rs.getString("description"));
+                lblDuration.setText("Duration: "+rs.getString("duration"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(TestController.class.getName()).log(Level.SEVERE, null, ex);
@@ -133,9 +138,6 @@ public class TestController implements Initializable {
         this.testId = testId;
     }
 
-    @FXML
-    private void toHoverState(MouseEvent event) {
-    }
 
     /**
      * @return the lblTitle
