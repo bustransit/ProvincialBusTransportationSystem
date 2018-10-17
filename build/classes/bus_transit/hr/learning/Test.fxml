@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<FlowPane fx:id="flpTest" hgap="10.0" minWidth="600.0" prefHeight="160.0" prefWidth="600.0" style="-fx-background-radius: 4;" styleClass="white" stylesheets="@../../../css/jfoenix-design.css" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bus_transit.hr.learning.TestController">
+   <children>
+      <Label fx:id="lblTitle" prefHeight="25.0" prefWidth="427.0" text="Pre-employment Test">
+         <font>
+            <Font name="Calibri Bold" size="20.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnEdit" contentDisplay="GRAPHIC_ONLY" prefHeight="31.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="SAVE REQUEST" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+         </effect>
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="EDIT" size="20" />
+         </graphic>
+         <tooltip>
+            <Tooltip text="Edit">
+               <font>
+                  <Font name="Calibri" size="12.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </JFXButton>
+      <JFXButton fx:id="btnRunTest" accessibleText="TestViewer.fxml" contentDisplay="GRAPHIC_ONLY" onAction="#runTest" prefHeight="31.0" prefWidth="8.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="View" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+         </effect>
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="PLAY" size="20" />
+         </graphic>
+         <tooltip>
+            <Tooltip text="Run This Test">
+               <font>
+                  <Font name="Calibri" size="12.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </JFXButton>
+      <JFXButton fx:id="btnPrint" contentDisplay="GRAPHIC_ONLY" prefHeight="31.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="View" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+         </effect>
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="20" />
+         </graphic>
+         <tooltip>
+            <Tooltip text="Print">
+               <font>
+                  <Font name="Calibri" size="12.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </JFXButton>
+      <Text fx:id="txtDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="Contains abstract, math, english, logic and personality test. Suits for entry level applicants." textAlignment="JUSTIFY" wrappingWidth="580.13671875">
+         <font>
+            <Font name="Calibri" size="14.0" />
+         </font>
+         <FlowPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </FlowPane.margin>
+      </Text>
+      <Label fx:id="lblDuration" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="575.0" text="Duration: 00:30 mins." />
+      <Label fx:id="lblDate" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="575.0" text="Last update: 12/12/2018">
+         <FlowPane.margin>
+            <Insets />
+         </FlowPane.margin>
+      </Label>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
+   <effect>
+      <DropShadow />
+   </effect>
+</FlowPane>
