@@ -7,14 +7,15 @@ package bus_transit.hr.attendance;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTimePicker;
 import java.net.URL;
 import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.temporal.TemporalField;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
@@ -79,6 +80,8 @@ public class DailyTimeRecordController extends
     private Label txt_time;
     @FXML
     private Label txt_date;
+    private JFXTimePicker tpStart;
+    private JFXTimePicker tpEnd;
 
     /**
      * Initializes the controller class.
@@ -132,14 +135,22 @@ public class DailyTimeRecordController extends
             Date timeStamp = new Date();
             String strTimeEntry = new SimpleDateFormat("hh:mm").format(timeStamp).toString();
             String dateToday = new SimpleDateFormat("yyyy-MM-dd").format(timeStamp).toString();
-            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss.SS");
             timeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-            long start = System.currentTimeMillis();
-            long end = System.currentTimeMillis();
+//            long start = System.currentTimeMillis();
+//            long end = System.currentTimeMillis();
 
+            long start =(long) Long.parseLong(tpStart.getValue().toString());
+            long end = (long) Long.parseLong(tpEnd.getValue().toString());
             long elapse = end - start;
+            int s = tpEnd.getValue().compareTo(tpStart.getValue());
+            System.out.println("Compare to: "+s);
             String el = timeFormat.format(elapse);
+            System.out.println("Start time: "+start);
+            System.out.println("End time: "+end);
+            System.out.println("Elapse time: "+el);
+            
             tm = new Timestamp(System.currentTimeMillis());
 
             if(timeEntry.equals("Time In")){                  

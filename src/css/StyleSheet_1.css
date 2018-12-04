@@ -246,6 +246,7 @@
     -fx-pref-width: 125;
     -fx-pref-height: 40;
 }
+
 .jfx-tab-pane:top .tab-header-area .headers-region .tab .jfx-rippler .tab-container .tab-label{
     -fx-text-fill: #b2b2b2;
     -fx-font-family: calibri;

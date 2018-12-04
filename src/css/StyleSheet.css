@@ -17,6 +17,19 @@
     -fx-background-color: transparent;
 }
 
+.custom-text-field:no-side-nodes ,
+.custom-text-field,
+.text-area,
+.text-field{    
+    -fx-prompt-text-fill: #6dc0ff;
+    -fx-background-color: transparent;
+    -fx-border-color:  #DCDCDC;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 10;
+}
+
+
 /*Transparent Background*/
 #transparent-background{
     -fx-background-image: url(../images/bg-image.png);
@@ -74,8 +87,10 @@
 
 /*ScrollPane Styling*/
 .scroll-pane {
-    -fx-background-color: transparent;
+    -fx-background-color: white;
+    -fx-fit-to-width:true;
 }
+
 .scroll-bar:horizontal, .scroll-bar:vertical{
     -fx-background-color: transparent;
 }
@@ -142,6 +157,16 @@
     -fx-background-color: white;
     -fx-padding: 10;
 }
+
+/* Customized Titled Pane Icon */
+#tlpApplicant:collapsed .title .glyph-icon{    
+    -glyph-name: USERS;
+}
+
+#tlpApplicant:expanded .title .glyph-icon{
+    -glyph-name: USERS;
+}
+
 .titled-pane:collapsed .title .glyph-icon{
     -fx-fill: #b2b2b2;
     -glyph-name: CHEVRON_RIGHT;
@@ -150,6 +175,7 @@
     -fx-fill: #0078D7;
     -glyph-name: CHEVRON_DOWN;
 }
+
 .titled-pane:collapsed .title .text{
     -fx-font-family: Calibri;
     -fx-font-size: 14;
@@ -169,3 +195,42 @@
 .titled-pane:hover .title .glyph-icon{
     -fx-fill: #0078D7;
 }
+
+.glyph-icon{
+    -fx-size: 18;
+}
+
+/*TabPane Styling*/
+.jfx-tab-pane:top .tab-header-area .tab-header-background{
+    -fx-background-color: #f3f3f3;
+}
+#tab-header .tab-header-area .tab-header-background{
+    -fx-background-color: white;
+}
+.jfx-tab-pane:top .tab-header-area .headers-region .tab{
+    -fx-pref-width: 125;
+    -fx-pref-height: 40;
+}
+
+.jfx-tab-pane:top .tab-header-area .headers-region .tab .jfx-rippler .tab-container .tab-label{
+    -fx-text-fill: #b2b2b2;
+    -fx-font-family: calibri;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-content-display: right;
+}
+.jfx-tab-pane:top .tab-header-area .headers-region .tab:selected .jfx-rippler .tab-container .tab-label{
+    -fx-text-fill: #0078D7;
+    -fx-font-family: calibri;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-content-display: right;
+}
+.jfx-tab-pane:top .tab-header-area .control-buttons-tab .jfx-rippler{
+    -fx-rippler-fill: black;
+}
+.jfx-tab-pane:top .tab-header-area .headers-region .tab-selected-line{
+    -fx-stroke: #0078D7;
+}
+
+/* ComboBox */

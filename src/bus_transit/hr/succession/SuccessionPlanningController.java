@@ -5,12 +5,27 @@
  */
 package bus_transit.hr.succession;
 
+import bus_transit.hr.training.TrainingManagementController;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import java.awt.Desktop;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -100,22 +115,17 @@ public class SuccessionPlanningController extends Application implements Initial
         db.createPieChart("Internal Placement Rate", q, myPiechart);
         q = "SELECT employee_type, employee_rate FROM barmoto";
         db.createBarChart("Successor Readines For Key Roles", "2018 Month Of September", q, myBarChart);
-        
-        
+                
       //  q = "SELECT employee_type, employee_rate FROM barmoto";
         db.createStackedAreaChartLap("Position Filled By Nominated Successor","2018 Month Of September",q,myLineChart);
         
         q = "SELECT Quarter, Quarter_rate FROM stackmoto";
         db.createStackedAreaChartLap("Position Filled By Nominated Successor","2018 Month Of September",q,myLineChart);
         
-        btn_pdf.setOnAction(e -> {
-            
-            
+        btn_pdf.setOnAction(e -> {            
             chartToPNG(myBarChart,"BarChartReport.png");
             chartToPNG(myLineChart,"BarChartReport.jpg");
             chartToPNG(myPiechart,"piechart.png");
-            
-            
         });
         
        populateSuccesionPlanePane();
@@ -125,19 +135,18 @@ public class SuccessionPlanningController extends Application implements Initial
         b.setAnimated(false);
         WritableImage image = b.snapshot(
             new SnapshotParameters(), null);
-        File file = new File(
-        "scr\\bus_transit\\hr\\reports\\"+filename);
+        File file = new File("scr\\bus_transit\\hr\\reports\\"+filename);
         try{
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "jpg",file);
         }catch(IOException e){
             System.out.println(e);
-    }
+        }
                                 
-    btn_pdf2.setOnAction(e -> {
-        chartToPNG(myPiechart, "BarChartReport.jpg");
-        chartToPNG(myBarChart, "BarChartReport.jpg");
-        chartToPNG(myLineChart, "BarChartReport.jpg");
-    });
+        btn_pdf2.setOnAction(e -> {
+            chartToPNG(myPiechart, "BarChartReport.jpg");
+            chartToPNG(myBarChart, "BarChartReport.jpg");
+            chartToPNG(myLineChart, "BarChartReport.jpg");
+        });
     }
         
     
@@ -145,8 +154,7 @@ public class SuccessionPlanningController extends Application implements Initial
         b.setAnimated(false);
         WritableImage image = b.snapshot(
             new SnapshotParameters(), null);
-        File file = new File(
-        "scr\\bus_transit\\hr\\reports\\img\\"+filename);
+        File file = new File("scr\\bus_transit\\hr\\reports\\img\\"+filename);
         try{
             ImageIO.write(SwingFXUtils.fromFXImage(image, null), "jpg",file);
         }catch(IOException e){
@@ -241,8 +249,7 @@ public class SuccessionPlanningController extends Application implements Initial
 //        cbReadiness.getItems().add("HIGH POTENTIALS");
 //        cbReadiness.setOnAction((evt) -> {
 //            setReadiness(cbReadiness);
-//        });
-//        
+//        });        
 //        vbx.getChildren().add(cbReadiness);
         
         JFXDatePicker dp = new JFXDatePicker();
@@ -292,7 +299,142 @@ public class SuccessionPlanningController extends Application implements Initial
         });
         
     }
+
+    private void toPDF(String q, String reportName, String module) {
+        try {          
+            // Instantiate the document object
+            Document document = new Document();
+
+            // Set the location file
+            PdfWriter.getInstance(document,new FileOutputStream("C:\\Users\\NelsonDelaTorre\\Documents\\NetBeansProjects\\Bus_Transit-master\\src\\bus_transit\\hr\\training\\reports\\"+reportName.replaceAll("\\s+","")+".pdf"));
+
+            // Open the document
+            document.open();
+
+            // Add Document Header
+            Paragraph heading1
+                    = new Paragraph("BUS Transportation System",
+                            FontFactory.getFont(FontFactory.TIMES_BOLD,
+                                    12, Font.BOLD, BaseColor.BLACK));
+
+            heading1.setAlignment(Element.ALIGN_CENTER);
+            document.add(heading1);
+
+            // heading2
+            Paragraph heading2
+                    = new Paragraph("BSIT 4101 - Batch 2019",
+                            FontFactory.getFont(FontFactory.TIMES,
+                                    12, Font.NORMAL, BaseColor.BLACK));
+
+            heading2.setAlignment(Element.ALIGN_CENTER);
+            document.add(heading2);
+
+            document.add(new Paragraph("\n\n\n"));
+            // Document Header ends here
+
+            /**
+             * Add Table document
+             */
+            
+            // get result from database
+            rs = db.displayRecords(q);
+            
+            try {
+                // get number of columns
+                int columns = rs.getMetaData().getColumnCount();
+
+                // Set table header
+                PdfPTable table = new PdfPTable(columns);
+                PdfPCell cell = new PdfPCell(new Paragraph("\n"+reportName+"\n\n"));
+                
+                cell.setColspan(columns);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cell);
+                
+                //cell.setBackgroundColor(BaseColor.YELLOW);
     
+                // This line will add table header
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    table.addCell(new PdfPCell(
+                                  new Paragraph(
+                                  rs.getMetaData()
+                                  .getColumnName(i))));
+                }
+                
+                // This line will add data to pdf table from the database
+                while (rs.next()) {                    
+                    for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++){                     
+                        table.addCell(new PdfPCell(
+                                      new Paragraph(
+                                      rs.getString(
+                                      rs.getMetaData()
+                                        .getColumnName(i)).toUpperCase())));
+                    }
+                }
+                
+                // finally add table to the document
+                document.add(table);
+                document.setPageCount(2);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(SuccessionPlanningController
+                      .class.getName()).log(Level.SEVERE, null, ex);
+            } catch (DocumentException ex) {
+                Logger.getLogger(SuccessionPlanningController
+                      .class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            document.add(new Paragraph("\n\n\n"));
+            
+            Rectangle imgSize = new Rectangle(300, 250);
+            
+            com.itextpdf.text.Image image
+                    = com.itextpdf.text.Image.getInstance( "src\\bus_transit\\hr\\succession\\reports\\imgs\\bar_chart_"+module+".png");
+
+            image.scaleToFit(imgSize);
+            document.add(image);
+
+            com.itextpdf.text.Image image2
+                    = com.itextpdf.text.Image.getInstance( "src\\bus_transit\\hr\\succession\\reports\\imgs\\pie_chart_"+module+".png");
+
+            image2.scaleToFit(imgSize);
+            document.add(image2);
+            
+            com.itextpdf.text.Image image3
+                    = com.itextpdf.text.Image.getInstance("src\\bus_transit\\hr\\succession\\reports\\imgs\\line_chart_"+module+".png");
+
+            image3.scaleToFit(imgSize);
+            document.add(image3);            
+
+            // close the document
+            document.close();
+            
+            // now open the document            
+            File reportFile = new File("C:\\Users\\NelsonDelaTorre\\Documents\\NetBeansProjects\\Bus_Transit-master\\src\\bus_transit\\hr\\training\\reports\\"+reportName.replaceAll("\\s+","")+".pdf");
+            if(reportFile.exists()){
+                if(Desktop.isDesktopSupported()){
+                    try{
+                        Desktop.getDesktop().open(reportFile);
+                    }catch(IOException e){
+                        e.printStackTrace();
+                    }
+                }else{
+                    System.out.println("AWT Desktop not supported!");
+                }              
+            }else{
+                System.out.println("File not exists.");
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SuccessionPlanningController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(SuccessionPlanningController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(SuccessionPlanningController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+            
     
     private void setSelectedPosition(String s){        
         positionId = s.toString().split(",")[0].substring(1);         

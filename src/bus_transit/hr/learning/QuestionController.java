@@ -105,10 +105,8 @@ public class QuestionController implements Initializable {
     }    
     
     public void checkAnswer(String exmnee, String a, String i){        
-        String q = "SELECT answer FROM question WHERE question_id="+i;
-        
-        rs = db.displayRecords(q);
-        
+        String q = "SELECT answer FROM question WHERE question_id="+i;        
+        rs = db.displayRecords(q);        
         try {
             if(rs.next()){
                 String ans = rs.getString("answer").toLowerCase();
@@ -170,9 +168,8 @@ public class QuestionController implements Initializable {
     
     public int getScore(String examineeId){
         int s = 0;
-        
-        rs = db.displayRecords("SELECT score FROM test_result "+
-                               "WHERE examinee_id="+examineeId);
+        String gtScore = "SELECT COUNT(answer_remark) as 'score' FROM question_examinee WHERE answer_remark='correct' AND examinee_id="+id;
+        rs = db.displayRecords(gtScore);
         try {
             if(rs.next()){
                 s = rs.getInt("score");
@@ -286,5 +283,5 @@ public class QuestionController implements Initializable {
         FXMLLoader l = 
                 new FXMLLoader(getClass().getResource("TestViewer.fxml")); 
         this.testViewerController = l.getController();
-    }    
+    }
 }

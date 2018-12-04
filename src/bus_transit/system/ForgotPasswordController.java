@@ -206,7 +206,7 @@ public class ForgotPasswordController
         Stage dash = new Stage(StageStyle.UNDECORATED);
         Directories dir = new Directories();
         //Parent root = FXMLLoader.load(getClass().getResource(dir.login.getFile()));
-        Parent root = FXMLLoader.load(dir.login);
+        Parent root = FXMLLoader.load(getClass().getResource(dir.login.getPath()));
         Scene scene = new Scene(root);
         dash.setScene(scene);
         dash.setMaximized(true);

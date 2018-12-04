@@ -11,36 +11,43 @@ import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXDrawer;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.Animation;
-import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.PopupWindow;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
+import utilities.DBUtilities;
 
 /**
  *
  * @author Llamera
  */
 public class DashboardController implements Initializable {   
+    DBUtilities db = new DBUtilities();
+    ResultSet rs;
+    
     @FXML private AnchorPane container;
     @FXML private JFXButton btn_menu;
     private JFXButton btn_close;
@@ -76,14 +83,37 @@ public class DashboardController implements Initializable {
     private JFXButton btnUserMgt;
     @FXML
     private AnchorPane footer;
+    @FXML
+    private ScrollPane scrlContent;
+    @FXML
+    private VBox vbxLearning;
+    @FXML
+    private Label lblNofTest;
+    @FXML
+    private Label lblNofModules;
+    @FXML
+    private VBox hbxTrainings;
+    @FXML
+    private VBox hbxSuccesstion;
+    @FXML
+    private AnchorPane mainContainer;
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) {        
         TimeDate();
         root = container;
         draw = drawer;
         pop = new PopOver(AccountPanel);        
-        loadSidePane();            
+        loadSidePane();  
+        setNofModules();
+        setNofTest();
+        
+        mainContainer.setOnMouseClicked((event) -> {
+            drawer.close();
+        });
+        
+        
+        
     }    
 
     public void loadSidePane(){
@@ -91,7 +121,7 @@ public class DashboardController implements Initializable {
         try {
             AnchorPane pane = FXMLLoader.load(getClass().getResource("SidePane.fxml"));
             drawer.setSidePane(pane);
-            drawer.open();
+            //drawer.open();
         } catch (IOException e) {
             System.out.println(e);
         }        
@@ -191,6 +221,33 @@ public class DashboardController implements Initializable {
         dialog.show();
     }    
     
+    
+    // initialize number of Tests on dashboard
+    private void setNofTest(){
+        String q = "SELECT COUNT(test_id) AS 'n' FROM test";
+        rs = db.displayRecords(q);
+        try {
+            if(rs.next()){
+                lblNofTest.setText(rs.getString("n"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    // initialize number of Modules on dashbaord
+    private void setNofModules(){
+        String q = "SELECT COUNT(module_id) AS 'n' FROM learning_modules WHERE learning_modules.module_status='active'";
+        rs = db.displayRecords(q);
+        try {
+            if(rs.next()){
+                lblNofModules.setText(rs.getString("n"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
+    
     @FXML
     private void Minimize(ActionEvent event) {
         // Minimize window if minimize button is clicked
@@ -221,31 +278,45 @@ public class DashboardController implements Initializable {
             stackpane.toBack();
         } catch (IOException ex) {
             System.out.println(ex);
-        }       
-        // Fade-out animation
-//        FadeTransition fade = new FadeTransition();
-//        fade.setDuration(Duration.millis(500));
-//        fade.setNode(DashboardController.root);
-//        fade.setFromValue(1);
-//        fade.setToValue(0);
-//        fade.setOnFinished(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                try {
-//                    AnchorPane pane = FXMLLoader.load(getClass().getResource("system/Profile.fxml"));
-//                    pane.setPrefSize(DashboardController.root.getWidth(), DashboardController.root.getHeight());
-//                    DashboardController.root.getChildren().removeAll(DashboardController.root.getChildren());
-//                    DashboardController.root.getChildren().add(pane);
-//                    DashboardController.draw.close();
-//                    stackpane.toBack();
-//                } catch (IOException ex) {
-//                    System.out.println(ex);
-//                }
-//            }
-//        });
-//        fade.play();        
+        }              
     }
 
+    /**
+     * External Class user can use this function
+     * to load modal from external command
+     * @param fxml = FXML file to load
+     * @param cntrl = Controller file for FXML
+     * @param btnOk = close function from Controller file
+     */
+    public void loadModal(String fxml, Class cntrl, JFXButton btnOk){
+        try {            
+            Stage stage = new Stage();
+            Parent root = FXMLLoader.load(cntrl.getClass().getResource(fxml));
+            stage.setScene(new Scene(root));
+            stage.setTitle("New Job Qualification");          
+            stage.initModality(Modality.APPLICATION_MODAL);                     
+                             
+            JFXDialogLayout dialog = new JFXDialogLayout();
+            
+            dialog.setBody(root);           
+            JFXDialog dlg = new JFXDialog(stackpane,dialog,JFXDialog.DialogTransition.CENTER);             
+            dlg.show();           
+            
+            JFXButton save = new JFXButton("Save");
+            save.setOnAction((sEvt) -> {
+                
+                dlg.close();
+            });
+            
+            JFXButton cancel = new JFXButton("Cancel");
+            cancel.setOnAction((sEvt) -> {
+                dlg.close();
+            });          
+        } catch (IOException ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @FXML
     private void SignOut(ActionEvent event) {
         // Shows dialog if sign out button is clicked
@@ -264,7 +335,8 @@ public class DashboardController implements Initializable {
         layout.setPrefSize(300, 150);
 
         JFXDialog dialog = new JFXDialog(stackpane, layout, JFXDialog.DialogTransition.LEFT);
-        dialog.setOverlayClose(false);
+        
+        //dialog.setOverlayClose(false); // set true if you want to close dialog upon clicking outside dialog area        
 
         // If YES, the scene will back to secondStage form
         JFXButton btn_yes = new JFXButton("Yes");
@@ -357,6 +429,9 @@ public class DashboardController implements Initializable {
                 txt_datetime.setText(date + "   " + hour + ":" + minute + ":" + second + " " + day_night);
                 txt_copyright.setText("Copyright " + year + ". Transportation System. All Rights Reserved.");
             }
+            
+            System.out.println("From timer");
+            
         }),
                 new KeyFrame(Duration.seconds(1))
         );

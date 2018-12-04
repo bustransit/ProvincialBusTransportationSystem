@@ -27,6 +27,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -80,15 +81,15 @@ public class TestViewerController extends Application implements Initializable {
         
         btnSubmit.setOnAction((event) -> {            
             try {
-                String q = "SELECT question.question_id, question.answer "+
-                          "AS 'correct_answer', question_examinee.answer "+
-                          "AS 'examinee_answer', "+
-                          "question_examinee.answer_remark "+
-                          "AS 'remark' FROM question "+
-                          "INNER JOIN question_examinee "+
-                          "ON question.question_id = "+
-                          "question_examinee.question_id "+
-                          "AND question_examinee.examinee_id="+getExamineeId();
+                String q =  "SELECT question.question_id, question.answer "+
+                            "AS 'correct_answer', question_examinee.answer "+
+                            "AS 'examinee_answer', "+
+                            "question_examinee.answer_remark "+
+                            "AS 'remark' FROM question "+
+                            "INNER JOIN question_examinee "+
+                            "ON question.question_id = "+
+                            "question_examinee.question_id "+
+                            "AND question_examinee.examinee_id="+getExamineeId();
                 
                 rs = db.displayRecords(q);
                 
@@ -112,13 +113,12 @@ public class TestViewerController extends Application implements Initializable {
 
                         System.out.println(examineeId);
                         db.execute(qr);
-
-                        timeLine.stop();
-                        stop();                        
+                        timeLine.stop();                      
                     }else{
                         System.out.println("Done");
                     }
                 }
+                submit();
             } catch (SQLException ex) {
                 Logger.getLogger(TestViewerController.class.getName())
                       .log(Level.SEVERE, null, ex);
@@ -130,6 +130,9 @@ public class TestViewerController extends Application implements Initializable {
         
     }    
     
+    
+    // a function to get exminee info
+    // modal use by TestViewer
     public void getExamineeInfo(){
         JFXDialogLayout dialog = new JFXDialogLayout();
         dialog.setHeading(new Text("Examinee Info"));
@@ -153,7 +156,7 @@ public class TestViewerController extends Application implements Initializable {
         JFXButton btnOK = new JFXButton("OK");
         
         btnOK.setOnAction((event) -> {
-            String f = firstname.getText();
+            String f = firstname.getText(); 
             String l = lastname.getText();
             if(!f.isEmpty() && !l.isEmpty()){
                 try {
@@ -202,6 +205,11 @@ public class TestViewerController extends Application implements Initializable {
         dlg.show();
     }    
     
+    /**
+     * Load questions to TestViewer
+     * and create a copy of questions on question_examinee table
+     * on the database base on examinee_id
+     */
     public void populateQuestionContainer() {
         System.out.println("from testviewercontroller:"+getTestId());
         //q = "SELECT * FROM question, test WHERE question.test_id="+getTestId();
@@ -229,9 +237,7 @@ public class TestViewerController extends Application implements Initializable {
                     examineeId+"','"+
                     rs.getString("question_id")+"','"+
                     rs.getString("question")+"','"+
-                    rs.getString("test_id")+"', CURDATE())";
-                
-               
+                    rs.getString("test_id")+"', CURDATE())";               
                 db.execute(q);          
             }                        
         } catch (SQLException ex) {
@@ -243,9 +249,26 @@ public class TestViewerController extends Application implements Initializable {
         }
     }
     
-    public void submit(){
-        String id = getExamineeId();
-        String q = "SELECT";
+    /**
+     * add new record to test_result table on the database
+     * 
+     */
+
+    
+    private int getItem(){
+        int item = 0;
+        String q = "SELECT COUNT(answer_remark) AS 'item' "
+                 + "FROM question_examinee WHERE examinee_id="+examineeId;
+        rs = db.displayRecords(q);
+        try {
+            if(rs.next()){
+                item = rs.getInt("item");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TestViewerController.class.getName())
+                  .log(Level.SEVERE, null, ex);
+        } 
+        return item;
     }
     
     @Override
@@ -285,8 +308,7 @@ public class TestViewerController extends Application implements Initializable {
         
         VBox choices = new VBox();
         choices.getChildren().addAll(getChoices(questionId));        
-        gridPane.add(choices, col, row++);
-        
+        gridPane.add(choices, col, row++);        
         return gridPane;        
     }
     
@@ -402,13 +424,9 @@ public class TestViewerController extends Application implements Initializable {
      * @param duration represents minutes
      */
     
-    private void runTimer(Integer duration){ 
-        
-        
-        duration = (duration * 60) + 1;
-        
-        IntegerProperty timeSeconds = new SimpleIntegerProperty(duration);
-        
+    private void runTimer(Integer duration){                 
+        duration = (duration * 60) + 1;        
+        IntegerProperty timeSeconds = new SimpleIntegerProperty(duration);        
         if (timeLine != null) {
             timeLine.stop();
         }
@@ -441,4 +459,39 @@ public class TestViewerController extends Application implements Initializable {
         });        
         timeLine.play();
     }       
+    
+    @FXML
+    private void submit() {        
+        String id = getExamineeId();
+        
+        System.out.println("Examinee ID: "+id);
+        System.out.println("Test ID: "+testId);
+        
+        String gScore = "SELECT COUNT(answer_remark) AS 'score' "
+                + "FROM question_examinee "
+                + "WHERE examinee_id='"+id
+                + "' AND answer_remark='correct'";
+        
+        rs = db.displayRecords(gScore);
+        try {
+            if(rs.next()){
+                int scr = rs.getInt("score");
+                Double passing = Math.ceil(getItem() * .75);
+                System.out.println("Passing: "+passing);
+                String remarks;
+                if(scr >= passing){
+                    remarks = "passed";
+                }else{
+                    remarks = "failed";
+                }                
+                String q = "INSERT INTO test_result (test_id, examinee_id, score, remarks) "
+                        + "VALUES('"+testId+"','"+examineeId+"','"+scr+"','"+remarks+"')";  
+                db.execute(q);                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TestViewerController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        timeLine.stop();
+        System.exit(1);
+    }
 }

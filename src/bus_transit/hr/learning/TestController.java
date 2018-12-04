@@ -6,6 +6,8 @@
 package bus_transit.hr.learning;
 
 import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -17,13 +19,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.controlsfx.control.PopOver;
 import utilities.DBUtilities;
 
 /**
@@ -37,7 +45,6 @@ public class TestController implements Initializable {
     String q;
     
     @FXML private JFXButton btnEdit;
-    @FXML private JFXButton btnPrint;
     @FXML private FlowPane flpTest;
     @FXML private Label lblTitle;
     @FXML private Text txtDescription;
@@ -48,17 +55,26 @@ public class TestController implements Initializable {
     private static String lastUpdate;
     public static String testId;
     public final String id = testId;
+    @FXML private JFXButton btnRunTest;
+    @FXML private Label lblDuration;
     @FXML
-    private JFXButton btnRunTest;
+    private StackPane stackpane;
     @FXML
-    private Label lblDuration;
+    private JFXButton btnShowOptions;
+    @FXML
+    private JFXButton btnDownload;
+    @FXML
+    private Label lblItems;
+    @FXML
+    private VBox vbxContainer;
+    
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {        
-        loadTest();
+        loadTest();        
     }    
 
     public void loadTest(){  
@@ -192,10 +208,10 @@ public class TestController implements Initializable {
             
             testViewerController.setTestId(id);
             
-            System.out.println("From TestController");
-            System.out.println(id);
-            System.out.println(this.testId);
-            System.out.println(getTestId());            
+//            System.out.println("From TestController");
+//            System.out.println(id);
+//            System.out.println(this.testId);
+//            System.out.println(getTestId());            
             
             root = l.load();
             
@@ -210,4 +226,76 @@ public class TestController implements Initializable {
             e.printStackTrace();
         }        
     } // runTest ends here    
+
+    @FXML
+    private void printResult(ActionEvent event) {
+    }
+    
+    /**
+     * OPions
+     */    
+    private PopOver pop = new PopOver();
+    private VBox vbx = new VBox();    
+    @FXML
+    private void showOptions(ActionEvent event) {
+        if(pop.isFocused()){
+            
+        }else{            
+            vbx.getChildren().clear();
+            vbx.setFillWidth(true);
+            vbx.setSpacing(10);
+            double p = 8;
+            vbx.setPadding(new Insets(p,p,p,p));
+            
+            double textSize = 14;
+            JFXButton btnEdit = new JFXButton("Edit");                                                
+            btnEdit.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE_ALT));
+            btnEdit.setFont(new Font(textSize));
+            //btnEdit.setTooltip(new Tooltip("Edit Test"));                        
+            vbx.getChildren().add(btnEdit);
+
+            JFXButton btnRun = new JFXButton("Run");                                                
+            btnRun.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLAY)); 
+            btnRun.setFont(new Font(textSize));
+            btnRun.setAccessibleText("TestViewer.fxml");
+            btnRun.setOnAction((evt) -> {
+                try {
+                    runTest(evt);
+                } catch (IOException ex) {
+                    Logger.getLogger(TestController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+            vbx.getChildren().add(btnRun);            
+            
+            JFXButton btnDownload = new JFXButton("Download");                                           
+            btnDownload.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.DOWNLOAD)); 
+            btnDownload.setFont(new Font(textSize));
+            //btnDownload.setTooltip(new Tooltip("Run Test"));                        
+            vbx.getChildren().add(btnDownload);             
+            
+            pop.setContentNode(vbx);
+            pop.setAnimated(true);        
+            pop.setId("OptionPopOver"); 
+
+            pop.setDetachable(false);
+            pop.setAnimated(true);
+            pop.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+            pop.setCornerRadius(4);        
+            pop.show(btnShowOptions);
+            String popOverId = pop.getId();
+            System.out.println(popOverId);             
+        }      
+    }  
+
+    // Not yet done
+    @FXML
+    private void edit(MouseEvent event) {
+        if(event.getClickCount() == 2){
+            Node n = ((Node) event.getSource());
+            n.getId();
+            System.out.println(n.getId());
+            
+        }
+    }
+    
 }

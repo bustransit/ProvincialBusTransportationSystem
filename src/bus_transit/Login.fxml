@@ -38,7 +38,7 @@
                               </Label>
                               <VBox layoutX="50.0" layoutY="199.0">
                                  <children>
-                                    <CustomTextField fx:id="txt_username" prefHeight="35.0" prefWidth="250.0" promptText="Enter Username or Employee ID" styleClass="textfield">
+                                    <CustomTextField fx:id="txt_username" prefHeight="35.0" prefWidth="250.0" promptText="Enter Username or Employee ID" styleClass="textfield" text="hr2_">
                                        <font>
                                           <Font name="Calibri" size="14.0" />
                                        </font>
@@ -48,7 +48,7 @@
                               </VBox>
                               <VBox layoutX="50.0" layoutY="250.0">
                                  <children>
-                                    <CustomPasswordField fx:id="txt_password" prefHeight="35.0" prefWidth="250.0" promptText="Enter Password" styleClass="textfield">
+                                    <CustomPasswordField fx:id="txt_password" prefHeight="35.0" prefWidth="250.0" promptText="Enter Password" styleClass="textfield" text="hr2_">
                                        <font>
                                           <Font name="Calibri" size="14.0" />
                                        </font>

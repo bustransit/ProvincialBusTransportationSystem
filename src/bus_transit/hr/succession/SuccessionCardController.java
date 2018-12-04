@@ -118,20 +118,22 @@ public class SuccessionCardController implements Initializable {
     @FXML
     private void loadSuccessorModal(ActionEvent event) {
         JFXDialogLayout dialog = new JFXDialogLayout();
-        dialog.setHeading(new Text("Examinee Info"));
+        dialog.setHeading(new Text("New Successor for "+lblPosition.getText().toUpperCase()));
         
         VBox vbx = new VBox();
         vbx.setFillWidth(true);
         
         String q = "";
         
-        JFXComboBox cbPosion = new JFXComboBox();
-        q = "SELECT CONCAT(position_id,', ', position_name) FROM employee_position";        
-        db.populateComboBox(q, cbPosion);
-        vbx.getChildren().add(cbPosion);
-        cbPosion.setOnAction((e) -> {
-            
-        });        
+//        JFXComboBox cbPosion = new JFXComboBox();
+//        q = "SELECT CONCAT(position_id,', ', position_name) FROM employee_position";        
+//        db.populateComboBox(q, cbPosion);
+//        vbx.getChildren().add(cbPosion);
+//        cbPosion.setOnAction((e) -> {
+//            
+//        });        
+        
+        //vbx.getChildren().add(new Label(lblPosition.getText()));
         
         JFXComboBox cbEmployee = new JFXComboBox();
         q = "SELECT CONCAT(emp_id,', ',lastname,"
@@ -154,20 +156,25 @@ public class SuccessionCardController implements Initializable {
         
         vbx.getChildren().add(cbReadiness);
         
-        JFXDatePicker dp = new JFXDatePicker();
-        vbx.getChildren().add(dp);
+        //JFXDatePicker dp = new JFXDatePicker();
+        //vbx.getChildren().add(dp);
         
-        dp.setOnAction((evt) -> {
-            
-        });
+//        dp.setOnAction((evt) -> {
+//            
+//        });
         
         dialog.setBody(vbx);
         
+        
+        
         JFXDialog dlg = new JFXDialog(stackPane,dialog,JFXDialog.DialogTransition.TOP);
+        
+        
         
         JFXButton btnOK = new JFXButton("OK");
         vbx.getChildren().add(btnOK);
-        btnOK.setOnAction((evt) -> {                                         
+        btnOK.setOnAction((evt) -> {
+            
             dlg.close();
         });
         
@@ -177,8 +184,8 @@ public class SuccessionCardController implements Initializable {
             dlg.close();
         });        
         
-                                      
-        dlg.show();
+        dlg.show();                              
+        
         dialog.setActions(btnOK);        
         
         dlg.setOnDialogClosed((evt) -> {

@@ -32,22 +32,14 @@ import javafx.stage.StageStyle;
  */
 public class TestManagementController extends Application implements Initializable {
 
-    @FXML
-    private AnchorPane container;
-    @FXML
-    private AnchorPane heading;
-    @FXML
-    private JFXButton btnNewQuestion;
-    @FXML
-    private StackPane stackpane;
-    @FXML
-    private AnchorPane content;
-    @FXML
-    private VBox vbxQuestions;
-    @FXML
-    private Label lblTitle;
-    @FXML
-    private Label lblDuration;
+    @FXML private AnchorPane container;
+    @FXML private AnchorPane heading;
+    @FXML private JFXButton btnNewQuestion;
+    @FXML private StackPane stackpane;
+    @FXML private AnchorPane content;
+    @FXML private VBox vbxQuestions;
+    @FXML private Label lblTitle;
+    @FXML private Label lblDuration;
 
     /**
      * Initializes the controller class.
@@ -90,8 +82,6 @@ public class TestManagementController extends Application implements Initializab
 
     @FXML
     private void showNewQuestionModal(ActionEvent event) {
-    }
-    
-    
-    
+        
+    }            
 }

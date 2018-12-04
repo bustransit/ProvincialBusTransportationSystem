@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -27,7 +28,11 @@
                <tabs>
                   <Tab text="Job Description">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        <ScrollPane>
+                           <content>
+                              <AnchorPane prefHeight="421.0" prefWidth="638.0" />
+                           </content>
+                        </ScrollPane>
                     </content>
                   </Tab>
                </tabs>

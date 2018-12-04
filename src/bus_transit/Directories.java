@@ -83,80 +83,89 @@ public class Directories {
                disbursement,
                budgetManagement,
                generalLedger;
+    
+    public URL HRSidePane,
+               HRDashboard;
         
     public Directories() {
         try {
             // MAIN
-            this.login = new File("src/bus_transit/Login.fxml").toURL();
-            this.dashboard = new File("src/bus_transit/Dashboard.fxml").toURL();
-            this.sidePane = new File("src/bus_transit/Login.fxml").toURL();
+            this.login = new URL("src/bus_transit/Login.fxml");
+            this.dashboard = new URL("src/bus_transit/Dashboard.fxml");
+            this.sidePane = new URL("src/bus_transit/Login.fxml");
                         
             // SYSTEM
-            this.forgotPassword = new File("src/bus_transit/system/ForgotPassword.fxml").toURL();
+            this.forgotPassword = new URL("src/bus_transit/system/ForgotPassword.fxml");
+            
+            // HR Dashboard
+            this.HRDashboard = new URL("src/bus_transit/hr/HRDashboard.fxml");
+
+            // HR SidePane
+            this.HRSidePane = new URL("src/bus_transit/hr/HRSidePane.fxml");
             
             // HR 1
-            this.applicantManagement = new File("").toURL();
-            this.performanceManagement = new File("").toURL();
-            this.newHireOnBoard = new File("").toURL();
-            this.socialReconition = new File("").toURL();
-            this.recruitment = new File("").toURL();
+            this.applicantManagement = new URL("");
+            this.performanceManagement = new URL("");
+            this.newHireOnBoard = new URL("");
+            this.socialReconition = new URL("");
+            this.recruitment = new URL("");
                         
             // HR 2
-            this.learningManagement = new File("src/bus_transit/hr/learning/LearningManagement.fxml").toURL();
-            this.trainingManagement = new File("src/bus_transit/hr/training/TrainingManagement.fxml").toURL();
-            this.competencyManagement = new File("src/bus_transit/hr/competency/CompetencyManagement.fxml").toURL();
-            this.successionPlanning = new File("src/bus_transit/hr/succession/SuccessionPlanning.fxml").toURL();
-            this.ess = new File("src/bus_transit/hr/ess/EmployeeSelfService.fxml").toURL();
+            this.learningManagement = new URL("src/bus_transit/hr/learning/LearningManagement.fxml");
+            this.trainingManagement = new URL("src/bus_transit/hr/training/TrainingManagement.fxml");
+            this.competencyManagement = new URL("src/bus_transit/hr/competency/CompetencyManagement.fxml");
+            this.successionPlanning = new URL("src/bus_transit/hr/succession/SuccessionPlanning.fxml");
+            this.ess = new URL("src/bus_transit/hr/ess/EmployeeSelfService.fxml");
                         
             // HR 3
-            this.shiftAndSchedule = new File("").toURL();
-            this.timeSheetManagement = new File("").toURL();
-            this.leaveManagement = new File("").toURL();
-            this.claimsAndReimbursement = new File("").toURL();
-            this.timeAndAttendance = new File("").toURL();
+            this.shiftAndSchedule = new URL("");
+            this.timeSheetManagement = new URL("");
+            this.leaveManagement = new URL("");
+            this.claimsAndReimbursement = new URL("");
+            this.timeAndAttendance = new URL("");
             
             // HR 4
-            this.payroll = new File("").toURL();
-            this.compensationPlanning = new File("").toURL();
-            this.hrAnalytics = new File("").toURL();
-            this.coreHumanCapital = new File("").toURL();
+            this.payroll = new URL("");
+            this.compensationPlanning = new URL("");
+            this.hrAnalytics = new URL("");
+            this.coreHumanCapital = new URL("");
             
             // LOGISTIC 1
-            this.procurement = new File("").toURL();
-            this.assetManagement = new File("").toURL();
-            this.projectManagement = new File("").toURL();
-            this.warehousing = new File("").toURL();
+            this.procurement = new URL("");
+            this.assetManagement = new URL("");
+            this.projectManagement = new URL("");
+            this.warehousing = new URL("");
             
             // LOGISTIC 2
-            this.auditManagement = new File("").toURL();
-            this.documentTracking = new File("").toURL();
-            this.vehicleReservation = new File("").toURL();
-            this.fleetManagementLog2 = new File("").toURL();
+            this.auditManagement = new URL("");
+            this.documentTracking = new URL("");
+            this.vehicleReservation = new URL("");
+            this.fleetManagementLog2 = new URL("");
             
             // CORE 1
-            this.fleetManagementCore = new File("").toURL();
-            this.tripManagement = new File("").toURL();
-            this.routeManagement = new File("").toURL();
-            this.gpsTracking = new File("").toURL();
+            this.fleetManagementCore = new URL("");
+            this.tripManagement = new URL("");
+            this.routeManagement = new URL("");
+            this.gpsTracking = new URL("");
             
             // CORE 2
-            this.tireAndBatteryManagement = new File("").toURL();
-            this.fuelManagement = new File("").toURL();
-            this.expenseManagement = new File("").toURL();
-            this.driverManagement = new File("").toURL();
+            this.tireAndBatteryManagement = new URL("");
+            this.fuelManagement = new URL("");
+            this.expenseManagement = new URL("");
+            this.driverManagement = new URL("");
     
             // ADMIN
-            this.documentManagement = new File("").toURL();
-            this.legalManagement = new File("").toURL();
-            this.visitorManagement = new File("").toURL();
-            this.facilitiesReservation = new File("").toURL();
+            this.documentManagement = new URL("");
+            this.legalManagement = new URL("");
+            this.visitorManagement = new URL("");
+            this.facilitiesReservation = new URL("");
 
             // FINANCE
-            this.accounts = new File("").toURL();
-            this.collection = new File("").toURL();
-            this.disbursement = new File("").toURL();
-            this.budgetManagement = new File("").toURL();
-            this.generalLedger = new File("").toURL();
+            this.accounts = new URL("");
+            this.collection = new URL("");
+            this.disbursement = new URL("");
+            this.budgetManagement = new URL("");
+            this.generalLedger = new URL("");
             
         } catch (MalformedURLException ex) {
             Logger.getLogger(Directories.class.getName()).log(Level.SEVERE, null, ex);

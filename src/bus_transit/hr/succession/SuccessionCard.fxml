@@ -53,7 +53,7 @@
          <children>
             <FlowPane prefHeight="521.0" prefWidth="617.0" vgap="10.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="479.13671875">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Successors" wrappingWidth="479.13671875">
                      <font>
                         <Font name="Calibri Bold" size="18.0" />
                      </font>
@@ -89,11 +89,17 @@
                                  <font>
                                     <Font size="14.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip text="Click to View Employee Details" />
+                                 </tooltip>
                               </Hyperlink>
                               <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Lance, Nicolas B.">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip text="Click to View Employee Details" />
+                                 </tooltip>
                               </Hyperlink>
                            </children>
                         </VBox>
@@ -115,11 +121,17 @@
                                  <font>
                                     <Font size="14.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip text="Click to View Employee Details" />
+                                 </tooltip>
                               </Hyperlink>
                               <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Lance, Nicolas B.">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip text="Click to View Employee Details" />
+                                 </tooltip>
                               </Hyperlink>
                            </children>
                         </VBox>
@@ -141,11 +153,17 @@
                                  <font>
                                     <Font size="14.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip text="Click to View Employee Details" />
+                                 </tooltip>
                               </Hyperlink>
                               <Hyperlink prefHeight="23.0" prefWidth="301.0" text="Lance, Nicolas B.">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip text="Click to View Employee Details" />
+                                 </tooltip>
                               </Hyperlink>
                            </children>
                         </VBox>

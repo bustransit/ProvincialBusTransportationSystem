@@ -41,31 +41,40 @@ import javax.swing.JPanel;
 public class DBUtilities {
     private String address = "";
     public String database_name;
-    private String DATABASE_URL = "jdbc:mysql://localhost/bustransit_master";
+    //private String DATABASE_URL = "jdbc:mysql://192.168.1.3/bustransit_master";
+    private String DATABASE_URL = "jdbc:mysql://localhost:3306/bustransit_master";
     private String username = "root";
     private String password = "071325";
     public Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;    
 
-    // Connect with modified database
+    // Connect with modified database connection string
     public DBUtilities(String a, String db, String u, String p) {
+        //this.DATABASE_URL = "jdbc:mysql://192.168.1.3:3306/bustransit_master";
         this.DATABASE_URL = "jdbc:mysql://" + a + "/" + db;
         this.username = u;
         this.password = p;
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             this.connection = (Connection) DriverManager.getConnection(DATABASE_URL, username, password);
         } catch (SQLException ex) {
             Logger.getLogger(DBUtilities.class.getName()).log(Level.SEVERE, ex.getMessage(), ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DBUtilities.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     // Connect with default database
     public DBUtilities() {
+        //this.DATABASE_URL = "jdbc:mysql://localhost:3306/bustransit_master";
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             this.connection = (Connection) DriverManager.getConnection(DATABASE_URL, username, password);
         } catch (SQLException ex) {
             Logger.getLogger(DBUtilities.class.getName()).log(Level.SEVERE, ex.getMessage(), ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DBUtilities.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -350,6 +359,9 @@ public class DBUtilities {
 
     /**
      * Charts
+     * ResultSet should be:
+     * 1 column String as label
+     * 1 column Double as value
      */
     @FXML
     public void createPieChart(String title, String q, PieChart c) {

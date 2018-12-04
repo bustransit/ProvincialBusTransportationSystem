@@ -38,6 +38,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
@@ -61,6 +62,20 @@ import utilities.DBUtilities;
  * @author NelsonDelaTorre
  */
 public class LearningManagementController extends Application implements Initializable {
+
+    /**
+     * @return the stackpane
+     */
+    public StackPane getStackpane() {
+        return stackpane;
+    }
+
+    /**
+     * @param stackpane the stackpane to set
+     */
+    public void setStackpane(StackPane stackpane) {
+        this.stackpane = stackpane;
+    }
     DBUtilities db = new DBUtilities();
     ResultSet rs;  
     
@@ -68,37 +83,29 @@ public class LearningManagementController extends Application implements Initial
     @FXML private AnchorPane heading;
     @FXML private JFXTabPane content;
     public static Label title;
-    @FXML
-    private FlowPane flpTestContainer;
-    @FXML
-    private StackPane stackpane;
-    @FXML
-    private Tab modules;
-    @FXML
-    private CustomTextField txt_searchAll;
-    @FXML
-    private JFXButton btnNew;
-    @FXML
-    private FlowPane flpModules;
-    @FXML
-    private Tab test;
-    @FXML
-    private CustomTextField txt_searchPending1;
-    @FXML
-    private JFXButton btnNewTest;
-    @FXML
-    private Tab learningProgress;
-    @FXML
-    private CustomTextField txt_searchPending;
-    @FXML
-    private FlowPane fplLearningProgress;
+    @FXML private FlowPane flpTestContainer;
+    @FXML public StackPane stackpane;
+    @FXML private Tab modules;
+    @FXML private CustomTextField txt_searchAll;
+    @FXML private JFXButton btnNew;
+    @FXML private FlowPane flpModules;
+    @FXML private Tab test;
+    @FXML private CustomTextField txt_searchPending1;
+    @FXML private JFXButton btnNewTest;
+    @FXML private Tab learningProgress;
+    @FXML private FlowPane fplLearningProgress;
+    @FXML private JFXButton btnPrintResult;
+    @FXML private PieChart pieResults;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        //stackpane = stpane;
         populateTestContainer();
+        populateLearningModule();
+        loadTestResult();
     }    
 
     
@@ -115,7 +122,25 @@ public class LearningManagementController extends Application implements Initial
         } catch (IOException ex) {
             System.out.println(ex);
         }
-    }     
+    } 
+
+    /**
+     * to run module directly
+     */
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass()
+                                .getResource("LearningManagement.fxml"));
+        Scene scene = new Scene(root);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setMaximized(true);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }    
         
     private void populateTestContainer(){
         String q = "SELECT * FROM test";
@@ -131,7 +156,7 @@ public class LearningManagementController extends Application implements Initial
                 String description = rs.getString("description").toUpperCase();
                 String lastUpdate = rs.getString("last_update").toUpperCase();    
                 
-                FXMLLoader l = new FXMLLoader(getClass().getResource("Test.fxml"));                                  
+                FXMLLoader l = new FXMLLoader(getClass().getResource("Test.fxml"));                                 
                 TestController testController = new TestController();
                 testController.setTestId(testId);                
                 FlowPane fp = l.load();
@@ -153,24 +178,8 @@ public class LearningManagementController extends Application implements Initial
             Logger.getLogger(LearningManagementController.class.getName())
                   .log(Level.SEVERE, null, ex);
         }
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass()
-                                .getResource("LearningManagement.fxml"));
-        Scene scene = new Scene(root);
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setMaximized(true);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }    
-
-   
+    }      
+    
     // to load FileChooser
     private void loadFileChooser(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -256,7 +265,6 @@ public class LearningManagementController extends Application implements Initial
             e.printStackTrace();
         }        
     }
-
    
     public int duration = 0;
     public String testTitle;
@@ -265,7 +273,7 @@ public class LearningManagementController extends Application implements Initial
     
     @FXML
     private void newTest(ActionEvent event) throws IOException {            
-        stackpane.toFront();
+        getStackpane().toFront();
 
         VBox vbx = new VBox();
         vbx.setSpacing(10);
@@ -300,7 +308,7 @@ public class LearningManagementController extends Application implements Initial
         layout.setBody(vbx);
         layout.setPrefSize(300, 150);
 
-        JFXDialog dialog = new JFXDialog(stackpane, layout, JFXDialog.DialogTransition.LEFT);
+        JFXDialog dialog = new JFXDialog(getStackpane(), layout, JFXDialog.DialogTransition.LEFT);
         dialog.setOverlayClose(false);
 
         JFXButton btn_yes = new JFXButton("Yes");
@@ -323,7 +331,7 @@ public class LearningManagementController extends Application implements Initial
         btn_cancel.setCancelButton(true);
         btn_cancel.setOnAction((evt) -> {
             dialog.close();
-            stackpane.toBack();
+            getStackpane().toBack();
         });
 
         layout.setActions(btn_cancel, btn_yes);
@@ -353,16 +361,122 @@ public class LearningManagementController extends Application implements Initial
         }
         return sb.toString();
     }
-
-    @FXML
-    private void SearchAllRequest(KeyEvent event) {
-    }
-
-    @FXML
-    private void CancelRequest(ActionEvent event) {
-    }
-
+    
     @FXML
     private void SearchPendingRequest(KeyEvent event) {
     }
+    
+    public void populateLearningModule(){
+        String q = "SELECT * FROM learning_modules";
+        rs = db.displayRecords(q);        
+        flpModules.getChildren().clear();
+        try {
+            while(rs.next()){                                                                
+                String mId = rs.getString("module_id");                 
+                FXMLLoader l = new FXMLLoader(getClass().getResource("LearningModuleCard.fxml"));
+                LearningModuleCardController md = new LearningModuleCardController();
+                md.setModuleId(mId);                             
+                FlowPane fp = l.load();
+                l.setController(md);   
+                flpModules.getChildren().add(fp);
+            }                                    
+        } catch (SQLException ex) {
+            Logger.getLogger(LearningManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(LearningManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void newLearningModule(ActionEvent event) {    
+        JFXDialogLayout dialog = new JFXDialogLayout();
+        dialog.setHeading(new Text("New Module"));
+        
+        VBox vbx = new VBox();        
+        
+        JFXTextField title = new JFXTextField();
+        title.setPromptText("Title");
+        vbx.getChildren().add(0, title);
+        
+        JFXTextField description = new JFXTextField();
+        description.setPromptText("Description");        
+        vbx.getChildren().add(1, description);
+                
+        JFXTextField author = new JFXTextField();
+        author.setPromptText("Author");        
+        vbx.getChildren().add(2, author);        
+        
+        JFXTextField type = new JFXTextField();
+        type.setPromptText("Type");        
+        vbx.getChildren().add(3, type);         
+        
+        dialog.setBody(vbx);
+        
+        JFXDialog dlg = new JFXDialog(getStackpane(),
+                                      dialog,
+                                      JFXDialog.DialogTransition.CENTER);
+        
+        JFXButton btn_yes = new JFXButton("Yes");
+        btn_yes.setButtonType(JFXButton.ButtonType.RAISED);
+        btn_yes.setPrefSize(75, 26);
+        btn_yes.setStyle("-fx-background-color: #0078D7; -fx-text-fill: white;");
+        btn_yes.setDefaultButton(true);
+        btn_yes.setOnAction((evt) -> {
+            try{
+                dlg.close();
+                String q = "INSERT INTO learning_modules (module_id, title, description, author, type, last_update)"
+                        + "VALUES(null, '"+title.getText()+"','"+description.getText()+"','"+author.getText()+"','"+type.getText()+"',CURDATE())";
+                db.execute(q);
+                populateLearningModule();
+                getStackpane().toBack();                   
+            }catch(NullPointerException e){
+                
+            }
+        });
+
+        JFXButton btn_cancel = new JFXButton("Cancel");
+        btn_cancel.setButtonType(JFXButton.ButtonType.RAISED);
+        btn_cancel.setPrefSize(75, 26);
+        btn_cancel.setCancelButton(true);
+        btn_cancel.setOnAction((evt) -> {
+            dlg.close();
+            getStackpane().toBack();
+        });
+
+        dialog.setActions(btn_cancel, btn_yes);              
+        dlg.show();            
+    }
+
+    @FXML
+    private void printTetResults(ActionEvent event) {
+        
+    }
+
+    @FXML
+    private void searchModule(KeyEvent event) {
+        String s = txt_searchAll.getText();
+        String q = "SELECT * FROM learning_modules WHERE title LIKE '%"+s+"%'";
+        rs = db.displayRecords(q);        
+        flpModules.getChildren().clear();
+        try {
+            while(rs.next()){                                                                
+                String mId = rs.getString("module_id");                 
+                FXMLLoader l = new FXMLLoader(getClass().getResource("LearningModuleCard.fxml"));
+                LearningModuleCardController md = new LearningModuleCardController();
+                md.setModuleId(mId);                             
+                FlowPane fp = l.load();
+                l.setController(md);   
+                flpModules.getChildren().add(fp);
+            }            
+        } catch (SQLException ex) {
+            Logger.getLogger(LearningManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(LearningManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
+    
+    private void loadTestResult(){
+//        String qry = "";
+//        db.createPieChart("Test Result: General preview", qry, pieResults);
+    }    
 }

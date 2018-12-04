@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -79,8 +80,7 @@ public class LoginController extends Application implements Initializable {
     
     DBUtilities db = new DBUtilities();
     ResultSet rs;
-    String q;
-    
+        
     SidePaneController sidePane = new SidePaneController();
     
     @Override
@@ -164,8 +164,8 @@ public class LoginController extends Application implements Initializable {
 //                + "AND user.emp_id = employee.emp_id "
 //                + "GROUP by user.emp_id";
 
-        q = "SELECT user.*, employee.*, employee_position.*, department.*"
-                + " FROM employee, user, employee_position, department"
+        String q = "SELECT user.*, employee.*, employee_position.*, department.*, module.*"
+                + " FROM employee, user, employee_position, department, module"
                 + " WHERE user.username='"+username+"'"
                 + " AND user.password='"+password+"'"
                 + " AND user.emp_id = employee.emp_id"
@@ -176,7 +176,7 @@ public class LoginController extends Application implements Initializable {
         
         try {
             if(rs.next()){
-                
+                System.out.println(rs.getString("department_level"));
                 userLevel = rs.getString("position_name");                
                 empID = rs.getString("emp_id");
                 positionID = rs.getString("position_id"); 
@@ -188,11 +188,13 @@ public class LoginController extends Application implements Initializable {
                                             rs.getString("firstname");
                 
                 filterUser(dept, userLevel);
-                
+                                
                 Stage stage = (Stage) btn_signin.getScene().getWindow();
                 stage.close();
                 Stage dash = new Stage(StageStyle.UNDECORATED);
+                
                 Parent root = FXMLLoader.load(getClass().getResource("Dashboard.fxml"));
+                //Parent root = FXMLLoader.load(getClass().getResource(dir.HRDashboard.toString())); 
                 Scene scene = new Scene(root);
                 dash.setScene(scene);
                 dash.setMaximized(true);
@@ -354,6 +356,7 @@ public class LoginController extends Application implements Initializable {
         clock.play();
     }
     
+
     
     @Override
     public void start(Stage stage) throws Exception {
