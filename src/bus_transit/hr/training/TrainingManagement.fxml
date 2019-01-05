@@ -3,28 +3,21 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDatePicker?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXTimePicker?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
 
@@ -53,27 +46,24 @@
                      <center>
                         <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <content>
-                              <TableView fx:id="tblTrainingList" onMouseClicked="#setSelectedTraining" prefHeight="625.0" prefWidth="915.0">
+                              <TableView fx:id="tblTrainingList" maxWidth="1.7976931348623157E308" onMouseClicked="#setSelectedTraining">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                                  <contextMenu>
                                     <ContextMenu>
                                       <items>
-                                          <MenuItem fx:id="mnuTrainingDetails" mnemonicParsing="false" onAction="#setTrainingActivation" text="View Details" />
-                                        <MenuItem fx:id="mnuTrainingActivation" mnemonicParsing="false" onAction="#setTrainingActivation" text="Deactivate" />
-                                          <MenuItem fx:id="mnuTraininReSchedule" mnemonicParsing="false" onAction="#setTrainingActivation" text="Reschedule" />
+                                        <MenuItem fx:id="mnuSetTrainees" mnemonicParsing="false" onAction="#setTrainees" text="Add Trainees" />
+                                          <Menu mnemonicParsing="false" text="Edit">
+                                            <items>
+                                              <MenuItem fx:id="mnuDetails" mnemonicParsing="false" onAction="#editDetails" text="Details" />
+                                                <MenuItem fx:id="mnuSchedule" mnemonicParsing="false" onAction="#editDateTime" text="Schedule" />
+                                                <MenuItem fx:id="mnuTrainors" mnemonicParsing="false" onAction="#editSponsorsAndTrainors" text="Sponsors and Trainors" />
+                                            </items>
+                                          </Menu>
                                       </items>
                                     </ContextMenu>
-                                 </contextMenu>
-                                 <tooltip>
-                                    <Tooltip text="Right click to view Training options">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                    </Tooltip>
-                                 </tooltip>
-                              </TableView>
+                                 </contextMenu></TableView>
                            </content>
                         </ScrollPane>
                      </center>
@@ -83,14 +73,28 @@
                               <DropShadow blurType="GAUSSIAN" color="SILVER" height="10.0" radius="4.5" width="10.0" />
                            </effect>
                            <children>
-                              <CustomTextField fx:id="tfSearch" layoutX="22.0" layoutY="15.0" onKeyReleased="#searchTraining" prefHeight="35.0" prefWidth="300.0" promptText="Search Keyword..." style="-fx-background-color: white; -fx-background-radius: 0; -fx-border-color: #DCDCDC;">
-                                 <font>
-                                    <Font name="Calibri" size="14.0" />
-                                 </font>
-                              </CustomTextField>
-                              <JFXCheckBox checkedColor="#0078d7" layoutX="524.0" layoutY="25.0" text="Show inactive trainings" />
-                              <JFXComboBox fx:id="cmbFilterBy" labelFloat="true" layoutX="328.0" layoutY="21.0" prefHeight="25.0" prefWidth="196.0" promptText="Filter by" />
-                              <JFXButton fx:id="btnNewTraining" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minHeight="40.0" minWidth="40.0" onAction="#loadNewTrainingModal" prefHeight="40.0" prefWidth="40.0" ripplerFill="#00000080" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="SAVE REQUEST" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                              <HBox alignment="CENTER_LEFT" layoutX="22.0" layoutY="14.0" spacing="14.0">
+                                 <children>
+                                    <Label text="Filter by:" />
+                                    <JFXComboBox fx:id="cmbFilterBy" labelFloat="true" prefHeight="36.0" prefWidth="189.0" />
+                                    <CustomTextField fx:id="tfSearch" onKeyReleased="#searchTraining" prefHeight="18.0" prefWidth="300.0" promptText="Search Keyword..." style="-fx-background-color: white; -fx-background-radius: 0; -fx-border-color: #DCDCDC;">
+                                       <font>
+                                          <Font name="Calibri" size="14.0" />
+                                       </font>
+                                    </CustomTextField>
+                                    <JFXButton fx:id="btnSearch" onAction="#search" prefHeight="34.0" prefWidth="62.0" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="Search" textFill="WHITE">
+                                       <font>
+                                          <Font name="Calibri Bold" size="14.0" />
+                                       </font>
+                                       <effect>
+                                          <DropShadow blurType="GAUSSIAN" color="GREY" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
+                                       </effect>
+                                    </JFXButton>
+                                    <JFXComboBox fx:id="cmbType" labelFloat="true" prefHeight="35.0" prefWidth="91.0" promptText="Type" />
+                                    <JFXCheckBox fx:id="chbtoggleInActiveTraining" checkedColor="#0078d7" onAction="#toggleInActiveTraining" prefHeight="35.0" text="Show inactive trainings" />
+                                 </children>
+                              </HBox>
+                              <JFXButton fx:id="btnNewTraining" accessibleText="new training" alignment="CENTER" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" minHeight="40.0" minWidth="40.0" onAction="#newTraining" prefHeight="40.0" prefWidth="40.0" ripplerFill="#00000080" style="-fx-background-color: transparent; -fx-background-radius: 30;" text="SAVE REQUEST" textFill="WHITE" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <font>
                                     <Font name="Calibri" />
                                  </font>
@@ -101,123 +105,13 @@
                                        </font>
                                     </Tooltip>
                                  </tooltip>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
                                  <graphic>
-                                    <MaterialDesignIconView fill="#0078d7" glyphName="PLUS_CIRCLE" size="34" strokeLineCap="ROUND" textAlignment="CENTER" wrappingWidth="40.0" />
+                                    <MaterialDesignIconView accessibleText="new" fill="#0078d7" glyphName="PLUS_CIRCLE" size="34" strokeLineCap="ROUND" textAlignment="CENTER" wrappingWidth="40.0" />
                                  </graphic>
                               </JFXButton>
                            </children>
                         </AnchorPane>
                      </top>
-                     <right>
-                        <Accordion prefHeight="625.0" prefWidth="328.0" BorderPane.alignment="CENTER">
-                          <panes>
-                              <TitledPane fx:id="tdpAddTrainees" animated="false" expanded="false" layoutX="10.0" layoutY="10.0" prefHeight="586.0" prefWidth="372.0" text="Set Trainees">
-                                 <content>
-                                    <VBox fx:id="vbxAddTrainees" disable="true" spacing="10.0">
-                                       <children>
-                                          <Label fx:id="lblTraineesForTraining" prefHeight="19.0" prefWidth="319.0" text="Training Title">
-                                             <font>
-                                                <Font name="Calibri Bold" size="18.0" />
-                                             </font>
-                                          </Label>
-                                          <JFXTextField fx:id="tfSearchTrainees" onKeyReleased="#searchTrainees" promptText="Search by Employee Lastname" />
-                                          <ScrollPane>
-                                             <content>
-                                                <VBox fx:id="vbxTrainees" prefHeight="497.0" prefWidth="242.0" spacing="8.0">
-                                                   <children>
-                                                      <JFXCheckBox onAction="#addTrainee" prefHeight="17.0" prefWidth="237.0">
-                                                         <tooltip>
-                                                            <Tooltip text="Empty Tooltip" />
-                                                         </tooltip>
-                                                      </JFXCheckBox>
-                                                      <JFXCheckBox layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="237.0" />
-                                                      <JFXCheckBox layoutX="10.0" layoutY="10.0" prefHeight="17.0" prefWidth="237.0" />
-                                                      <JFXCheckBox layoutX="10.0" layoutY="35.0" prefHeight="17.0" prefWidth="237.0" />
-                                                   </children>
-                                                </VBox>
-                                             </content>
-                                          </ScrollPane>
-                                       </children>
-                                    </VBox>
-                                 </content>
-                              </TitledPane>
-                            <TitledPane animated="false" expanded="false" text="Set Training">
-                              <content>
-                                    <VBox spacing="20.0">
-                                       <children>
-                                          <JFXTextField fx:id="tfTrainingTitle" labelFloat="true" promptText="Title" />
-                                          <JFXTextField fx:id="tfTrainingLocation" labelFloat="true" promptText="Venue" />
-                                          <JFXTextField fx:id="tfNumberOfParticipants" labelFloat="true" prefHeight="25.0" prefWidth="334.0" promptText="Number of Participants" />
-                                          <JFXTextField labelFloat="true" promptText="Speaker/Trainor" />
-                                          <JFXTimePicker fx:id="tpTrainingStart" prefHeight="28.0" prefWidth="321.0" promptText="Start time">
-                                             <tooltip>
-                                                <Tooltip text="Start time" />
-                                             </tooltip>
-                                          </JFXTimePicker>
-                                          <JFXTimePicker fx:id="tpTrainingEnd" prefHeight="28.0" prefWidth="330.0" promptText="End time" />
-                                          <JFXDatePicker fx:id="dpTrainingDate" prefHeight="31.0" prefWidth="313.0" promptText="Target Date" />
-                                          <JFXComboBox fx:id="cbTrainingType" labelFloat="true" prefHeight="25.0" prefWidth="295.0" promptText="Type" />
-                                          <HBox alignment="TOP_RIGHT" spacing="20.0">
-                                             <children>
-                                                <JFXButton fx:id="btnNew" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#saveNewTraining" prefHeight="29.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="Save" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Calibri Bold" size="14.0" />
-                                                   </font>
-                                                   <effect>
-                                                      <DropShadow color="SILVER" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
-                                                   </effect>
-                                                   <graphic>
-                                                      <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="18" />
-                                                   </graphic>
-                                                   <tooltip>
-                                                      <Tooltip text="Save" />
-                                                   </tooltip>
-                                                </JFXButton>
-                                                <JFXButton fx:id="btnClear" alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" onAction="#clearTrainingFields" prefHeight="28.0" prefWidth="58.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="Clear" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Calibri Bold" size="14.0" />
-                                                   </font>
-                                                   <effect>
-                                                      <DropShadow color="SILVER" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
-                                                   </effect>
-                                                </JFXButton>
-                                                <JFXButton fx:id="btnUpdate" alignment="CENTER" contentDisplay="CENTER" disable="true" onAction="#updateTraining" prefHeight="28.0" prefWidth="80.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="Update" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Calibri Bold" size="14.0" />
-                                                   </font>
-                                                   <effect>
-                                                      <DropShadow color="SILVER" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
-                                                   </effect>
-                                                </JFXButton>
-                                                <JFXButton fx:id="btnPrint" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" onAction="#printTraining" prefHeight="28.0" prefWidth="0.0" ripplerFill="BLACK" style="-fx-background-color: #0078D7; -fx-background-radius: 2;" text="Print" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Calibri Bold" size="14.0" />
-                                                   </font>
-                                                   <effect>
-                                                      <DropShadow color="SILVER" height="10.0" offsetX="1.0" offsetY="1.0" radius="4.5" width="10.0" />
-                                                   </effect>
-                                                   <tooltip>
-                                                      <Tooltip text="Print" />
-                                                   </tooltip>
-                                                   <graphic>
-                                                      <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18" />
-                                                   </graphic>
-                                                </JFXButton>
-                                             </children>
-                                             <padding>
-                                                <Insets top="20.0" />
-                                             </padding>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                              </content>
-                            </TitledPane>
-                          </panes>
-                        </Accordion>
-                     </right>
                   </BorderPane>
                </children>
             </AnchorPane>
@@ -228,7 +122,8 @@
       </StackPane>
    </children>
    <stylesheets>
-      <URL value="@../../../css/StyleSheet_1.css" />
+      <URL value="@../../../css/jfoenix-design.css" />
       <URL value="@../../../css/StyleSheet.css" />
+      <URL value="@../../../css/StyleSheet_1.css" />
    </stylesheets>
 </AnchorPane>

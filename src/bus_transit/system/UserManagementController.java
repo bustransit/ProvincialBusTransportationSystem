@@ -36,6 +36,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -68,11 +69,6 @@ public class UserManagementController extends
     @FXML private TableView<?> tblUser;
     @FXML private VBox newUser;
     @FXML private JFXButton btnAddNewUser;
-    @FXML private VBox editUserInfo;
-    @FXML private JFXTextField tfEmpCode1;
-    @FXML private JFXTextField tfUsername1;
-    @FXML private JFXPasswordField pfPassword1;
-    @FXML private JFXButton btnAddUser1;
     @FXML private JFXTextField tfEmpId;
     @FXML private Label lblResult;
     @FXML private ContextMenu context;
@@ -80,6 +76,8 @@ public class UserManagementController extends
     @FXML private MenuItem editInfo;
     @FXML private MenuItem archiveAccount;
     String selectedRec;
+    @FXML
+    private StackPane stackpane;
 
     /**
      * Initializes the controller class.
@@ -87,6 +85,8 @@ public class UserManagementController extends
     @Override
     public void initialize(URL url, ResourceBundle ddddrb) {
         qry = "SELECT emp_id, username FROM user";        
+        db.buildData(qry, tblUser);
+        
         btnAddNewUser.setOnAction(e->{
             BooleanProperty b = newUser.visibleProperty();
             if(b.getValue()){
@@ -98,13 +98,12 @@ public class UserManagementController extends
             }                        
         });
         
-        db.buildData(qry, tblUser);
+        
         
         btnAddUser.setOnAction(e -> {
             addUser(tfEmpCode.getText(),                    
                     tfUsername.getText(),
-                    pfPassword.getText());
-            
+                    pfPassword.getText());            
             mdls.showAlert("New User");
         });
         
@@ -113,7 +112,16 @@ public class UserManagementController extends
                     tblUser.getSelectionModel().getSelectedItem();            
             String id = r.get(0);
             selectedRec = id;
-            System.out.println(selectedRec);
+            
+//            String q = "SELECT * FROM user WHERE emp_id="+selectedRec;
+//            try {
+//                if(rs.next()){ 
+//                    
+//                }
+//            } catch (SQLException ex) {
+//                Logger.getLogger(UserManagementController.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+            
         });   
         
         tfEmpId.setOnAction(new EventHandler<ActionEvent>() {
@@ -340,4 +348,9 @@ public class UserManagementController extends
     public static void main(String[] args) {
         launch(args);
     }    
+
+    @FXML
+    private void selectUserData(MouseEvent event) {
+        
+    }
 }

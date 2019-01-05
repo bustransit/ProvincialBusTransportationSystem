@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.Animation;
@@ -36,28 +37,29 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import utilities.lambdaworks.crypto.SCryptUtil;
 
 public class DBUtilities {
-    private String address = "";
-    public String database_name;
-    //private String DATABASE_URL = "jdbc:mysql://192.168.1.3/bustransit_master";
-    private String DATABASE_URL = "jdbc:mysql://localhost:3306/bustransit_master";
-    private String username = "root";
-    private String password = "071325";
     public Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;    
+    private String database_name;
+    private String HOST = "jdbc:mysql://localhost:3306/bustransit_master";    
+    private String username = "root";
+    private String password = "071325";
+    private int PORT;    
 
     // Connect with modified database connection string
     public DBUtilities(String a, String db, String u, String p) {
-        //this.DATABASE_URL = "jdbc:mysql://192.168.1.3:3306/bustransit_master";
-        this.DATABASE_URL = "jdbc:mysql://" + a + "/" + db;
+        //this.HOST = "jdbc:mysql://192.168.1.3:3306/bustransit_master";
+        this.HOST = "jdbc:mysql://" + a + "/" + db;
         this.username = u;
-        this.password = p;
+        this.password = p;        
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            this.connection = (Connection) DriverManager.getConnection(DATABASE_URL, username, password);
+            this.connection = (Connection) DriverManager.getConnection(HOST, username, password);
         } catch (SQLException ex) {
             Logger.getLogger(DBUtilities.class.getName()).log(Level.SEVERE, ex.getMessage(), ex.getMessage());
         } catch (ClassNotFoundException ex) {
@@ -66,11 +68,10 @@ public class DBUtilities {
     }
 
     // Connect with default database
-    public DBUtilities() {
-        //this.DATABASE_URL = "jdbc:mysql://localhost:3306/bustransit_master";
+    public DBUtilities() {        
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            this.connection = (Connection) DriverManager.getConnection(DATABASE_URL, username, password);
+            this.connection = (Connection) DriverManager.getConnection(HOST, username, password);
         } catch (SQLException ex) {
             Logger.getLogger(DBUtilities.class.getName()).log(Level.SEVERE, ex.getMessage(), ex.getMessage());
         } catch (ClassNotFoundException ex) {
@@ -82,7 +83,7 @@ public class DBUtilities {
         try {
             this.resultSet.close();
             this.statement.close();
-            this.connection.close();
+            this.getConnection().close();
         } catch (SQLException ex) {
             Logger.getLogger(DBUtilities.class.getName()).log(Level.SEVERE, ex.getMessage(), ex.getMessage());
         }
@@ -90,7 +91,7 @@ public class DBUtilities {
 
     public ResultSet displayRecords(String sql_stmt) {
         try {
-            this.statement = connection.createStatement();
+            this.statement = getConnection().createStatement();
             this.resultSet = statement.executeQuery(sql_stmt);
             return resultSet;
         } catch (SQLException ex) {
@@ -101,7 +102,7 @@ public class DBUtilities {
 
     public void execute(String sql_stmt) {
         try {
-            this.statement = connection.createStatement();
+            this.statement = getConnection().createStatement();
             this.statement.executeUpdate(sql_stmt);
         } catch (SQLException ex) {
             Logger.getLogger(DBUtilities.class.getName()).log(Level.SEVERE, ex.getMessage(), ex.getMessage());
@@ -319,7 +320,9 @@ public class DBUtilities {
         }
     }
 
-    public static String toMD5(String input) {
+    
+    // One encryption algorithm, non reversible
+    public String toMD5(String input) {
         try {
             String hashText = new BigInteger(1, MessageDigest.getInstance("MD5").digest(input.getBytes())).toString(16);
             while (hashText.length() < 32) {
@@ -331,10 +334,20 @@ public class DBUtilities {
         }
     }
 
+    
+    // Something wrong in decryption
     public String decrypt(String s) throws NoSuchAlgorithmException {
         return Base64.getDecoder().decode(s).toString();
     }
-
+    
+    public String encryptPassword(String p){        
+        return SCryptUtil.scrypt(p, 16, 16, 16);
+    }
+    
+    public boolean isPasswordMatched(String InputPassword, String EncryptedPassword){
+        return SCryptUtil.check(InputPassword, EncryptedPassword);
+    }
+    
     // to SQL Date
     public java.sql.Date toSQLDate(java.util.Date d) {
         if (d != null) {
@@ -569,6 +582,35 @@ public class DBUtilities {
         this.database_name = database_name;
     }
     
+    /**
+     * @return the connection
+     */
+    public Connection getConnection() {
+        return connection;
+    }
+
+    /**
+     * @param connection the connection to set
+     */
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }  
+
+    private char[] chrs = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_$#@".toCharArray();
+    public String getRandom(){        
+        Random n = new Random();
+        StringBuilder sb = new StringBuilder((100000 + n.nextInt(900000)));
+        for(int i=0; i < 8; i++){sb.append(chrs[n.nextInt(chrs.length)]);}            
+        return sb.toString();
+    }
+    
+    public String getRandom(int length){        
+        Random n = new Random();
+        StringBuilder sb = new StringBuilder((100000 + n.nextInt(900000)));
+        for(int i=0; i < length; i++){ sb.append(chrs[n.nextInt(chrs.length)]);}            
+        return sb.toString();
+    }
+      
     public String getTime() {        
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             String remaining = "";
@@ -638,5 +680,5 @@ public class DBUtilities {
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
         return clock.toString();
-    }    
+    }        
 }

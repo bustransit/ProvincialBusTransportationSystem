@@ -139,13 +139,13 @@ public class TestViewerController extends Application implements Initializable {
         
         VBox vbx = new VBox();        
         
-        JFXTextField firstname = new JFXTextField();
-        firstname.setPromptText("Firstname");
-        vbx.getChildren().add(0, firstname);
+        JFXTextField applicantId = new JFXTextField();
+        applicantId.setPromptText("Applicant ID: ");
+        vbx.getChildren().add(0, applicantId);
         
-        JFXTextField lastname = new JFXTextField();
-        lastname.setPromptText("LastName");        
-        vbx.getChildren().add(1, lastname);
+//        JFXTextField lastname = new JFXTextField();
+//        lastname.setPromptText("LastName");        
+//        vbx.getChildren().add(1, lastname);
                 
         dialog.setBody(vbx);
         
@@ -156,20 +156,19 @@ public class TestViewerController extends Application implements Initializable {
         JFXButton btnOK = new JFXButton("OK");
         
         btnOK.setOnAction((event) -> {
-            String f = firstname.getText(); 
-            String l = lastname.getText();
-            if(!f.isEmpty() && !l.isEmpty()){
+            String f = applicantId.getText(); 
+//            String l = lastname.getText();
+            if(!f.isEmpty()){
                 try {
-                    String q = "INSERT INTO examinee (firstname, lastname, test_date) "+
-                            "VALUES ('"+f+"','"+l+"',CURDATE())";
+                    String q = "INSERT INTO examinee (examinee_id,  test_date) "+
+                            "VALUES ('"+f+"',CURDATE())";
                     db.execute(q);
-                    lblExaminee.setText(l+", "+f);
+                    //lblExaminee.setText(l+", "+f);
                     
                     String qr = "SELECT MAX(examinee_id) AS 'id' FROM examinee";
                     rs = db.displayRecords(qr);
                     if(rs.next()){
-                        setExamineeId(rs.getString("id"));
-                        
+                        setExamineeId(rs.getString("id"));                        
                         System.out.println("Get from Dialog Examinee ID:"+getExamineeId());
                     }
                     
@@ -213,7 +212,7 @@ public class TestViewerController extends Application implements Initializable {
     public void populateQuestionContainer() {
         System.out.println("from testviewercontroller:"+getTestId());
         //q = "SELECT * FROM question, test WHERE question.test_id="+getTestId();
-        q = "SELECT * FROM test INNER JOIN question ON test.test_id = question.test_id AND test.test_id ="+getTestId();
+        q = "SELECT * FROM test INNER JOIN question ON test.test_id = question.test_id AND test.test_id ='"+getTestId()+"' ORDER BY RAND()";
         rs = db.displayRecords(q);        
         int i = 1;        
         ObservableList<FlowPane> p = null;
@@ -331,7 +330,7 @@ public class TestViewerController extends Application implements Initializable {
     
     public ArrayList<JFXRadioButton> getChoices(String questionId){
         String q = "SELECT choice FROM answer_meta " +
-                   "WHERE question_id="+questionId;
+                   "WHERE question_id='"+questionId+"' ORDER BY RAND()";
         rs = db.displayRecords(q);
         ArrayList<JFXRadioButton> choices = new ArrayList();
         try {

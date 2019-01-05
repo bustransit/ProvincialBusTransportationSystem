@@ -1,6 +1,9 @@
 
 package bus_transit.hr.training;
 
+import bus_transit.LoginController;
+import bus_transit.SceneController;
+import bus_transit.SidePaneController;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -17,7 +20,6 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import java.awt.Desktop;
@@ -35,28 +37,27 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import bus_transit.components.controls.Buttons;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TitledPane;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import net.sf.jasperreports.engine.JRException;
@@ -77,71 +78,89 @@ import utilities.DBUtilities;
  *
  * @author Admin
  */
-public class TrainingManagementController 
-       extends Application 
+public class TrainingManagementController extends Application
        implements Initializable {
-
-    private String q;
-    DBUtilities db = new DBUtilities();
+    
+    private DBUtilities db;
     private ResultSet rs;
+    private String loggedInUser;
+    SceneController scn = new SceneController();
     @FXML
     private AnchorPane container;
     @FXML private AnchorPane heading;
     @FXML private CustomTextField tfSearch;
     @FXML private TableView<String> tblTrainingList;
-    @FXML private JFXTextField tfTrainingTitle;
-    @FXML private JFXTextField tfTrainingLocation;
-    @FXML private JFXDatePicker dpTrainingDate;
-    @FXML private JFXComboBox<String> cbTrainingType;
-    @FXML private JFXTextField tfNumberOfParticipants;
-    @FXML private JFXButton btnNew;
+    private JFXTextField tfTrainingTitle;
+    private JFXTextField tfTrainingLocation;
+    private JFXDatePicker dpTrainingDate;
+    private JFXComboBox<String> cbTrainingType;
+    private JFXTextField tfNumberOfParticipants;
+    private JFXButton btnNew;
     private JFXTimePicker tpTrainingTime;
-    @FXML private JFXButton btnClear;
-    @FXML private Label lblTraineesForTraining;
-    @FXML private JFXTextField tfSearchTrainees;
-    @FXML private VBox vbxTrainees;
+    private Label lblTraineesForTraining;
+    private JFXTextField tfSearchTrainees;
+    private VBox vbxTrainees;
     
     public String selectedTrainingId = null;
-    @FXML
-    private TitledPane tdpAddTrainees;
-    @FXML
     private VBox vbxAddTrainees;
-    @FXML
-    private AnchorPane ancTraining;
-    @FXML
     private JFXButton btnUpdate;
     private StackPane stackPane;
     @FXML
-    private JFXButton btnPrint;
-    @FXML
     private JFXButton btnNewTraining;
     @FXML
-    private JFXComboBox<?> cmbFilterBy;
-    @FXML
-    private MenuItem mnuTrainingDetails;
-    @FXML
-    private MenuItem mnuTrainingActivation;
-    @FXML
-    private MenuItem mnuTraininReSchedule;
-    @FXML
+    private JFXComboBox<String> cmbFilterBy;
     private JFXTimePicker tpTrainingStart;
     @FXML
-    private JFXTimePicker tpTrainingEnd;
-    @FXML
     private StackPane stackpane;
-    @FXML
     private GridPane grdTraining;
+    @FXML
+    private JFXCheckBox chbtoggleInActiveTraining;
+    
+    public final String trainingFields = "SELECT training_id as 'ID',"
+            + "title as 'TITLE',"
+            + "n_of_participants as 'PARTICIPANTS',"
+            + "description as 'DESCRIPTION', "
+            + "venue as 'VENUE', "
+            + "status as 'STATUS', "
+            + "note as 'NOTE', "
+            + "TYPE FROM training ";
+    @FXML
+    private JFXComboBox<String> cmbType;
+    @FXML
+    private JFXButton btnSearch;
+    @FXML
+    private MenuItem mnuSetTrainees;
+    @FXML
+    private MenuItem mnuDetails;
+    @FXML
+    private MenuItem mnuSchedule;
+    @FXML
+    private MenuItem mnuTrainors;
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {               
+    public void initialize(URL url, ResourceBundle rb) {
+        // Using 1 DButilities instance
+        this.db = LoginController.db;
+        this.loggedInUser = SidePaneController.employeeFullName;
+        
+        System.out.println(loggedInUser);
+        
         refreshTable();        
-        populateVBXTrainees();        
-        ObservableList type = cbTrainingType.getItems();       
-        type.add("");
-        type.add("Inhouse");
-        type.add("Outdoor");        
-        cbTrainingType.setItems(type);        
+        tblTrainingList.getColumns().get(2).setStyle("-fx-alignment: CENTER;");
+        initializedComboBox();        
     }    
+    
+    private void initializedComboBox(){
+        cmbFilterBy.getItems().add("Title");
+        cmbFilterBy.getItems().add("Venue");
+        cmbFilterBy.getItems().add("Description");
+        cmbFilterBy.getSelectionModel().selectFirst();
+        
+        cmbType.getItems().add("All");
+        cmbType.getItems().add("Inhouse");
+        cmbType.getItems().add("Outdoor");
+        cmbType.getSelectionModel().selectFirst();
+    }
     
     private Integer getTotalEmployee(){
         String q = "SELECT COUNT(emp_id) as 'total' FROM employee";
@@ -158,7 +177,6 @@ public class TrainingManagementController
         return t;
     }
     
-    @FXML
     private void clearTrainingFields(){
         tfTrainingTitle.setText("");
         tfTrainingLocation.setText("");
@@ -227,7 +245,7 @@ public class TrainingManagementController
                 String q = "UPDATE training "
                         + "SET title = '"+title+"', "
                         + "participants='"+participants+"', "
-                        + "TIME='"+time+"', "
+                        + "start_time='"+time+"', "
                         + "target_date='"+date+"', "
                         + "venue='"+venue+"', "
                         + "TYPE='"+type+"' "
@@ -241,7 +259,6 @@ public class TrainingManagementController
     };    
     
     
-    @FXML
     private void updateTraining(){
                 String title = tfTrainingTitle.getText();
                 int participants = Integer.parseInt(tfNumberOfParticipants.getText());
@@ -261,7 +278,7 @@ public class TrainingManagementController
                 String q = "UPDATE training "
                         + "SET title = '"+title+"', "
                         + "participants='"+participants+"', "
-                        + "TIME='"+time+"', "
+                        + "start_time='"+time+"', "
                         + "target_date='"+date+"', "
                         + "venue='"+venue+"', "
                         + "TYPE='"+type+"' "
@@ -274,48 +291,105 @@ public class TrainingManagementController
                 btnUpdate.setDisable(true);
     }
     
+    public static void main(String[] args) {                
+        launch(args);        
+    }     
     
     @Override
-    public void start(Stage stage) throws Exception {
-        BasicConfigurator.configure();
-        Parent root = FXMLLoader.load(getClass()
-                                .getResource("TrainingManagement.fxml"));
-        Scene scene = new Scene(root);
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.setMaximized(true);
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage stage) {
+        try {
+            BasicConfigurator.configure();
+            Parent root = FXMLLoader.load(getClass()
+                    .getResource("TrainingManagement.fxml"));
+            Scene scene = new Scene(root);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setMaximized(true);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(TrainingManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void showActiveTraining(){
+        db.populateTable("SELECT training_id as 'ID', "
+                + "title as 'TITLE', "
+                + "participants as 'PARTICIPANTS', "
+                + "start_time as 'TIME', "
+                + "target_date as 'DATE', "
+                + "venue as 'VENUE', "
+                + "TYPE FROM training WHERE status='active'", tblTrainingList);        
+    }
+    
+    private void showInActiveTraining(){
+        db.populateTable(trainingFields + " WHERE status='inactive'", tblTrainingList);        
     }
     
     private void refreshTable(){
-        db.populateTable("SELECT training_id as 'ID', "
-                + "title as 'TITLE', "
-                + "participants as 'PARTICIPANTS', "
-                + "TIME as 'TIME', "
-                + "target_date as 'DATE', "
-                + "venue as 'VENUE', "
-                + "TYPE FROM training", tblTrainingList);
+        db.populateTable(trainingFields + " WHERE status='active'", tblTrainingList);
+        tblTrainingList.getColumns().get(0).setResizable(false);
+        tblTrainingList.getColumns().get(0).setPrefWidth(1);        
     }
 
-    public static void main(String[] args) {        
-        BasicConfigurator.configure();
-        launch(args);        
-    }      
+//    private void addDeleteButtonToTable(TableView tbv){
+//        TableColumn<?, ?> delBtn = new TableColumn("Delete");
+//        Callback<TableColumn<?,Void>,TableCell<?,Void>> cellFactory = new Callback<TableColumn<,Void>, TableCell<d,Void>>(){
+//            @Override
+//            public TableCell<?, Void> call(TableColumn<?, Void> param) {
+//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//            }
+//            
+//        }
+//        
+//    }
+        
 
     @FXML    
     private void searchTraining(KeyEvent event) {
-        String s = tfSearch.getText();
-        db.populateTable("SELECT training_id as 'ID', "
-                + "title as 'TITLE', "
-                + "participants as 'PARTICIPANTS', "
-                + "TIME as 'TIME', "
-                + "target_date as 'DATE', "
-                + "venue as 'VENUE', "
-                + "TYPE FROM training "
-                + "WHERE title LIKE '%"+s+"%'", tblTrainingList);
+        String s = tfSearch.getText().trim();                        
+        if(!s.isEmpty()){
+            if(!chbtoggleInActiveTraining.isSelected()){
+                db.populateTable(trainingFields+ " WHERE title LIKE '%"+s+"%' AND status<>'active'", tblTrainingList);
+            }
+
+            if(chbtoggleInActiveTraining.isSelected()){
+                db.populateTable(trainingFields+ " WHERE title LIKE '%"+s+"%'", tblTrainingList);
+            }            
+        }
+        tblTrainingList.getColumns().get(0).setResizable(false);
+        tblTrainingList.getColumns().get(0).setPrefWidth(1);        
+    }
+    
+    
+    
+    @FXML
+    private void search(){  
+//        JFXDialogLayout layout = new JFXDialogLayout();
+//        JFXDialog dialog = new JFXDialog();        
+//        layout.setHeading(new Text("Heading"));        
+//        scn.loadModal(layout, dialog);
+        
+        String s = tfSearch.getText().trim();        
+        String type = cmbType.getSelectionModel().getSelectedItem();
+        String col = cmbFilterBy.getSelectionModel().getSelectedItem();
+        
+        /**
+         * Column Filters
+         * 
+         */
+        
+        
+        if(!s.isEmpty()){
+            if(!chbtoggleInActiveTraining.isSelected()){
+                db.populateTable(trainingFields+ " WHERE title LIKE '%"+s+"%' AND status<>'active'", tblTrainingList);
+            }
+
+            if(chbtoggleInActiveTraining.isSelected()){
+                db.populateTable(trainingFields+ " WHERE title LIKE '%"+s+"%'", tblTrainingList);
+            }            
+        }        
     }
 
-    @FXML
     private void saveNewTraining(ActionEvent event) {          
         try{
             String title = tfTrainingTitle.getText();
@@ -335,7 +409,7 @@ public class TrainingManagementController
 
             String q = "INSERT INTO training "+
                        "(training_id, "+
-                       "title, participants, TIME, target_date, venue, TYPE) " +
+                       "title, participants, start_time, target_date, venue, TYPE) " +
                        "VALUES(NULL, '"+title+
                        "', '"+participants+
                        "', '"+time+
@@ -353,10 +427,6 @@ public class TrainingManagementController
     }   
 
 
-    @FXML
-    private void addTrainee(ActionEvent event) {
-        
-    }
     
     private void addToTraining(String trainingId, String empId){
         String q = "INSERT INTO training_participants (training_id,emp_id) "
@@ -420,61 +490,68 @@ public class TrainingManagementController
     public String id;
     @FXML
     private void setSelectedTraining(MouseEvent event) {
-        if(tblTrainingList.getSelectionModel().getSelectedItem() != null){
-            vbxAddTrainees.setDisable(false);        
+        if(tblTrainingList.getSelectionModel().getSelectedItem() != null){                
             Object o = tblTrainingList.getSelectionModel().getSelectedItem();
             id = o.toString().split(",")[0].substring(1);
             
-            String title = o.toString().split(",")[1].substring(1);
-            String location = o.toString().split(",")[2].substring(1);
-            String nOParticipants = o.toString().split(",")[3].substring(1);
-            String time = o.toString().split(",")[4].substring(1);
-            String date = o.toString().split(",")[5].substring(1);
-            String type = o.toString().split(",")[6].substring(1);           
-            selectedTrainingId = id;
+            int dbClick = event.getClickCount();            
+            if(dbClick == 2){
+                viewDetails();;
+            }
             
-            System.out.println(selectedTrainingId);
-            
-            String q = "SELECT training_id as 'ID', "
-                + "title as 'TITLE', "
-                + "participants as 'PARTICIPANTS', "
-                + "TIME as 'TIME', "
-                + "target_date as 'DATE', "
-                + "venue as 'VENUE', "
-                + "TYPE FROM training "
-                + "WHERE training_id="+selectedTrainingId;
-            
-            rs = db.displayRecords(q);
-            try {
-                if(rs.next()){
-                    tfTrainingTitle.setText(rs.getString("TITLE"));
-                    lblTraineesForTraining.setText(rs.getString("TITLE"));
-                    
-                    tfNumberOfParticipants.setText(rs.getString("PARTICIPANTS"));
-                    tfTrainingLocation.setText(rs.getString("VENUE"));
-                    dpTrainingDate.setValue(rs.getDate("DATE").toLocalDate());
-                    tpTrainingTime.setValue(rs.getTime("TIME").toLocalTime());
-                    
-                    cbTrainingType.getSelectionModel().select(rs.getString("TYPE").toLowerCase());
-                    
-                    btnUpdate.setDisable(false);
-                    
-                    populateVBXTrainees();                                        
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(TrainingManagementController.class.getName())
-                      .log(Level.SEVERE, null, ex);
-            }  
-            
-            
-            btnNew.setDisable(true);
-            btnUpdate.setDisable(false);
+//            String title = o.toString().split(",")[1].substring(1);
+//            String location = o.toString().split(",")[2].substring(1);
+//            String nOParticipants = o.toString().split(",")[3].substring(1);
+//            String time = o.toString().split(",")[4].substring(1);
+//            String date = o.toString().split(",")[5].substring(1);
+//            String type = o.toString().split(",")[6].substring(1);           
+//            selectedTrainingId = id;
+//            
+//            System.out.println(selectedTrainingId);
+//            
+//            String q = "SELECT training_id as 'ID', "
+//                + "title as 'TITLE', "
+//                + "participants as 'PARTICIPANTS', "
+//                + "start_time as 'TIME', "
+//                + "target_date as 'DATE', "
+//                + "venue as 'VENUE', "
+//                + "TYPE FROM training "
+//                + "WHERE training_id="+selectedTrainingId;
+//            
+//            rs = db.displayRecords(q);
+//            try {
+//                if(rs.next()){
+//                    tfTrainingTitle.setText(rs.getString("TITLE"));
+//                    lblTraineesForTraining.setText(rs.getString("TITLE"));
+//                    
+//                    tfNumberOfParticipants.setText(rs.getString("PARTICIPANTS"));
+//                    tfTrainingLocation.setText(rs.getString("VENUE"));
+//                    dpTrainingDate.setValue(rs.getDate("DATE").toLocalDate());
+//                    tpTrainingStart.setValue(rs.getTime("TIME").toLocalTime());
+//                    
+//                    cbTrainingType.getSelectionModel().select(rs.getString("TYPE").toLowerCase());
+//                    
+//                    btnUpdate.setDisable(false);
+//                    
+//                    populateVBXTrainees();                                        
+//                }
+//            } catch (SQLException ex) {
+//                Logger.getLogger(TrainingManagementController.class.getName())
+//                      .log(Level.SEVERE, null, ex);
+//            }  
+//            
+//            
+//            btnNew.setDisable(true);
+//            btnUpdate.setDisable(false);
+        }else{
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Table Row Selection Error");
+            alert.setContentText("No Table Row Selected.");
         }
     }
 
-    @FXML
     private void searchTrainees(KeyEvent event) {
-        String s = tfSearchTrainees.getText();
+        String s = tfSearchTrainees.getText().trim();
         String q = "SELECT employee.emp_id AS 'id',"
                 + "CONCAT(employee.lastname,', ', employee.firstname, "
                 + "' (',employee_position.position_name,')') AS 'NAME',  "
@@ -535,14 +612,13 @@ public class TrainingManagementController
             jdq.setText(q);
             jd.setQuery(jdq);
             JasperReport jr = JasperCompileManager.compileReport(lc);
-            JasperPrint jrp = JasperFillManager.fillReport(jr, null, db.connection);            
+            JasperPrint jrp = JasperFillManager.fillReport(jr, null, db.getConnection());            
             JasperViewer.viewReport(jrp, false);
         } catch (JRException ex) {
             Logger.getLogger(TrainingManagementController.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }
 
-    @FXML
     private void printTraining(ActionEvent event) {
         String q =  "SELECT employee.firstname, employee.lastname, employee_position.position_name\n" +
                     "FROM training, training_participants, employee, employee_position\n" +
@@ -709,36 +785,442 @@ public class TrainingManagementController
         } 
     }
 
-    @FXML
-    private void setTrainingActivation(ActionEvent event) {
+
+    private void loadNewTrainingModal(ActionEvent event) {
+        loadTrainingUtility("new training");
+//        try {
+//            dialog = new JFXDialogLayout();
+//            
+//            Stage stage = new Stage();
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("TrainingUtility.fxml"));
+//            Parent root = loader.load();
+//
+//            TrainingUtilityController trUtl = loader.getController();
+//            
+//            dialog.setBody(root);
+//            
+//            dlg = new JFXDialog(stackpane,dialog,JFXDialog.DialogTransition.CENTER);
+//            
+//            dlg.show();
+//            
+//            JFXButton save = new JFXButton("Save");
+//            save.setOnAction((sEvt) -> {
+//                dlg.close();
+//            });
+//            
+//            JFXButton cancel = new JFXButton("Cancel");
+//            cancel.setOnAction((sEvt) -> {
+//                dlg.close();
+//            });
+//                
+//            dialog.setActions(save,cancel);
+//        } catch (IOException ex) {
+//            Logger.getLogger(TrainingManagementController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }
+    
+    private void loadTrainingUtility(String act){
+        try {
+            if(act.trim() != null){
+                JFXDialogLayout dialog;
+                JFXDialog dlg;                
+                dialog = new JFXDialogLayout();
+                dialog.setPadding(new Insets(0, 0, 0, 0));
+                          
+                //Stage stage = new Stage();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("TrainingUtility.fxml"));                                
+                TrainingUtilityController trUtl = new TrainingUtilityController();
+                // new or edit
+                trUtl.action = act;
+                trUtl.trainingId = selectedTrainingId;
+                
+                loader.setController(trUtl);                
+                Parent root = loader.load();
+                dialog.setBody(root);                                
+                
+                dlg = new JFXDialog(stackpane,dialog,JFXDialog.DialogTransition.CENTER);
+
+                dlg.show();
+
+                JFXButton save = new JFXButton("Save");
+                save.setOnAction((sEvt) -> {
+                    dlg.close();
+                });
+
+                JFXButton cancel = new JFXButton("Cancel");
+                cancel.setOnAction((sEvt) -> {
+                    dlg.close();
+                });
+
+                dialog.setActions(save,cancel);
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(TrainingManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }        
     }
 
-    JFXDialogLayout dialog;
-    JFXDialog dlg;
-    @FXML
-    private void loadNewTrainingModal(ActionEvent event) {
-        dialog = new JFXDialogLayout();
-        
-        GridPane grdp = grdTraining;
-        
-        grdp.setPrefHeight(127);
-        
-        dialog.setBody(grdp);        
-        
-        dlg = new JFXDialog(stackpane,dialog,JFXDialog.DialogTransition.CENTER);
-        
-        dlg.show();
-        
-        JFXButton save = new JFXButton("Save");        
-        save.setOnAction((sEvt) -> {        
-            dlg.close();
-        });
-        
-        JFXButton cancel = new JFXButton("Cancel");
-        cancel.setOnAction((sEvt) -> {
-            dlg.close();
-        });
-        
-        dialog.setActions(save,cancel);    
+    private void viewDetails() {
+        try {            
+            JFXDialogLayout dialog;
+            JFXDialog dlg;            
+            dialog = new JFXDialogLayout();
+            dialog.setPadding(new Insets(0, 0, 0, 0));
+            
+            //Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewTraining.fxml")); 
+            ViewTrainingController controller = new ViewTrainingController();
+            controller.trainingId = id;
+            //loader.setController(controller);            
+            Parent root = loader.load();            
+            dialog.setBody(root);
+            
+            dlg = new JFXDialog(stackpane,dialog,JFXDialog.DialogTransition.CENTER);
+            
+            dlg.show();            
+        } catch (IOException ex) {
+            Logger.getLogger(TrainingManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }          
+    }       
+    
+
+    private void editTraining(ActionEvent event) {
+        try {
+            JFXDialogLayout dialog;
+            JFXDialog dlg;            
+            dialog = new JFXDialogLayout();
+            dialog.setPadding(new Insets(0, 0, 0, 0));
+
+            //Stage stage = new Stage();
+            FXMLLoader loader =
+            new FXMLLoader(getClass().getResource("EditTraining.fxml")); 
+            EditTrainingController controller = new EditTrainingController();
+            controller.trainingId = id;
+            loader.setController(controller);            
+                
+            Parent root = loader.load();
+            dialog.setBody(root);                                
+
+            dlg = new JFXDialog(stackpane,dialog,JFXDialog.DialogTransition.CENTER);
+
+            dlg.show();
+
+            JFXButton save = new JFXButton("Save");
+            save.setOnAction((sEvt) -> {
+                controller.updateTraining(id);
+                dlg.close();
+            });
+
+            JFXButton cancel = new JFXButton("Cancel");
+            cancel.setOnAction((sEvt) -> {
+                dlg.close();
+            });
+
+            HBox hbx = new HBox();
+            hbx.setPadding(new Insets(8));
+            hbx.setSpacing(10);
+            hbx.getChildren().add(save);
+            hbx.getChildren().add(cancel);            
+            
+            dialog.setActions(save,cancel);
+        } catch (IOException ex) {
+            Logger.getLogger(TrainingManagementController.class.getName())
+                  .log(Level.SEVERE, null, ex);
+        } 
     }
+
+    @FXML
+    private void newTraining(ActionEvent event) {
+        try {
+            //loadTrainingUtility("new training");
+            JFXDialogLayout dialog;
+            JFXDialog dlg;            
+            dialog = new JFXDialogLayout();
+            //dialog.setPadding(new Insets(0, 0, 0, 0));
+            
+            //Stage stage = new Stage();
+            FXMLLoader loader = 
+                    new FXMLLoader(getClass().getResource("NewTraining.fxml")); 
+            NewTrainingController controller = new NewTrainingController();
+            loader.setController(controller);
+            Parent root = loader.load();            
+            dialog.setBody(root);
+            
+            dlg = new JFXDialog(stackpane,
+                                dialog,
+                                JFXDialog.DialogTransition.CENTER);
+            
+            dlg.show();
+            
+            JFXButton save = new Buttons().GreenButton("Save");            
+            save.setOnAction((sEvt) -> {
+                controller.save();
+                refreshTable();
+                dlg.close();               
+            });
+            
+            JFXButton cancel = new Buttons().RedButton("Cancel");            
+            cancel.setOnAction((sEvt) -> {
+                dlg.close();
+            });
+            
+            HBox hbx = new HBox();
+            hbx.setPadding(new Insets(8));
+            hbx.setSpacing(10);
+            hbx.getChildren().add(save);
+            hbx.getChildren().add(cancel);
+            
+            dialog.setActions(hbx);
+        } catch (IOException ex) {
+            Logger.getLogger(TrainingManagementController.class.getName())
+                  .log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void toggleInActiveTraining(ActionEvent event) {
+        JFXCheckBox cbx = ((JFXCheckBox) event.getSource());
+        if(cbx.isSelected()){
+           // show active            
+           db.populateTable(trainingFields , tblTrainingList);  
+        }
+        
+        if(!cbx.isSelected()){
+           // show inactive
+           db.populateTable(trainingFields+ " WHERE status<>'inactive'", 
+                            tblTrainingList);                        
+        }   
+        tblTrainingList.getColumns().get(0).setResizable(false);
+        tblTrainingList.getColumns().get(0).setPrefWidth(1);        
+    }
+
+    @FXML
+    private void editDetails(ActionEvent event) {
+        try {
+            //loadTrainingUtility("new training");
+            JFXDialogLayout dialog;
+            JFXDialog dlg;            
+            dialog = new JFXDialogLayout();
+            dialog.setPadding(new Insets(0, 0, 0, 0));
+            
+            //Stage stage = new Stage();
+            FXMLLoader loader = 
+            new FXMLLoader(getClass().getResource("EditTraining.fxml")); 
+            EditTrainingController controller = new EditTrainingController();
+            controller.trainingId = id;
+            loader.setController(controller);            
+            Parent root = loader.load();            
+            dialog.setBody(root);
+            
+            dlg = 
+            new JFXDialog(stackpane,dialog,JFXDialog.DialogTransition.CENTER);
+            
+            dlg.show();
+                        
+            HBox hbx = new HBox();
+            hbx.setPadding(new Insets(8));
+            hbx.setSpacing(10);
+            JFXButton save = new Buttons().GreenButton("Save");
+            hbx.getChildren().add(save);
+            JFXButton cancel = new Buttons().RedButton("Cancel");
+            hbx.getChildren().add(cancel);
+                        
+            save.setOnAction((sEvt) -> {
+                controller.updateTraining(id);
+                refreshTable();
+                dlg.close();               
+            });
+            
+            
+            cancel.setOnAction((sEvt) -> {
+                dlg.close();
+            });
+                    
+            dialog.setActions(hbx);
+        } catch (IOException ex) {
+            Logger.getLogger(TrainingManagementController.class.getName())
+                  .log(Level.SEVERE, null, ex);
+        }         
+    }
+
+    @FXML
+    private void editDateTime(ActionEvent event) {
+        try {
+            //loadTrainingUtility("new training");
+            JFXDialogLayout dialog;
+            JFXDialog dlg;            
+            dialog = new JFXDialogLayout();
+            dialog.setPadding(new Insets(0, 0, 0, 0));
+            
+            //Stage stage = new Stage();
+            FXMLLoader loader = 
+            new FXMLLoader(getClass().getResource("AddDateTimeToTraining.fxml")); 
+            AddDateTimeToTrainingController controller = 
+            new AddDateTimeToTrainingController();
+            controller.trainingId = id;
+            loader.setController(controller);            
+            Parent root = loader.load();            
+            dialog.setBody(root);
+            
+            dlg = 
+            new JFXDialog(stackpane,dialog,JFXDialog.DialogTransition.CENTER);
+            
+            dlg.show();
+            
+            HBox hbx = new HBox();
+            hbx.setPadding(new Insets(8));
+            hbx.setSpacing(10);
+            JFXButton save = new Buttons().GreenButton("Save");
+            hbx.getChildren().add(save);
+            JFXButton cancel = new Buttons().RedButton("Cancel");
+            hbx.getChildren().add(cancel);            
+                        
+            save.setOnAction((sEvt) -> {
+                controller.save();
+                refreshTable();
+                dlg.close();               
+            });
+                        
+            cancel.setOnAction((sEvt) -> {
+                dlg.close();
+            });
+                    
+            dialog.setActions(hbx);
+        } catch (IOException ex) {
+            Logger.getLogger(TrainingManagementController.class.getName())
+                  .log(Level.SEVERE, null, ex);
+        }        
+    }
+
+    @FXML
+    private void editSponsorsAndTrainors(ActionEvent event) {
+        try {
+            //loadTrainingUtility("new training");
+            JFXDialogLayout dialog;
+            JFXDialog dlg;            
+            dialog = new JFXDialogLayout();
+            dialog.setPadding(new Insets(0, 0, 0, 0));
+            
+            //Stage stage = new Stage();
+            FXMLLoader loader =
+            new FXMLLoader(getClass().getResource("Sponsors.fxml")); 
+            
+            SponsorsController controller = new SponsorsController();                                                
+            controller.trainingId = id;
+            loader.setController(controller);            
+            Parent root = loader.load();
+            dialog.setBody(root);
+            
+            dlg =
+            new JFXDialog(stackpane,dialog,JFXDialog.DialogTransition.CENTER);
+            
+            dlg.show();
+            
+            HBox hbx = new HBox();
+            hbx.setPadding(new Insets(8));
+            hbx.setSpacing(10);
+            JFXButton save = new Buttons().GreenButton("Save");
+            hbx.getChildren().add(save);
+            JFXButton cancel = new Buttons().RedButton("Cancel");
+            hbx.getChildren().add(cancel);            
+                        
+            save.setOnAction((sEvt) -> {                
+                refreshTable();
+                
+                dlg.close();               
+            });
+                        
+            cancel.setOnAction((sEvt) -> {
+                dlg.close();
+            });
+                    
+            dialog.setActions(hbx);
+        } catch (IOException ex) {
+            Logger.getLogger(TrainingManagementController.class.getName())
+                  .log(Level.SEVERE, null, ex);
+        }        
+    }
+
+    @FXML
+    private void setTrainees(ActionEvent event) {
+        try {
+            //loadTrainingUtility("new training");
+            JFXDialogLayout dialog;
+            JFXDialog dlg;            
+            dialog = new JFXDialogLayout();
+            dialog.setPadding(new Insets(0, 0, 0, 0));
+            
+            //Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Participants.fxml")); 
+            ParticipantsController controller = new ParticipantsController();
+            controller.trainingId = id;
+            //loader.setController(controller);            
+            Parent root = loader.load();            
+            dialog.setBody(root);
+            
+            dlg = new JFXDialog(stackpane,dialog,JFXDialog.DialogTransition.CENTER);
+            
+            dlg.show();
+            
+            HBox hbx = new HBox();
+            hbx.setPadding(new Insets(8));
+            hbx.setSpacing(10);
+            JFXButton save = new Buttons().GreenButton("Save");
+            hbx.getChildren().add(save);
+            JFXButton cancel = new Buttons().RedButton("Cancel");
+            hbx.getChildren().add(cancel);            
+                        
+            save.setOnAction((sEvt) -> {                
+                refreshTable();
+                dlg.close();               
+            });
+                        
+            cancel.setOnAction((sEvt) -> {
+                dlg.close();
+            });
+                    
+            dialog.setActions(hbx);
+        } catch (IOException ex) {
+            Logger.getLogger(TrainingManagementController.class.getName()).log(Level.SEVERE, null, ex);
+        }          
+    }
+    
+    /*private void addActionButton(){
+        TableColumn actionCol = new TableColumn("Action");
+        actionCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
+
+        Callback<TableColumn<?, String>, TableCell<?, String>> cellFactory
+                = 
+                new Callback<TableColumn<Person, String>, TableCell<Person, String>>() {
+            @Override
+            public TableCell call(final TableColumn<Person, String> param) {
+                final TableCell<Person, String> cell = new TableCell<Person, String>() {
+
+                    final Button btn = new Button("Just Do It");
+
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            btn.setOnAction(event -> {
+                                Person person = getTableView().getItems().get(getIndex());
+                                System.out.println(person.getFirstName()
+                                        + "   " + person.getLastName());
+                            });
+                            setGraphic(btn);
+                            setText(null);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        actionCol.setCellFactory(cellFactory);
+
+        table.setItems(data);
+        table.getColumns().addAll(firstNameCol, lastNameCol, actionCol);            
+    }*/
 }

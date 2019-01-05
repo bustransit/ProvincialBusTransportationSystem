@@ -7,6 +7,7 @@ package bus_transit.hr.learning;
 
 import bus_transit.DashboardController;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTabPane;
@@ -42,6 +43,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -63,6 +65,23 @@ import utilities.DBUtilities;
  */
 public class LearningManagementController extends Application implements Initializable {
 
+    @FXML
+    private JFXButton btnBack;
+    @FXML
+    private CustomTextField tfTitle;
+    @FXML
+    private CustomTextField taDuration;
+    @FXML
+    private TextArea taDescription;
+    @FXML
+    private CustomTextField tfNofParts;
+    @FXML
+    private ToggleButton btnOkParts;
+    @FXML
+    private VBox vbxTestParts;
+    @FXML
+    private JFXComboBox<?> cmbParts;
+
     /**
      * @return the stackpane
      */
@@ -83,19 +102,10 @@ public class LearningManagementController extends Application implements Initial
     @FXML private AnchorPane heading;
     @FXML private JFXTabPane content;
     public static Label title;
-    @FXML private FlowPane flpTestContainer;
-    @FXML public StackPane stackpane;
-    @FXML private Tab modules;
-    @FXML private CustomTextField txt_searchAll;
-    @FXML private JFXButton btnNew;
-    @FXML private FlowPane flpModules;
-    @FXML private Tab test;
-    @FXML private CustomTextField txt_searchPending1;
-    @FXML private JFXButton btnNewTest;
-    @FXML private Tab learningProgress;
-    @FXML private FlowPane fplLearningProgress;
-    @FXML private JFXButton btnPrintResult;
-    @FXML private PieChart pieResults;
+    private FlowPane flpTestContainer;
+    public StackPane stackpane;
+    private CustomTextField txt_searchAll;
+    private FlowPane flpModules;
 
     /**
      * Initializes the controller class.
@@ -271,7 +281,6 @@ public class LearningManagementController extends Application implements Initial
     public String type;
     public String description;
     
-    @FXML
     private void newTest(ActionEvent event) throws IOException {            
         getStackpane().toFront();
 
@@ -362,9 +371,6 @@ public class LearningManagementController extends Application implements Initial
         return sb.toString();
     }
     
-    @FXML
-    private void SearchPendingRequest(KeyEvent event) {
-    }
     
     public void populateLearningModule(){
         String q = "SELECT * FROM learning_modules";
@@ -387,7 +393,6 @@ public class LearningManagementController extends Application implements Initial
         }
     }
 
-    @FXML
     private void newLearningModule(ActionEvent event) {    
         JFXDialogLayout dialog = new JFXDialogLayout();
         dialog.setHeading(new Text("New Module"));
@@ -447,12 +452,7 @@ public class LearningManagementController extends Application implements Initial
         dlg.show();            
     }
 
-    @FXML
-    private void printTetResults(ActionEvent event) {
-        
-    }
 
-    @FXML
     private void searchModule(KeyEvent event) {
         String s = txt_searchAll.getText();
         String q = "SELECT * FROM learning_modules WHERE title LIKE '%"+s+"%'";
@@ -479,4 +479,8 @@ public class LearningManagementController extends Application implements Initial
 //        String qry = "";
 //        db.createPieChart("Test Result: General preview", qry, pieResults);
     }    
+
+    @FXML
+    private void populateVbxParts(ActionEvent event) {
+    }
 }

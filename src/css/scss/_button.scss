@@ -1,0 +1,104 @@
+/**
+* Mixins for Buttons   
+*/
+@import "_color.scss";
+
+$btnSizes:(xsm, sm, md,lg,xl);
+$btnColor:('gray','blue','green','lightblue','orange','red');
+
+@mixin x-small-button{
+    -fx-font-size: 10px;
+}
+
+@mixin small-button{
+    -fx-font-size: 12px;
+}
+
+@mixin medium-button{
+    -fx-font-size: 14px;
+}
+
+@mixin large-button{
+    -fx-font-size: 16px;
+}
+
+@mixin x-large-button{
+    -fx-font-size: 18px;
+}
+
+$darkenAmount : 5;
+
+@mixin button{
+    -fx-cursor: hand;
+}
+
+@mixin buttonMixin($size, $color){
+    -fx-background-color: $color;    
+    -fx-text-fill: $white;
+    -fx-cursor: hand;
+    @include button();
+    &:hover{
+        -fx-background-color: lighten($color,$darkenAmount);
+        -fx-text-fill: $white;
+    }     
+}
+
+@mixin gray-button{
+    -fx-background-color: $gray;    
+    -fx-text-fill: $white;
+    @include button();
+    &:hover{
+        -fx-background-color: lighten($gray,$darkenAmount);
+        -fx-text-fill: $white;
+    }    
+}
+
+@mixin blue-button{
+    -fx-background-color: $blue;    
+    -fx-text-fill: $white;
+    @include button();
+    &:hover{
+        -fx-background-color: lighten($blue,$darkenAmount);
+        -fx-text-fill: $white;
+    }
+}
+
+@mixin red-button{
+    -fx-background-color: $red;    
+    -fx-text-fill: $white;
+    @include button();
+    &:hover{
+        -fx-background-color: $red;
+        -fx-text-fill: $white;
+    }
+}
+
+@mixin green-button{
+    -fx-background-color: $green;
+    -fx-text-fill: $white;
+    @include button();
+    &:hover{
+        -fx-background-color: darken($green, $darkenAmount);
+        -fx-text-fill: $white;        
+    }    
+}
+
+@mixin orange-button{
+    -fx-background-color: $orange;
+    -fx-text-fill: $white;
+    @include button();
+    &:hover{
+        -fx-background-color: lighten($orange,0.6);
+        -fx-text-fill: $white;
+    }  
+}
+
+@mixin lightblue-button{
+    -fx-background-color: $lightblue;    
+    -fx-text-fill: $white;
+    @include button();
+    &:hover{
+        -fx-background-color: lighten($lightblue,0.6);
+        -fx-text-fill: $white;
+    }
+}

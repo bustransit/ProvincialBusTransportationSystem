@@ -464,7 +464,6 @@ public class LearningModulesController extends Application implements Initializa
     }
     
     // to set width of Main ScrollPane
-    @FXML
     private void setMainControllerWidth(){
         double w = slpMainScrollPane.getWidth();
         flpMainContainer.setPrefWidth(w);

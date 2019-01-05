@@ -16,32 +16,32 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.controlsfx.control.textfield.CustomTextField;
-import org.controlsfx.control.textfield.TextFields;
+import static sferyx.administration.editors.cl.m;
 import utilities.DBUtilities;
+import utilities.Validator;
 
 /**
  * FXML Controller class
@@ -64,19 +64,29 @@ public class NewJobQualificationController extends Application implements Initia
     private Tab tbBenefits;
     @FXML
     private JFXButton btnAddToBenefits;
+    @FXML
+    private Label lblJobTitle;
+    @FXML
+    private Label lblManpower;
+    @FXML
+    private Label lblDepartment;
+    @FXML
+    private Label lblSalaryGrade;
+    @FXML
+    private Label lblDescription;
 
     /**
-     * @return the department
+     * @return the departmentCode
      */
-    public String getDepartment() {
-        return department;
+    public String getDepartmentCode() {
+        return departmentCode;
     }
 
     /**
-     * @param department the department to set
+     * @param departmentCode the departmentCode to set
      */
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
     }
 
     /**
@@ -178,7 +188,7 @@ public class NewJobQualificationController extends Application implements Initia
     @FXML
     private VBox vbxBenefits;
     @FXML
-    private JFXComboBox<?> cbSalaryGrade;
+    private JFXComboBox<Hyperlink> cbSalaryGrade;
 
     /**
      * @return the btnSave
@@ -195,6 +205,7 @@ public class NewJobQualificationController extends Application implements Initia
     }
     DBUtilities db = new DBUtilities();
     ResultSet rs;
+    Validator v = new Validator();
     
     @FXML
     private TextField txtJobTitle;
@@ -212,7 +223,7 @@ public class NewJobQualificationController extends Application implements Initia
     @FXML
     private JFXComboBox<String> cbDepartment;
 
-    String department = null;
+    String departmentCode = null;
     String positionCode = null;
     String description = null;
     String position_name = null;
@@ -229,51 +240,82 @@ public class NewJobQualificationController extends Application implements Initia
         vbxQualification.getChildren().clear();
         db.populateComboBox("SELECT UPPER(CONCAT(department_name,'(', department_code,')')) FROM department", cbDepartment);
         cbDepartment.getSelectionModel().selectFirst();
-        db.populateComboBox("SELECT rec_id FROM salary_grade", cbSalaryGrade);
+        db.populateComboBox("SELECT CONCAT(rec_id, '(P',monthly_rate,')') AS 'sGrade' FROM salary_grade", cbSalaryGrade);
+        cbSalaryGrade.getSelectionModel().selectFirst();
         
-        //txtJobTitle = TextFields.createClearableTextField();        
-//        // replace all textfield into clearable textfield
-//        vbxJobInfo.getChildren().forEach((t) -> {
-//            if(t instanceof TextField){
-//                TextField b = TextFields.createClearableTextField();
-//                b.setId(t.getId());    
-//                int i = vbxJobInfo.getChildren().indexOf(t);
-//                vbxJobInfo.getChildren().remove(t);
-//                vbxJobInfo.getChildren().add(i, b);
-//                b.requestFocus();                
-//            }
-//        });
-                        
-        txtJobTitle.setOnKeyReleased((event) -> {           
+                               
+        txtJobTitle.setOnKeyReleased((event) -> {
+            // get the text
             TextField node = (TextField) event.getSource();
-            String[] p = node.getText().trim().split("\\s");
-            positionCode = "";   
+            String nodeText = node.getText().trim();            
+            
             try{
-                for (String i : p) {
-                    this.positionCode = positionCode.concat(i.charAt(0)+"").toUpperCase();
+                if(!nodeText.isEmpty()){
+                    if(!v.isNumberOnly(nodeText)){
+                        String s = "";                                    
+                        // Check if there is spaces
+                        Matcher m = Pattern.compile("\\s").matcher(nodeText);
+
+                        // set length of charactr you need
+                        int l = 3;
+                        if(!m.find()){
+                           // just get the last 3 character of the word
+                           s = nodeText.substring(0, Math.min(nodeText.length(), l)).toUpperCase();
+                           System.out.println("no spaces");
+                        }else{
+                            System.out.println("there is spaces");                
+                            // if does not containe spaces
+                            Pattern ptrn = Pattern.compile("\\b[a-zA-Z]");
+                            Matcher ma = ptrn.matcher(nodeText);                                                
+                            while(ma.find()){                    
+                                s = s.concat(ma.group());
+                            }                                             
+                        }
+                        positionCode = s.substring(0, Math.min(s.length(), l)).toUpperCase();
+                        System.out.println(positionCode.toUpperCase());
+                        node.setStyle("-fx-border-color:  #DCDCDC");
+                    }else{
+                        node.setStyle("-fx-border-color: red");
+                    }                
                 }                
-                System.out.println("Employee code: "+positionCode);
-            }catch(java.lang.StringIndexOutOfBoundsException e){
-                System.out.println(e);
-            }                      
+            }catch (NullPointerException e){
+                
+            }
         });
         
         txtVacancies.setOnKeyReleased((event) -> {
-            TextField node = (TextField) event.getSource();          
-            if(!(node.getText().trim().isEmpty())){
-                setManpower(Integer.parseInt(txtVacancies.getText()));
-                System.out.println("Vacancies: "+txtVacancies.getText());                
+            TextField node = (TextField) event.getSource(); 
+            String nodeText = node.getText().trim();
+            try{
+                if(!(nodeText.isEmpty())){
+                    if(v.isNumberOnly(nodeText)){                            
+                        setManpower(Integer.parseInt(txtVacancies.getText()));              
+                        node.setStyle("-fx-border-color:  #DCDCDC;");
+                        lblManpower.setText("Number of Personnel nedded: ");
+                        lblManpower.setStyle("-fx-text-fill: black;");
+                    }else{                        
+                        lblManpower.setText("Number of Personnel nedded: Input number only*");
+                        lblManpower.setStyle("-fx-text-fill: blue;");
+                        node.setStyle("-fx-border-color:  red;");
+                        node.setText(null);
+                    }               
+                }                
+            }catch(NullPointerException e){
+                
             }
         });
         
         cbSalaryGrade.setOnAction((event) -> {
             setSalaryGrade(Integer.parseInt(cbSalaryGrade.getSelectionModel().getSelectedItem().toString()));
-            System.out.println(getSalaryGrade());
         });
         
-        cbDepartment.setOnAction((event) -> {
-            setDepartment(cbDepartment.getSelectionModel().getSelectedItem().toString());
-            System.out.println(getDepartment());
+        cbDepartment.setOnAction((event) -> {             
+            Matcher m = Pattern.compile("\\(([^)]+)\\)")
+                               .matcher(cbDepartment.getSelectionModel().getSelectedItem().toLowerCase());
+            while(m.find()){
+                System.out.println(m.group(1));
+            }
+            setDepartmentCode(cbDepartment.getSelectionModel().getSelectedItem().toString());            
         });
         
         txtDescription.setOnKeyReleased((event) -> {
@@ -286,23 +328,57 @@ public class NewJobQualificationController extends Application implements Initia
 
 
     
-    public void save(){           
-        try {        
-        System.out.println("Save from NewJobQualificationController");
-        String q = "INSERT INTO position "+
-                   "(position_code, description, n_of_manpower, position_name, salary_grade) "+
-                   "VALUES('"+positionCode+
-                   "','"+txtDescription.getText()+
-                   "','"+txtVacancies.getText()+
-                   "','"+txtJobTitle.getText()+
-                   "','"+cbSalaryGrade.getSelectionModel().getSelectedItem().toString()+"')";                  
-        db.execute(q);
-        q = "SELECT MAX(rec_id) as 'position_id' FROM position";
-        rs = db.displayRecords(q);            
+    public void save(){                   
+        try {            
+            String q = "INSERT INTO position "+
+                       "(position_code, departement_code, description, n_of_manpower, position_name, salary_grade) "+
+                       "VALUES('"+positionCode+
+                       "','"+departmentCode+
+                       "','"+txtDescription.getText()+
+                       "','"+txtVacancies.getText()+
+                       "','"+txtJobTitle.getText()+
+                       "','"+cbSalaryGrade.getSelectionModel().getSelectedItem().toString()+"')";                  
+            db.execute(q);
+            
+            q = "SELECT MAX(rec_id) as 'position_id' FROM position";
+            
+            rs = db.displayRecords(q);            
+            
             if(rs.next()){
-                setPositionId(rs.getString("position_id"));
+                positionId = rs.getString("position_id");
                 System.out.println("positionId");
+                
+                vbxQualification.getChildren().forEach((t) -> {
+                    String s = vbxQualification.getAccessibleText();
+                    if(t instanceof JFXButton){
+                        String txt = ((JFXButton) t).getText();                        
+                        String qry = "INSERT INTO position_qualification ("+s+", position_code) "+
+                                   "VALUES ('"+txt+"', '"+positionCode+"')";
+                        db.execute(qry);
+                    }
+                });
+                
+                vbxBenefits.getChildren().forEach((t) -> {
+                    String s = vbxBenefits.getAccessibleText();
+                    if(t instanceof JFXButton){
+                        String txt = ((JFXButton) t).getText();                        
+                        String qry = "INSERT INTO position_benefits ("+s+", position_code) "+
+                                   "VALUES ('"+txt+"', '"+positionCode+"')";
+                        db.execute(qry);
+                    }
+                });
+                
+                vbxResponsibilities.getChildren().forEach((t) -> {
+                    String s = vbxResponsibilities.getAccessibleText(); 
+                    if(t instanceof JFXButton){
+                        String txt = ((JFXButton) t).getText();                        
+                        String qry = "INSERT INTO position_responsibilities ("+s+", position_code) "+
+                                   "VALUES ('"+txt+"', '"+positionCode+"')";
+                        db.execute(qry);
+                    }
+                });                
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(NewJobQualificationController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex){
@@ -342,7 +418,7 @@ public class NewJobQualificationController extends Application implements Initia
     
     @FXML
     private void setDepartment(ActionEvent event) {
-        setDepartment((String) cbDepartment.getSelectionModel().getSelectedItem());        
+        setDepartmentCode((String) cbDepartment.getSelectionModel().getSelectedItem());        
     }
 
     @FXML

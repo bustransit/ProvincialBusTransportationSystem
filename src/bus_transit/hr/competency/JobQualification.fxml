@@ -42,7 +42,7 @@
                      <center>
                         <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <content>
-                              <FlowPane fx:id="flpMainContainer" alignment="TOP_CENTER" hgap="20.0" prefHeight="600.0" prefWidth="1270.0" prefWrapLength="1000.0" style="-fx-background-color: white;" vgap="20.0">
+                              <FlowPane fx:id="flpMainContainer" alignment="TOP_CENTER" hgap="40.0" prefWrapLength="1000.0" style="-fx-background-color: white;" vgap="40.0">
                                  <padding>
                                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                  </padding>
@@ -57,7 +57,7 @@
                         </ScrollPane>
                      </center>
                      <top>
-                        <AnchorPane minHeight="20.0" prefHeight="50.0" prefWidth="1258.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                        <AnchorPane fx:id="ancHeader" minHeight="20.0" prefHeight="50.0" prefWidth="1258.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
                            <children>
                               <CustomTextField fx:id="txtSearch" layoutX="14.0" layoutY="4.0" onKeyReleased="#search" prefHeight="20.0" prefWidth="300.0" promptText="Search by Position" style="-fx-background-color: white; -fx-background-radius: 0; -fx-border-color: #DCDCDC;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <font>
@@ -70,7 +70,7 @@
                                     <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                                  </opaqueInsets>
                               </CustomTextField>
-                              <JFXComboBox fx:id="cbFilterBy" layoutX="327.0" layoutY="13.0" prefHeight="25.0" prefWidth="188.0" promptText="Filter by" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="10.0">
+                              <JFXComboBox fx:id="cbFilterBy" layoutX="327.0" layoutY="13.0" prefHeight="25.0" prefWidth="188.0" promptText="Filter by" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>

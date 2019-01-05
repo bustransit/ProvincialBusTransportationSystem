@@ -5,8 +5,11 @@
  */
 package bus_transit.hr.competency;
 
+import static bus_transit.DashboardController.root;
 import bus_transit.hr.learning.TestController;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXNodesList;
+import com.jfoenix.controls.JFXTabPane;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.IOException;
@@ -20,8 +23,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -36,6 +42,28 @@ import utilities.DBUtilities;
 public class PositionCardController implements Initializable {
     ResultSet rs;
     DBUtilities db = new DBUtilities();
+    @FXML
+    private VBox vbxJobDetails;
+    @FXML
+    private Hyperlink hplPosition;
+    @FXML
+    private JFXTabPane tabPane;
+    @FXML
+    private Hyperlink hplRate;
+    @FXML
+    private Tab tbQualities;
+    @FXML
+    private JFXNodesList jfxNdListQualities;
+    @FXML
+    private Tab tbResponsibilities;
+    @FXML
+    private JFXNodesList jfxNdListResponsibilities;
+    @FXML
+    private Tab tbBenefits;
+    @FXML
+    private JFXNodesList jfxNdListBenefits;
+    @FXML
+    private Label lblPositionCode;
     /**
      * @return the positionId
      */
@@ -53,14 +81,11 @@ public class PositionCardController implements Initializable {
     public static String positionId;
     @FXML
     private AnchorPane ancPosition;
-    @FXML
     private Label lblPosition;
     @FXML
     private JFXButton btnShowOptions;
     @FXML
     private VBox vbxPosition;
-    @FXML
-    private Label lblSalary;
     @FXML
     private Text txtDescription;
 
@@ -69,23 +94,97 @@ public class PositionCardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadJobDetails();
+        // to set tab fit width header
+        tabPane.tabMinWidthProperty().bind(tabPane.widthProperty().divide(tabPane.getTabs().size()).subtract(10));
+        loadJobDetails(); 
+        
     }    
     
     /**
      * Job Position Details
      */    
     private void loadJobDetails(){
-        try {
-            String q = "SELECT * FROM employee_position WHERE position_id="+positionId;
-            rs = db.displayRecords(q);
+        String q = "SELECT CONCAT('P',FORMAT(monthly_rate,2)) as 'monthly_rate', " +
+                   "position.position_code, " +
+                   "position.department_code," +
+                   "position.description, " +
+                   "position.position_name, " +
+                   "position.salary_grade " +
+                   "FROM POSITION, salary_grade " +
+                   "WHERE position.salary_grade = salary_grade.salary_grade "+
+                   "AND position.position_code ='"+positionId+"'";
+
+        rs = db.displayRecords(q);        
+        try {          
             if(rs.next()){
-                lblPosition.setText(rs.getString("position_name").toUpperCase());
+                hplPosition.setText(rs.getString("position_name").toUpperCase());
+                hplRate.setText(rs.getString("monthly_rate"));
                 txtDescription.setText(rs.getString("description"));
+                lblPositionCode.setText(rs.getString("position_code"));                
+                
+                positionId = rs.getString("position_code");
+                loadQualities(positionId, jfxNdListQualities);
+                loadResponsibilities(positionId, jfxNdListResponsibilities);
+                loadBenefits(positionId, jfxNdListBenefits);
+                
             }} catch (SQLException ex) {
+            Logger.getLogger(PositionCardController.class.getName()).log(Level.SEVERE, null, ex);            
+        }
+    }
+    
+    private void loadQualities(String psCode, JFXNodesList lst){
+        lst.getChildren().clear();
+        String q = "SELECT qualifications FROM position_qualification WHERE position_code = '"+psCode+"'";
+        rs = db.displayRecords(q);
+        try {
+            while(rs.next()){
+                HBox hbx = new HBox();
+                Text txt = new Text(rs.getString("qualifications"));
+                FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.CIRCLE);
+                hbx.getChildren().add(icon);
+                hbx.getChildren().add(txt);
+                lst.getChildren().add(hbx);
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(PositionCardController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    private void loadResponsibilities(String psCode, JFXNodesList lst){
+        lst.getChildren().clear();
+        String q = "SELECT responsibilities FROM position_responsibilities WHERE position_code = '"+psCode+"'";
+        rs = db.displayRecords(q);
+        try {
+            while(rs.next()){
+                HBox hbx = new HBox();
+                Text txt = new Text(rs.getString("responsibilities"));
+                FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.CIRCLE);
+                hbx.getChildren().add(icon);
+                hbx.getChildren().add(txt);
+                lst.getChildren().add(hbx);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PositionCardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
+
+    private void loadBenefits(String psCode, JFXNodesList lst){
+        lst.getChildren().clear();
+        String q = "SELECT benefits FROM position_benefits WHERE position_code = '"+psCode+"'";
+        rs = db.displayRecords(q);
+        try {
+            while(rs.next()){
+                HBox hbx = new HBox();
+                Text txt = new Text(rs.getString("benefits"));
+                FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.CIRCLE);
+                hbx.getChildren().add(icon);
+                hbx.getChildren().add(txt);
+                lst.getChildren().add(hbx);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PositionCardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }     
     
     /**
      * OPions
@@ -104,11 +203,12 @@ public class PositionCardController implements Initializable {
             vbx.setPadding(new Insets(p,p,p,p));
             
             double textSize = 14;
+            
             JFXButton btnEdit = new JFXButton("Edit");                                                
             btnEdit.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE_ALT));
-            btnEdit.setAccessibleText("TestViewer.fxml");
-            btnEdit.setFont(new Font(textSize));
-            //btnEdit.setTooltip(new Tooltip("Edit Test"));                        
+            btnEdit.setAccessibleText("EditJobQualification.fxml");
+            
+            btnEdit.setFont(new Font(textSize));                       
             vbx.getChildren().add(btnEdit);
 
 //            JFXButton btnRun = new JFXButton("Run");                                                
@@ -120,11 +220,10 @@ public class PositionCardController implements Initializable {
 //            });
 //            vbx.getChildren().add(btnRun);            
             
-            JFXButton btnDownload = new JFXButton("Download");                                           
-            btnDownload.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.DOWNLOAD)); 
-            btnDownload.setFont(new Font(textSize));
-            //btnDownload.setTooltip(new Tooltip("Run Test"));                        
-            vbx.getChildren().add(btnDownload);        
+            JFXButton btnViewDetails = new JFXButton("Details");                                           
+            btnViewDetails.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.DOWNLOAD)); 
+            btnViewDetails.setFont(new Font(textSize));
+            vbx.getChildren().add(btnViewDetails);        
             
             pop.setContentNode(vbx);
             pop.setAnimated(true);        
@@ -139,5 +238,13 @@ public class PositionCardController implements Initializable {
             System.out.println(popOverId);             
         }      
     }     
+
+    @FXML
+    private void goToPositionFullInfo(ActionEvent event) {
+    }
+
+    @FXML
+    private void goToSalaryGradeInfo(ActionEvent event) {
+    }
     
 }

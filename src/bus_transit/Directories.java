@@ -1,10 +1,14 @@
 package bus_transit;
 
+import com.jfoenix.controls.JFXButton;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
@@ -12,6 +16,9 @@ import java.util.logging.Logger;
  */
 
 public class Directories {
+    // Component
+    public String employeeInfo = "system/entities/EmployeeeInfo.fxml";
+    
     // MAIN
     public URL login;
     public URL dashboard;
@@ -170,5 +177,20 @@ public class Directories {
         } catch (MalformedURLException ex) {
             Logger.getLogger(Directories.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    
+    
+    public void loadTestViewer(){                
+        String file = this.learningManagement.toString();
+        try {
+            AnchorPane pane = FXMLLoader.load(getClass().getResource(file));
+            pane.setPrefSize(DashboardController.root.getWidth(), DashboardController.root.getHeight());
+            DashboardController.root.getChildren().removeAll(DashboardController.root.getChildren());
+            DashboardController.root.getChildren().add(pane);
+            DashboardController.draw.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }    
     }
 }

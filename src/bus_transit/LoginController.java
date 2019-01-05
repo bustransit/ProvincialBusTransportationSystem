@@ -5,14 +5,16 @@
  */
 package bus_transit;
 
-import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXButton;      
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -26,6 +28,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -38,6 +41,7 @@ import javafx.util.Duration;
 import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
 import utilities.DBUtilities;
+import utilities.Notification;
 
 /**
  * FXML Controller class
@@ -78,16 +82,48 @@ public class LoginController extends Application implements Initializable {
     public String empID;
     public String dept;
     
-    DBUtilities db = new DBUtilities();
+    public static DBUtilities db;
     ResultSet rs;
-        
+    Notification notif = new Notification();    
+    
     SidePaneController sidePane = new SidePaneController();
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try{
+            db = new DBUtilities();
+        }catch(Exception e){
+            notif.showDarkErrorNotif("Not Connected", "Please connect to local network", Pos.CENTER, 1.0);
+        }
         TimeDate();
+        toMD5AndViceVersa();
+        startServer();
     }
 
+    private void startServer(){
+        try{
+            ServerSocket serverSocket = new ServerSocket(3306);
+            Socket s = serverSocket.accept();
+            DataInputStream input = new DataInputStream(s.getInputStream());
+            String str = (String) input.readUTF();
+            
+            System.out.println("Client Says:" +str);
+            
+            serverSocket.close();
+            
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    
+    public void toMD5AndViceVersa(){
+        String p = "admin";
+        String enc = db.encryptPassword(p);
+        System.out.println("Password: "+ p);
+        System.out.println(enc);
+        System.out.println(db.isPasswordMatched("admin", enc));
+    }
+    
     @FXML
     private void Close(ActionEvent event) {
         // Shows dialog of close button is clicked
@@ -140,30 +176,9 @@ public class LoginController extends Application implements Initializable {
 
     @FXML
     private void SignIn(ActionEvent event) throws IOException {       
-        username = txt_username.getText();
-        password = txt_password.getText();
+        username = txt_username.getText().trim();
+        password = txt_password.getText().trim();
         
-//        q = "SELECT user.emp_id, "
-//                + "user.username, "
-//                + "user.password,"
-//                + "user.department_code, "
-//                + "employee.position_id,"
-//                + "employee_position.position_level "
-//                + "FROM user,employee, employee_position "
-//                + "WHERE user.emp_id = employee.emp_id "
-//                + "AND employee.position_id = employee_position.position_id "
-//                + "ANd user.username = '"+username+"' "
-//                + "AND user.password = '"+password+"'";
-
-//        q = "SELECT user.*, "
-//                + "employee.*, "
-//                + "employee_position.* "
-//                + "FROM user, employee, employee_position "
-//                + "WHERE user.username = '"+username+"' "
-//                + "AND user.password='"+password+"' "
-//                + "AND user.emp_id = employee.emp_id "
-//                + "GROUP by user.emp_id";
-
         String q = "SELECT user.*, employee.*, employee_position.*, department.*, module.*"
                 + " FROM employee, user, employee_position, department, module"
                 + " WHERE user.username='"+username+"'"
@@ -374,6 +389,5 @@ public class LoginController extends Application implements Initializable {
      */
     public static void main(String[] args) {
         launch(args);
-    }     
-    
+    }         
 }

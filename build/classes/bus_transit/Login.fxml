@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import org.controlsfx.control.textfield.CustomPasswordField?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
@@ -36,26 +35,18 @@
                                     <Font name="Calibri" size="24.0" />
                                  </font>
                               </Label>
-                              <VBox layoutX="50.0" layoutY="199.0">
-                                 <children>
-                                    <CustomTextField fx:id="txt_username" prefHeight="35.0" prefWidth="250.0" promptText="Enter Username or Employee ID" styleClass="textfield" text="hr2_">
-                                       <font>
-                                          <Font name="Calibri" size="14.0" />
-                                       </font>
-                                    </CustomTextField>
-                                    <Pane id="login-line" prefHeight="1.0" prefWidth="250.0" style="-fx-background-color: #6dc0ff;" />
-                                 </children>
-                              </VBox>
-                              <VBox layoutX="50.0" layoutY="250.0">
-                                 <children>
-                                    <CustomPasswordField fx:id="txt_password" prefHeight="35.0" prefWidth="250.0" promptText="Enter Password" styleClass="textfield" text="hr2_">
-                                       <font>
-                                          <Font name="Calibri" size="14.0" />
-                                       </font>
-                                    </CustomPasswordField>
-                                    <Pane id="login-line" prefHeight="1.0" prefWidth="250.0" style="-fx-background-color: #6dc0ff;" />
-                                 </children>
-                              </VBox>
+                              <CustomTextField fx:id="txt_username" layoutX="50.0" layoutY="199.0" prefHeight="35.0" prefWidth="250.0" promptText="Enter Username or Employee ID" styleClass="textfield" text="hr2_">
+                                 <font>
+                                    <Font name="Calibri" size="14.0" />
+                                 </font>
+                              </CustomTextField>
+                              <Pane id="login-line" layoutX="50.0" layoutY="238.0" prefHeight="1.0" prefWidth="250.0" style="-fx-background-color: #6dc0ff;" />
+                              <CustomPasswordField fx:id="txt_password" layoutX="50.0" layoutY="250.0" prefHeight="35.0" prefWidth="250.0" promptText="Enter Password" styleClass="textfield" text="hr2_">
+                                 <font>
+                                    <Font name="Calibri" size="14.0" />
+                                 </font>
+                              </CustomPasswordField>
+                              <Pane id="login-line" layoutX="50.0" layoutY="289.0" prefHeight="1.0" prefWidth="250.0" style="-fx-background-color: #6dc0ff;" />
                               <JFXButton fx:id="btn_signin" buttonType="RAISED" defaultButton="true" layoutX="50.0" layoutY="306.0" onAction="#SignIn" prefHeight="30.0" prefWidth="100.0" ripplerFill="#0090ff" style="-fx-background-color: white; -fx-background-radius: 2;" text="SIGN IN" textFill="#0078d7">
                                  <font>
                                     <Font name="Calibri Bold" size="14.0" />

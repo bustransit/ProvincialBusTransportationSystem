@@ -5,6 +5,7 @@
  */
 package bus_transit.hr.learning;
 
+import bus_transit.SceneController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDialog;
@@ -396,8 +397,14 @@ public class LearningModuleCardController implements Initializable {
         dlg.show();         
     }
     
+    SceneController scn = new SceneController();
     @FXML
     private void editModule(ActionEvent event) {
+        JFXDialogLayout layout = new JFXDialogLayout();
+        JFXDialog d = new JFXDialog();        
+        layout.setHeading(new Text("Heading"));        
+        scn.loadModal(layout, d);
+        
         String q = "SELECT * FROM learning_modules WHERE module_id="+id;
         rs = db.displayRecords(q); 
         try {

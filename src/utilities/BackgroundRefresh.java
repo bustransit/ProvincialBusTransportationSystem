@@ -6,6 +6,7 @@
 
 package utilities;
 
+import java.lang.reflect.Method;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -17,17 +18,16 @@ import javafx.util.Duration;
  */
 
 public class BackgroundRefresh {
-    public int refreshRate = 1;    
+           
     public BackgroundRefresh() {
+        int refreshRate = 1;
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {    
             /**
              * Continuous background process here
              * will update every int refreshRate;
-             */            
+             */                                  
             System.out.println("From BackgroundRefresh timer");
-        }),
-            new KeyFrame(Duration.seconds(refreshRate))
-        );        
+        }),new KeyFrame(Duration.seconds(refreshRate)));                       
         clock.setCycleCount(Animation.INDEFINITE);
         clock.play();
     }

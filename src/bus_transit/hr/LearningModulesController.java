@@ -41,17 +41,16 @@ public class LearningModulesController implements Initializable {
     DBUtilities db = new DBUtilities();
     ResultSet rs;     
     
-    @FXML
-    private AnchorPane heading;
-    @FXML
-    private CustomTextField txt_searchAll;
-    @FXML
-    private JFXButton btnNew;
     private FlowPane flpModules;
-    @FXML
     private StackPane stackpane;
     @FXML
-    private FlowPane flpMainContainer;
+    private AnchorPane container;
+    @FXML
+    private AnchorPane ancPosition;
+    @FXML
+    private JFXButton btnShowOptions;
+    @FXML
+    private AnchorPane ancContent;
 
     
     /**
@@ -76,9 +75,6 @@ public class LearningModulesController implements Initializable {
         // TODO
     }    
 
-    @FXML
-    private void searchModule(KeyEvent event) {
-    }
     
     public void populateLearningModule(){
         String q = "SELECT * FROM learning_modules";
@@ -101,7 +97,6 @@ public class LearningModulesController implements Initializable {
         }
     }    
 
-    @FXML
     private void newLearningModule(ActionEvent event) {    
         JFXDialogLayout dialog = new JFXDialogLayout();
         dialog.setHeading(new Text("New Module"));
@@ -159,6 +154,10 @@ public class LearningModulesController implements Initializable {
 
         dialog.setActions(btn_cancel, btn_yes);              
         dlg.show();            
+    }
+
+    @FXML
+    private void showOptions(ActionEvent event) {
     }
     
 }

@@ -20,11 +20,11 @@ import java.util.logging.Logger;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -44,18 +44,18 @@ import utilities.DBUtilities;
  *
  * @author Llamera
  */
-public class DashboardController implements Initializable {   
-    DBUtilities db = new DBUtilities();
-    ResultSet rs;
+public class DashboardController extends Application implements Initializable {   
+    private DBUtilities db;
+    private ResultSet rs;
     
-    @FXML private AnchorPane container;
+    
     @FXML private JFXButton btn_menu;
     private JFXButton btn_close;
     @FXML private JFXButton btn_minimize;
     @FXML private JFXButton btn_user;
     @FXML private Label txt_copyright;
     @FXML private Label txt_datetime;
-    @FXML private StackPane stackpane;
+    @FXML public StackPane stackpane;
     @FXML private AnchorPane AccountPanel;
     @FXML private Label txt_user;
     @FXML private Label txt_level;
@@ -71,6 +71,7 @@ public class DashboardController implements Initializable {
     private int day;
     private int year;
 
+    @FXML private AnchorPane container;
     public static AnchorPane root;
     public static JFXDrawer draw;
 
@@ -97,12 +98,18 @@ public class DashboardController implements Initializable {
     private VBox hbxSuccesstion;
     @FXML
     private AnchorPane mainContainer;
+    public static Stage primaryStage;
+    public static StackPane stckPne;
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {        
+    public void initialize(URL url, ResourceBundle rb) {  
+        
+        this.db = LoginController.db;
+        
         TimeDate();
         root = container;
         draw = drawer;
+        stckPne = stackpane;
         pop = new PopOver(AccountPanel);        
         loadSidePane();  
         setNofModules();
@@ -111,11 +118,19 @@ public class DashboardController implements Initializable {
         mainContainer.setOnMouseClicked((event) -> {
             drawer.close();
         });
-        
-        
-        
     }    
 
+    @Override
+    public void start(Stage stage) throws Exception {
+        primaryStage = stage;        
+        Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));        
+        Scene scene = new Scene(root);        
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setMaximized(true);
+        stage.setScene(scene);
+        stage.show();
+    }    
+    
     public void loadSidePane(){
         // This will sets the sidepane
         try {
@@ -428,10 +443,7 @@ public class DashboardController implements Initializable {
             } else {
                 txt_datetime.setText(date + "   " + hour + ":" + minute + ":" + second + " " + day_night);
                 txt_copyright.setText("Copyright " + year + ". Transportation System. All Rights Reserved.");
-            }
-            
-            System.out.println("From timer");
-            
+            }            
         }),
                 new KeyFrame(Duration.seconds(1))
         );
